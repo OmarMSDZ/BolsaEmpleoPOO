@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class Persona {
-
+	
+	//xd
 	protected String codigo, nombre, apellido, sexo, passwd;
 	protected Date fechaNacimiento;
 	protected String cedula, telefono, correoElectronico, provincia, direccion, dispHorarios;
