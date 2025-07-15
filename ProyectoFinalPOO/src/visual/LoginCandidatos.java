@@ -105,8 +105,8 @@ public class LoginCandidatos extends JDialog {
 		setBounds(100, 100, 796, 894);
 
 		//****SUPERUSUARIO, ELIMINAR DESPUES ****
-		Universitario superusu = new Universitario("SUP-1", "Omar", "Morales", "M", "1234", new Date(), "abc", "8091231234", "super@gmail.com", "Santiago", "Su casa", "Todos", true, true, "Tiempo Completo", "Presencial", false, null, "Ing. en Sistemas");
-		Bolsa.getInstancia().insertarPersona(superusu);
+		//Universitario superusu = new Universitario("SUP-1", "Omar", "Morales", "M", "1234", new Date(), "abc", "8091231234", "super@gmail.com", "Santiago", "Su casa", "Todos", true, true, "Tiempo Completo", "Presencial", false, null, "Ing. en Sistemas");
+		//Bolsa.getInstancia().insertarPersona(superusu);
 		//***************************************
 		
 		setLocationRelativeTo(null);
