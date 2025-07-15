@@ -2,54 +2,27 @@ package logica;
 
 import java.util.ArrayList;
 
-public class Empresa {
+public class Empresa extends Usuario {
 
-	private String codigo;
-	private String nombre;
-	private String passw;
+	private String rnc;
 	private String tipoEmpresa;
-	private String telefono;
-	private String correo;
-	private String provincia;
-	private String direccion;
 	private ArrayList<Oferta> misOfertas;
 
-	public Empresa(String codigo, String nombre, String passw, String tipoEmpresa, String telefono, String correo, String provincia, String direccion) {
-		super();
-		this.codigo = codigo;
-		this.nombre = nombre;
-		this.passw = passw;
+	public Empresa(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
+			String provincia, String municipio, String direccion, String rnc, String tipoEmpresa,
+			ArrayList<Oferta> misOfertas) {
+		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion);
+		this.rnc = rnc;
 		this.tipoEmpresa = tipoEmpresa;
-		this.telefono = telefono;
-		this.correo = correo;
-		this.provincia = provincia;
-		this.direccion = direccion;
-		
-		misOfertas = new ArrayList<Oferta>();
+		this.misOfertas = misOfertas;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public String getRnc() {
+		return rnc;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getPassw() {
-		return passw;
-	}
-
-	public void setPassw(String passw) {
-		this.passw = passw;
+	public void setRnc(String rnc) {
+		this.rnc = rnc;
 	}
 
 	public String getTipoEmpresa() {
@@ -60,38 +33,6 @@ public class Empresa {
 		this.tipoEmpresa = tipoEmpresa;
 	}
 
-	public String getTelefono() {
-		return telefono;
-	}
-
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
-
-	public String getCorreo() {
-		return correo;
-	}
-
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
-	
-	public String getProvincia() {
-		return provincia;
-	}
-
-	public void setProvincia(String provincia) {
-		this.provincia = provincia;
-	}
-	
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-	
 	public ArrayList<Oferta> getMisOfertas() {
 		return misOfertas;
 	}

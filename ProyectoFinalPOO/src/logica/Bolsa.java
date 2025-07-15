@@ -4,66 +4,91 @@ import java.util.ArrayList;
 
 public class Bolsa {
 
-	private ArrayList<Persona> listaPersonas;
+	private ArrayList<Usuario> listaUsuarios;
 	private ArrayList<Solicitud> listaSolicitudes;
-	private ArrayList<Empresa> listaEmpresas;
+	private ArrayList<MatchOferta> listaMatchOferta;
 	private ArrayList<Oferta> listaOfertas;
-	public static int genCodPers = 0;
+	public static int genCodUsu = 0;
 	public static int genCodSoli = 0;
-	public static int genCodEmpr = 0;
+	public static int genCodMatch = 0;
 	public static int genCodOfer = 0;
 	public static Bolsa bolsaLaboral = null;
-
+	
 	public Bolsa() {
 		super();
-		listaPersonas = new ArrayList<Persona>();
-		listaSolicitudes = new ArrayList<Solicitud>();
-		listaEmpresas = new ArrayList<Empresa>();
-		listaOfertas = new ArrayList<Oferta>();
+		this.listaUsuarios = new ArrayList<Usuario>();
+		this.listaSolicitudes = new ArrayList<Solicitud>();
+		this.listaMatchOferta = new ArrayList<MatchOferta>();
+		this.listaOfertas = new ArrayList<Oferta>();
 	}
-
-	public static Bolsa getInstancia() {
-		if (bolsaLaboral == null) {
+	
+	public Bolsa getInstancia() {
+		if(bolsaLaboral==null) {
 			bolsaLaboral = new Bolsa();
 		}
-
 		return bolsaLaboral;
 	}
-
-	public ArrayList<Persona> getListaPersonas() {
-		return listaPersonas;
+	
+	public ArrayList<Usuario> getListaUsuarios() {
+		return listaUsuarios;
 	}
-
-	public void setListaPersonas(ArrayList<Persona> listaPersona) {
-		this.listaPersonas = listaPersona;
+	public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+		this.listaUsuarios = listaUsuarios;
 	}
-
 	public ArrayList<Solicitud> getListaSolicitudes() {
 		return listaSolicitudes;
 	}
-
 	public void setListaSolicitudes(ArrayList<Solicitud> listaSolicitudes) {
 		this.listaSolicitudes = listaSolicitudes;
 	}
-
-	public ArrayList<Empresa> getListaEmpresas() {
-		return listaEmpresas;
+	public ArrayList<MatchOferta> getListaMatchOferta() {
+		return listaMatchOferta;
 	}
-
-	public void setListaEmpresas(ArrayList<Empresa> listaEmpresas) {
-		this.listaEmpresas = listaEmpresas;
+	public void setListaMatchOferta(ArrayList<MatchOferta> listaMatchOferta) {
+		this.listaMatchOferta = listaMatchOferta;
 	}
-
 	public ArrayList<Oferta> getListaOfertas() {
 		return listaOfertas;
 	}
-
-	public void setListaOferta(ArrayList<Oferta> listaOferta) {
-		this.listaOfertas = listaOferta;
+	public void setListaOfertas(ArrayList<Oferta> listaOfertas) {
+		this.listaOfertas = listaOfertas;
+	}
+	public static int getGenCodUsu() {
+		return genCodUsu;
+	}
+	public static void setGenCodUsu(int genCodUsu) {
+		Bolsa.genCodUsu = genCodUsu;
+	}
+	public static int getGenCodSoli() {
+		return genCodSoli;
+	}
+	public static void setGenCodSoli(int genCodSoli) {
+		Bolsa.genCodSoli = genCodSoli;
+	}
+	public static int getGenCodMatch() {
+		return genCodMatch;
+	}
+	public static void setGenCodMatch(int genCodMatch) {
+		Bolsa.genCodMatch = genCodMatch;
+	}
+	public static int getGenCodOfer() {
+		return genCodOfer;
+	}
+	public static void setGenCodOfer(int genCodOfer) {
+		Bolsa.genCodOfer = genCodOfer;
+	}
+	public static Bolsa getBolsaLaboral() {
+		return bolsaLaboral;
+	}
+	public static void setBolsaLaboral(Bolsa bolsaLaboral) {
+		Bolsa.bolsaLaboral = bolsaLaboral;
 	}
 
+	
+	
+	
 	//metodos aqui debajo
-
+	/*
 	//buscar por codigo
 	public Persona buscarClienteByCodigo(String cod) {
 		Persona aux = null;
@@ -342,7 +367,7 @@ public class Bolsa {
 
 		return listaPersonasMatch;
 	}
-
+*/
 
 
 }
