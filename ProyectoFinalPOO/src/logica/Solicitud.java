@@ -58,10 +58,10 @@ public class Solicitud {
 	public void setLicencia(boolean licencia) {
 		this.licencia = licencia;
 	}
-	public String getTipoEmpleado() {
+	public String getTipoEmpleo() {
 		return tipoEmpleo;
 	}
-	public void setTipoEmpleado(String tipoEmpleado) {
+	public void setTipoEmpleo(String tipoEmpleado) {
 		this.tipoEmpleo = tipoEmpleado;
 	}
 	public String getModalidad() {
