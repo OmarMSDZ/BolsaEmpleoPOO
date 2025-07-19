@@ -73,12 +73,26 @@ public class MenuCandidatos extends JFrame {
 	private JTabbedPane jtpDescripcionSolicitud;
 	private JLabel lblHorariosSolicitud;
 
-	private static Oferta ofertaSelected = null; // oferta seleccionada, para cuando se haga la solicitud
+	// solicitud seleccionada
+	private static Solicitud solicitudSelected = null;
+	private static Persona persActual = null;
+
 	private JTabbedPane jtpMenus;
 	private JRadioButton rdbtnLicenciaNo;
 	private JRadioButton rdbtnLicenciaSi;
 	private JRadioButton rdbtnMovilidadNo;
 	private JRadioButton rdbtnMovilidadSi;
+	private JComboBox cbxAreaSolicitud;
+	private JLabel lblInfNombreCompleto;
+	private JLabel lblInfCedula;
+	private JLabel lblInfSexo;
+	private JLabel lblInfFechaNacimiento;
+	private JLabel lblInfNumeroSolicitudes;
+	private JLabel lblInfEstado;
+	private JComboBox cbxHorarioSolicitud;
+	private JComboBox cbxTipoEmpleo;
+	private JComboBox cbxModalidad;
+	private JSpinner spnSalarioDeseado;
 
 	/**
 	 * Launch the application.
@@ -99,9 +113,10 @@ public class MenuCandidatos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MenuCandidatos(Persona persActual) {
-		if (persActual != null) {
+	public MenuCandidatos(Persona personaActual) {
+		if (personaActual != null) {
 			setTitle("Laborea - ¡Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
+			persActual = personaActual;
 		} else {
 			setTitle("Laborea - Pruebas menu candidatos");
 		}
@@ -310,7 +325,7 @@ public class MenuCandidatos extends JFrame {
 
 		JLabel lblHorarioDeseado = new JLabel("Horario");
 		lblHorarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblHorarioDeseado.setBounds(782, 275, 260, 51);
+		lblHorarioDeseado.setBounds(782, 338, 260, 51);
 		pnlSolicitudes.add(lblHorarioDeseado);
 
 		JLabel lblTipoDeEmpleo = new JLabel("Tipo de empleo");
@@ -325,17 +340,17 @@ public class MenuCandidatos extends JFrame {
 
 		JLabel lblSalarioDeseado = new JLabel("Salario deseado");
 		lblSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblSalarioDeseado.setBounds(1242, 275, 260, 51);
+		lblSalarioDeseado.setBounds(1242, 255, 260, 51);
 		pnlSolicitudes.add(lblSalarioDeseado);
 
 		JLabel lbldisponeDeLicencia = new JLabel("\u00BFDispone de licencia de conducir?");
 		lbldisponeDeLicencia.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lbldisponeDeLicencia.setBounds(782, 388, 395, 51);
+		lbldisponeDeLicencia.setBounds(782, 430, 395, 51);
 		pnlSolicitudes.add(lbldisponeDeLicencia);
 
 		JLabel lblDisponibilidadDeMovilidad = new JLabel("Disponibilidad de movilidad");
 		lblDisponibilidadDeMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblDisponibilidadDeMovilidad.setBounds(1242, 388, 313, 51);
+		lblDisponibilidadDeMovilidad.setBounds(1242, 338, 313, 51);
 		pnlSolicitudes.add(lblDisponibilidadDeMovilidad);
 
 		JSeparator separator_2 = new JSeparator();
@@ -343,7 +358,7 @@ public class MenuCandidatos extends JFrame {
 		separator_2.setBounds(10, 54, 1609, 8);
 		pnlSolicitudes.add(separator_2);
 
-		JComboBox cbxTipoEmpleo = new JComboBox();
+		cbxTipoEmpleo = new JComboBox();
 		cbxTipoEmpleo.setModel(new DefaultComboBoxModel(
 				new String[] { "<Seleccione>", "Tiempo completo", "Tiempo Parcial", "Temporal", "Freelance" }));
 		cbxTipoEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 15));
@@ -351,7 +366,7 @@ public class MenuCandidatos extends JFrame {
 		cbxTipoEmpleo.setBounds(782, 210, 395, 39);
 		pnlSolicitudes.add(cbxTipoEmpleo);
 
-		JComboBox cbxModalidad = new JComboBox();
+		cbxModalidad = new JComboBox();
 		cbxModalidad
 				.setModel(new DefaultComboBoxModel(new String[] { "<Seleccione>", "Presencial", "Remoto", "Mixto" }));
 		cbxModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 15));
@@ -359,19 +374,19 @@ public class MenuCandidatos extends JFrame {
 		cbxModalidad.setBounds(1242, 214, 313, 39);
 		pnlSolicitudes.add(cbxModalidad);
 
-		JComboBox cbxHorarioSolicitud = new JComboBox();
+		cbxHorarioSolicitud = new JComboBox();
 		cbxHorarioSolicitud.setModel(new DefaultComboBoxModel(new String[] { "<Seleccione>", "Matutino", "Vespertino",
 				"Nocturno", "Matutino y Vespertino", "Vespertino y Nocturno", "Todos" }));
 		cbxHorarioSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxHorarioSolicitud.setBackground(Color.WHITE);
-		cbxHorarioSolicitud.setBounds(782, 324, 395, 39);
+		cbxHorarioSolicitud.setBounds(782, 387, 395, 39);
 		pnlSolicitudes.add(cbxHorarioSolicitud);
 
-		JSpinner spnSalarioDeseado = new JSpinner();
+		spnSalarioDeseado = new JSpinner();
 		spnSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		spnSalarioDeseado.setBackground(Color.WHITE);
 		spnSalarioDeseado.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		spnSalarioDeseado.setBounds(1242, 324, 313, 39);
+		spnSalarioDeseado.setBounds(1242, 302, 313, 39);
 		pnlSolicitudes.add(spnSalarioDeseado);
 
 		rdbtnLicenciaSi = new JRadioButton("Si");
@@ -379,12 +394,12 @@ public class MenuCandidatos extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnLicenciaSi.setSelected(true);
 				rdbtnLicenciaNo.setSelected(false);
-				
+
 			}
 		});
 		rdbtnLicenciaSi.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnLicenciaSi.setBackground(Color.WHITE);
-		rdbtnLicenciaSi.setBounds(782, 446, 109, 23);
+		rdbtnLicenciaSi.setBounds(782, 488, 109, 23);
 		pnlSolicitudes.add(rdbtnLicenciaSi);
 
 		rdbtnLicenciaNo = new JRadioButton("No");
@@ -396,7 +411,7 @@ public class MenuCandidatos extends JFrame {
 		});
 		rdbtnLicenciaNo.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnLicenciaNo.setBackground(Color.WHITE);
-		rdbtnLicenciaNo.setBounds(944, 446, 109, 23);
+		rdbtnLicenciaNo.setBounds(944, 488, 109, 23);
 		pnlSolicitudes.add(rdbtnLicenciaNo);
 
 		rdbtnMovilidadSi = new JRadioButton("Puedo movilizarme/viajar");
@@ -408,7 +423,7 @@ public class MenuCandidatos extends JFrame {
 		});
 		rdbtnMovilidadSi.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnMovilidadSi.setBackground(Color.WHITE);
-		rdbtnMovilidadSi.setBounds(1242, 446, 260, 23);
+		rdbtnMovilidadSi.setBounds(1242, 387, 260, 23);
 		pnlSolicitudes.add(rdbtnMovilidadSi);
 
 		rdbtnMovilidadNo = new JRadioButton("No puedo movilizarme/viajar");
@@ -420,7 +435,7 @@ public class MenuCandidatos extends JFrame {
 		});
 		rdbtnMovilidadNo.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnMovilidadNo.setBackground(Color.WHITE);
-		rdbtnMovilidadNo.setBounds(1242, 480, 260, 23);
+		rdbtnMovilidadNo.setBounds(1242, 421, 260, 23);
 		pnlSolicitudes.add(rdbtnMovilidadNo);
 
 		JLabel lblDatosSolicitante = new JLabel("Datos Solicitante");
@@ -473,93 +488,122 @@ public class MenuCandidatos extends JFrame {
 		separator_4.setBounds(782, 145, 534, 8);
 		pnlSolicitudes.add(separator_4);
 
-		JLabel lblInfNombreCompleto = new JLabel("Nombre Completo");
+		lblInfNombreCompleto = new JLabel("Nombre Completo");
 		lblInfNombreCompleto.setForeground(Color.DARK_GRAY);
 		lblInfNombreCompleto.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfNombreCompleto.setBounds(247, 168, 468, 51);
 		pnlSolicitudes.add(lblInfNombreCompleto);
 
-		// obtener nombre completo candidato activo en esta pagina
-		if (persActual != null) {
-			lblInfNombreCompleto.setText(persActual.getNombre() + " " + persActual.getApellidos());
-		}
-
-		JLabel lblInfCedula = new JLabel("Cedula");
+	 
+		lblInfCedula = new JLabel("Cedula");
 		lblInfCedula.setForeground(Color.DARK_GRAY);
 		lblInfCedula.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfCedula.setBounds(247, 230, 468, 51);
 		pnlSolicitudes.add(lblInfCedula);
 
-		// obtener cedula candidato activo en esta pagina
-		if (persActual != null) {
-			lblInfCedula.setText(persActual.getCedula());
-		}
-
-		JLabel lblInfSexo = new JLabel("Sexo");
+	 
+		lblInfSexo = new JLabel("Sexo");
 		lblInfSexo.setForeground(Color.DARK_GRAY);
 		lblInfSexo.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfSexo.setBounds(247, 292, 468, 51);
 		pnlSolicitudes.add(lblInfSexo);
 
-		// obtener sexo candidato activo en esta pagina
-		if (persActual != null) {
-			if (persActual.getSexo().equalsIgnoreCase("M")) {
-				lblInfSexo.setText("Masculino");
-			} else if (persActual.getSexo().equalsIgnoreCase("F")) {
-				lblInfSexo.setText("Femenino");
-			}
-		}
-
-		JLabel lblInfFechaNacimiento = new JLabel("Fecha Nacimiento");
+	 
+		lblInfFechaNacimiento = new JLabel("Fecha Nacimiento");
 		lblInfFechaNacimiento.setForeground(Color.DARK_GRAY);
 		lblInfFechaNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfFechaNacimiento.setBounds(247, 358, 468, 51);
 		pnlSolicitudes.add(lblInfFechaNacimiento);
 
-		// obtener fecha nacimiento candidato activo en esta pagina
-		if (persActual != null) {
-			lblInfFechaNacimiento.setText(persActual.getFechaNacimiento().toString());
-		}
-		JLabel lblInfNumeroSolicitudes = new JLabel("N\u00FAmero Solicitudes");
+	 
+		lblInfNumeroSolicitudes = new JLabel("N\u00FAmero Solicitudes");
 		lblInfNumeroSolicitudes.setForeground(Color.DARK_GRAY);
 		lblInfNumeroSolicitudes.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfNumeroSolicitudes.setBounds(247, 429, 468, 51);
 		pnlSolicitudes.add(lblInfNumeroSolicitudes);
-		if (persActual != null) {
-			lblInfNumeroSolicitudes.setText(String.valueOf(persActual.getMisSolicitudes().size()));
-		}
 
-		JLabel lblInfEstado = new JLabel("Estado");
+		lblInfEstado = new JLabel("Estado");
 		lblInfEstado.setForeground(Color.DARK_GRAY);
 		lblInfEstado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfEstado.setBounds(247, 501, 468, 51);
 		pnlSolicitudes.add(lblInfEstado);
-		if (persActual != null) {
-			if (persActual.isEstadoEmpleado()) {
-				lblInfEstado.setText("Empleado");
-			} else {
-				lblInfEstado.setText("Desempleado");
+		
+		//cargar datos de persona al iniciar esta pantalla
+		cargarDatosPersona();
+		
+		JButton btnRegistrarSolicitud = new JButton("Registrar solicitud");
+		btnRegistrarSolicitud.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(persActual!=null) {
+					
+				// registrar solicitud
+				String codigoGenerado = Bolsa.getInstancia().generarCodigoSolicitud();
+				String dispHorario = cbxHorarioSolicitud.getSelectedItem().toString();
+				String tipoEmpleo = cbxTipoEmpleo.getSelectedItem().toString();
+				String modalidad = cbxModalidad.getSelectedItem().toString();
+				String area = cbxAreaSolicitud.getSelectedItem().toString();
+				boolean dispMovilidad = false;
+				if (rdbtnMovilidadSi.isSelected()) {
+					dispMovilidad = true;
+				}
+
+				boolean licencia = false;
+				if (rdbtnLicenciaSi.isSelected()) {
+					licencia = true;
+				}
+				float salarioEsperado = (Float) spnSalarioDeseado.getValue();
+
+				Solicitud soli = new Solicitud(codigoGenerado, persActual, dispHorario, dispMovilidad, licencia,
+						tipoEmpleo, modalidad, area, salarioEsperado, new Date(), "ACTIVA");
+				Bolsa.getInstancia().insertarSolicitud(soli);
+				JOptionPane.showMessageDialog(null, "¡Solicitud procesada con éxito!", "Información",
+						JOptionPane.INFORMATION_MESSAGE);
+				clear();
+
+				} else {
+					JOptionPane.showMessageDialog(null, "¡No hay persona activa en esta vista!", "Alerta",
+							JOptionPane.WARNING_MESSAGE);
+						
+				}
 			}
 
-		}
-		JButton btnRegistrarSolicitud = new JButton("Registrar solicitud");
+		});
 		btnRegistrarSolicitud.setBorder(null);
 		btnRegistrarSolicitud.setBackground(new Color(46, 204, 113));
 		btnRegistrarSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnRegistrarSolicitud.setBounds(1242, 808, 313, 66);
 		pnlSolicitudes.add(btnRegistrarSolicitud);
 
-		JLabel lblObtenidoAutomticamente = new JLabel("Completado autom\u00E1ticamente");
+		JLabel lblObtenidoAutomticamente = new JLabel("*Completado autom\u00E1ticamente");
 		lblObtenidoAutomticamente.setForeground(Color.GRAY);
 		lblObtenidoAutomticamente.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		lblObtenidoAutomticamente.setBounds(326, 97, 260, 51);
 		pnlSolicitudes.add(lblObtenidoAutomticamente);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(Color.BLACK);
 		separator_1.setBounds(658, 145, 23, 395);
 		pnlSolicitudes.add(separator_1);
+
+		JLabel lblArea = new JLabel("\u00C1rea");
+		lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 23));
+		lblArea.setBounds(782, 255, 260, 51);
+		pnlSolicitudes.add(lblArea);
+
+		cbxAreaSolicitud = new JComboBox();
+		cbxAreaSolicitud.setModel(new DefaultComboBoxModel(new String[] { "<Seleccione>",
+				"Tecnolog\u00EDa / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
+				"Administraci\u00F3n / Oficina", "Recursos Humanos", "Finanzas / Contabilidad",
+				"Log\u00EDstica y Distribuci\u00F3n", "Ingenier\u00EDa", "Salud / Medicina",
+				"Educaci\u00F3n / Capacitaci\u00F3n", "Atenci\u00F3n al Cliente / Call Center",
+				"Dise\u00F1o Gr\u00E1fico / UX/UI", "Legal / Jur\u00EDdico", "Producci\u00F3n / Manufactura",
+				"Turismo y Hoteler\u00EDa", "Construcci\u00F3n / Arquitectura", "Investigaci\u00F3n y Desarrollo",
+				"Servicios Generales / Mantenimiento", "Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
+		cbxAreaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		cbxAreaSolicitud.setBackground(Color.WHITE);
+		cbxAreaSolicitud.setBounds(782, 304, 395, 39);
+		pnlSolicitudes.add(cbxAreaSolicitud);
 
 		JPanel pnlMisSolicitudes = new JPanel();
 		pnlMisSolicitudes.setBackground(Color.WHITE);
@@ -768,39 +812,39 @@ public class MenuCandidatos extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				jtpDescripcionSolicitud.setSelectedIndex(0);
-				ofertaSelected = null;
+				// solicitudSelected = null;
 			}
 		});
 		btnCerrarVistaOferta.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCerrarVistaOferta.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/close.png")));
 		btnCerrarVistaOferta.setBounds(1171, 11, 77, 73);
 		pnlVistaSolicitud.add(btnCerrarVistaOferta);
-		
+
 		JLabel lblSolicitante = new JLabel("Solicitante:");
 		lblSolicitante.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/user2.png")));
 		lblSolicitante.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblSolicitante.setBounds(10, 127, 129, 27);
 		pnlVistaSolicitud.add(lblSolicitante);
-		
+
 		JLabel lblSolicitanteSolicitud = new JLabel("SolicitanteSolicitud");
 		lblSolicitanteSolicitud.setForeground(Color.DARK_GRAY);
 		lblSolicitanteSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblSolicitanteSolicitud.setBounds(230, 117, 343, 47);
 		pnlVistaSolicitud.add(lblSolicitanteSolicitud);
-		
+
 		JLabel lblFechaRealizacin = new JLabel("Fecha realizaci\u00F3n:");
 		lblFechaRealizacin.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/calendar.png")));
 		lblFechaRealizacin.setForeground(Color.BLACK);
 		lblFechaRealizacin.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblFechaRealizacin.setBounds(10, 558, 210, 47);
 		pnlVistaSolicitud.add(lblFechaRealizacin);
-		
+
 		JLabel lblFechaSolicitud = new JLabel("FechaSolicitud");
 		lblFechaSolicitud.setForeground(Color.DARK_GRAY);
 		lblFechaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblFechaSolicitud.setBounds(230, 558, 448, 47);
 		pnlVistaSolicitud.add(lblFechaSolicitud);
-		
+
 		JButton btnNewButton = new JButton("Notificaci\u00F3n");
 		btnNewButton.setBackground(Color.WHITE);
 		btnNewButton.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -809,7 +853,7 @@ public class MenuCandidatos extends JFrame {
 		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnNewButton.setBounds(856, 807, 182, 73);
 		pnlVistaSolicitud.add(btnNewButton);
-		
+
 		JButton btnCancelarSolicitud = new JButton("Cancelar Solicitud");
 		btnCancelarSolicitud.setBackground(Color.WHITE);
 		btnCancelarSolicitud.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -818,25 +862,66 @@ public class MenuCandidatos extends JFrame {
 		btnCancelarSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnCancelarSolicitud.setBounds(1066, 807, 182, 73);
 		pnlVistaSolicitud.add(btnCancelarSolicitud);
-		
+
 		JLabel lblEstadoSolicitud2 = new JLabel("Estado solicitud:");
 		lblEstadoSolicitud2.setBackground(Color.WHITE);
 		lblEstadoSolicitud2.setForeground(new Color(30, 144, 255));
 		lblEstadoSolicitud2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblEstadoSolicitud2.setBounds(10, 810, 210, 47);
 		pnlVistaSolicitud.add(lblEstadoSolicitud2);
-		
+
 		JLabel lblEstadoSolicitud = new JLabel("Estado Solicitud");
 		lblEstadoSolicitud.setForeground(Color.DARK_GRAY);
 		lblEstadoSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblEstadoSolicitud.setBounds(230, 810, 448, 47);
 		pnlVistaSolicitud.add(lblEstadoSolicitud);
-		
-		JLabel lblActivarSoloSi = new JLabel("<html>Activar btn de notificacion solo si se hace el macheo y <br>se envia la notificacion a esta solicitud, desactivar el de cancelar <br>hasta que no acepte o niegue</html>");
+
+		JLabel lblActivarSoloSi = new JLabel(
+				"<html>Activar btn de notificacion solo si se hace el macheo y <br>se envia la notificacion a esta solicitud, desactivar el de cancelar <br>hasta que no acepte o niegue</html>");
 		lblActivarSoloSi.setForeground(new Color(255, 0, 0));
 		lblActivarSoloSi.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		lblActivarSoloSi.setBackground(Color.WHITE);
 		lblActivarSoloSi.setBounds(652, 704, 219, 142);
 		pnlVistaSolicitud.add(lblActivarSoloSi);
+	}
+
+	private void cargarDatosPersona() {
+		if (persActual != null) {
+			
+			lblInfNombreCompleto.setText(persActual.getNombre() + " " + persActual.getApellidos());
+
+			lblInfCedula.setText(persActual.getCedula());
+
+			if (persActual.getSexo().equalsIgnoreCase("M")) {
+				lblInfSexo.setText("Masculino");
+			} else if (persActual.getSexo().equalsIgnoreCase("F")) {
+				lblInfSexo.setText("Femenino");
+			}
+
+			lblInfFechaNacimiento.setText(persActual.getFechaNacimiento().toString());
+
+			lblInfNumeroSolicitudes.setText(String.valueOf(persActual.getMisSolicitudes().size()));
+
+			if (persActual.isEstadoEmpleado()) {
+				lblInfEstado.setText("Empleado");
+			} else {
+				lblInfEstado.setText("Desempleado");
+			}
+
+		}
+	}
+
+	// limpiar form solicitudes
+	private void clear() {
+		// TODO Auto-generated method stub
+		cbxHorarioSolicitud.setSelectedIndex(0);
+		cbxTipoEmpleo.setSelectedIndex(0);
+		cbxModalidad.setSelectedIndex(0);
+		cbxAreaSolicitud.setSelectedIndex(0);
+		rdbtnMovilidadSi.setSelected(false);
+		rdbtnMovilidadNo.setSelected(false);
+		rdbtnLicenciaSi.setSelected(false);
+		spnSalarioDeseado.setValue(0); 
+		cargarDatosPersona();
 	}
 }

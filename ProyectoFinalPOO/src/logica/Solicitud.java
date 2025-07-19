@@ -7,23 +7,26 @@ public class Solicitud {
 	private String codigo;
 	private Persona solicitante;
 	private String dispHorarios;
-	private boolean dispMudarse;
+	private boolean dispMovilidad;
 	private boolean licencia;
 	private String tipoEmpleo;
 	private String modalidad;
+	private String area;
+	
 	private float salarioDeseado;
 	private Date fechaSolicitud;
 	private String estadoSolicitud;
-	public Solicitud(String codigo, Persona solicitante, String dispHorarios, boolean dispMudarse, boolean licencia,
-			String tipoEmpleado, String modalidad, float salarioDeseado, Date fechaSolicitud, String estadoSolicitud) {
+	public Solicitud(String codigo, Persona solicitante, String dispHorarios, boolean dispMovilidad, boolean licencia,
+			String tipoEmpleado, String modalidad, String area, float salarioDeseado, Date fechaSolicitud, String estadoSolicitud) {
 		super();
 		this.codigo = codigo;
 		this.solicitante = solicitante;
 		this.dispHorarios = dispHorarios;
-		this.dispMudarse = dispMudarse;
+		this.dispMovilidad = dispMovilidad;
 		this.licencia = licencia;
 		this.tipoEmpleo = tipoEmpleado;
 		this.modalidad = modalidad;
+		this.area = area;
 		this.salarioDeseado = salarioDeseado;
 		this.fechaSolicitud = fechaSolicitud;
 		this.estadoSolicitud = estadoSolicitud;
@@ -46,11 +49,11 @@ public class Solicitud {
 	public void setDispHorarios(String dispHorarios) {
 		this.dispHorarios = dispHorarios;
 	}
-	public boolean isDispMudarse() {
-		return dispMudarse;
+	public boolean isDispMovilidad() {
+		return dispMovilidad;
 	}
-	public void setDispMudarse(boolean dispMudarse) {
-		this.dispMudarse = dispMudarse;
+	public void setDispMovilidad(boolean dispMovilidad) {
+		this.dispMovilidad = dispMovilidad;
 	}
 	public boolean isLicencia() {
 		return licencia;
@@ -70,6 +73,15 @@ public class Solicitud {
 	public void setModalidad(String modalidad) {
 		this.modalidad = modalidad;
 	}
+	
+	public String getArea() {
+		return area;
+	}
+	
+	public void setArea(String area) {
+		this.area= area;
+	}
+	
 	public float getSalarioDeseado() {
 		return salarioDeseado;
 	}

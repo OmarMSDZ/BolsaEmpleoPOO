@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class Oferta {
 
-	private String codigo, puestoTrab, descripcion, modalidad, tipoEmpleo, horario, nivelEducacion, areaEstudios;
+	private String codigo, puestoTrab, descripcion, modalidad, tipoEmpleo, horario, nivelEducacion; 
+	private String area; //tecnologia, salud, servicios, etc...
 	private int aniosExp;
 	private float salarioEstimado;
 	private boolean requiereLicencia;
@@ -15,7 +16,7 @@ public class Oferta {
 	private Empresa empReclutadora;
 
 	public Oferta(String codigo, String puestoTrab, String descripcion, String modalidad, String tipo, String horario,
-			String nivelEducacion, String carrera, int aniosExp, float salarioEstimado, boolean requiereLicencia,
+			String nivelEducacion, String area, int aniosExp, float salarioEstimado, boolean requiereLicencia,
 			boolean requiereMovilidad, Date fechaOferta, String provincia, int cantVacantes, boolean estadoOferta,
 			Empresa empReclutadora) {
 		super();
@@ -26,7 +27,7 @@ public class Oferta {
 		this.tipoEmpleo = tipo;
 		this.horario = horario;
 		this.nivelEducacion = nivelEducacion;
-		this.areaEstudios = carrera;
+		this.area = area;
 		this.aniosExp = aniosExp;
 		this.salarioEstimado = salarioEstimado;
 		this.requiereLicencia = requiereLicencia;
@@ -95,11 +96,11 @@ public class Oferta {
 	}
 
 	public String getCarrera() {
-		return areaEstudios;
+		return area;
 	}
 
-	public void setCarrera(String carrera) {
-		this.areaEstudios = carrera;
+	public void setCarrera(String area) {
+		this.area = area;
 	}
 
 	public int getAniosExp() {

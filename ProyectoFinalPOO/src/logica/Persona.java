@@ -60,5 +60,11 @@ public class Persona extends Usuario {
 		this.misSolicitudes = misSolicitudes;
 	}
 	
+	//metodos aqui debajo
+	public void insertarSolicitud(Solicitud soli) {
+		// TODO Auto-generated method stub
+		misSolicitudes.add(soli);
+	}
+	
 	
 }
