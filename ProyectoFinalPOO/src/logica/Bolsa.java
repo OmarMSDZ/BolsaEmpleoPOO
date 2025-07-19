@@ -197,14 +197,19 @@ public class Bolsa {
 	}
 	public void insertarSolicitud(Solicitud soli) {
 		listaSolicitudes.add(soli);
-		//al insertar una solicitud debe agregarse a la lista de persona
+		//al insertar una solicitud debe agregarse a la lista solicitudes hechas por la persona
 		Persona aux = soli.getSolicitante();
 		aux.insertarSolicitud(soli);
-		//modificarPersona(aux);
+		modificarUsuario(aux);
 	}
 
 	//modificar
- 
+	
+	public void modificarUsuario(Usuario updated) {
+		int index = buscarIndexUsuarioByCodigo(updated.getCodigo()); //buscar indice a actualizar
+		listaUsuarios.set(index, updated); //actualizar elemento del listado en ese indice
+	}
+	
 	public void modificarSolicitud(Solicitud updated) {
 		int index = buscarIndexSolicitudByCodigo(updated.getCodigo()); //buscar indice a actualizar
 		listaSolicitudes.set(index, updated); //actualizar elemento del listado en ese indice
@@ -221,6 +226,9 @@ public class Bolsa {
 	}
 	public void eliminarSolicitud(Solicitud selected) {
 		listaSolicitudes.remove(selected);
+		Persona aux = selected.getSolicitante();
+		aux.removerSolicitud(selected);
+		modificarUsuario(aux);
 	}
 
 	//generacion de codigos
@@ -244,6 +252,12 @@ public class Bolsa {
 		}
 		return valido;
 	}*/
+	
+	//desactivar cuenta usuario
+	public void desactivarCuenta(Persona persActiva) {
+		persActiva.setEstado(false);
+		modificarUsuario(persActiva);
+	}
 
 	//validar contraseña y email de empresa
 	/*public boolean validarLoginEmpresa(String email, String passwd) {
