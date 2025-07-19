@@ -16,6 +16,7 @@ public class ElementoSolicitud extends JPanel {
     private JLabel lblModalidad;
     private JLabel lblTipo;
     private JLabel lblFecha;
+    private JLabel lblArea;
 
     public ElementoSolicitud(Solicitud soli) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -32,6 +33,11 @@ public class ElementoSolicitud extends JPanel {
         lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
         lblTitulo.setAlignmentX(LEFT_ALIGNMENT);
         add(lblTitulo);
+        
+        lblArea = new JLabel("Area");
+        lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        lblArea.setAlignmentX(0.0f);
+        add(lblArea);
 
         lblSalario = new JLabel("Salario");
         lblSalario.setIcon(new ImageIcon(ElementoSolicitud.class.getResource("/img/money.png")));
@@ -57,6 +63,7 @@ public class ElementoSolicitud extends JPanel {
         add(lblFecha);
 
         if (soli.getCodigo() != null) lblTitulo.setText("Solicitud #"+soli.getCodigo());
+        if(soli.getArea()!=null) lblArea.setText(soli.getArea());
         if(soli.getSalarioDeseado()>0) {
         	lblSalario.setText(String.valueOf(soli.getSalarioDeseado()));
         } else {

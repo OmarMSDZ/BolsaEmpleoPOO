@@ -9,20 +9,22 @@ public class Obrero extends Persona {
 	private boolean mecanica;
 	private boolean ofimatica;
 	private boolean seguridad;
+	private boolean electricidad;
 	private boolean mantenimiento;
 	private boolean conduccion;
 	private boolean limpieza;
 	public Obrero(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
-			String provincia, String municipio, String direccion, String apellidos, String sexo, Date fechaNacimiento,
-			String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes, boolean ventas,
-			boolean mecanica, boolean ofimatica, boolean seguridad, boolean mantenimiento, boolean conduccion,
-			boolean limpieza) {
-		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, apellidos, sexo,
-				fechaNacimiento, cedula, estadoEmpleado, misSolicitudes);
+			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
+			Date fechaNacimiento, String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes,
+			boolean ventas, boolean mecanica, boolean ofimatica, boolean seguridad, boolean electricidad,
+			boolean mantenimiento, boolean conduccion, boolean limpieza) {
+		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
+				sexo, fechaNacimiento, cedula, estadoEmpleado, misSolicitudes);
 		this.ventas = ventas;
 		this.mecanica = mecanica;
 		this.ofimatica = ofimatica;
 		this.seguridad = seguridad;
+		this.electricidad = electricidad;
 		this.mantenimiento = mantenimiento;
 		this.conduccion = conduccion;
 		this.limpieza = limpieza;
@@ -51,6 +53,12 @@ public class Obrero extends Persona {
 	public void setSeguridad(boolean seguridad) {
 		this.seguridad = seguridad;
 	}
+	public boolean isElectricidad() {
+		return electricidad;
+	}
+	public void setElectricidad(boolean electricidad) {
+		this.electricidad = electricidad;
+	}
 	public boolean isMantenimiento() {
 		return mantenimiento;
 	}
@@ -69,7 +77,7 @@ public class Obrero extends Persona {
 	public void setLimpieza(boolean limpieza) {
 		this.limpieza = limpieza;
 	}
-	
+	 
 	
 
 	 

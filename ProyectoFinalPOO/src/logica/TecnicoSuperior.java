@@ -8,11 +8,11 @@ public class TecnicoSuperior extends Persona {
 	private String tecnico;
 	private int aniosExperiencia;
 	public TecnicoSuperior(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
-			String provincia, String municipio, String direccion, String apellidos, String sexo, Date fechaNacimiento,
-			String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes, String tecnico,
-			int aniosExperiencia) {
-		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, apellidos, sexo,
-				fechaNacimiento, cedula, estadoEmpleado, misSolicitudes);
+			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
+			Date fechaNacimiento, String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes,
+			String tecnico, int aniosExperiencia) {
+		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
+				sexo, fechaNacimiento, cedula, estadoEmpleado, misSolicitudes);
 		this.tecnico = tecnico;
 		this.aniosExperiencia = aniosExperiencia;
 	}
@@ -28,6 +28,7 @@ public class TecnicoSuperior extends Persona {
 	public void setAniosExperiencia(int aniosExperiencia) {
 		this.aniosExperiencia = aniosExperiencia;
 	}
+	 
 	
 	
 
