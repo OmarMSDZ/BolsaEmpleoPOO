@@ -95,11 +95,11 @@ public class Oferta {
 		this.nivelEducacion = nivelEducacion;
 	}
 
-	public String getCarrera() {
+	public String getArea() {
 		return area;
 	}
 
-	public void setCarrera(String area) {
+	public void setArea(String area) {
 		this.area = area;
 	}
 
