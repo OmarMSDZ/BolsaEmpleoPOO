@@ -8,21 +8,24 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
+import javax.swing.border.LineBorder;
 
 public class Inicio extends JFrame {
 
 	private JPanel contentPane;
-	private Dimension dim;
+	private JPanel btnInicioSesion;
+
 	/**
 	 * Launch the application.
 	 */
@@ -45,41 +48,51 @@ public class Inicio extends JFrame {
 	public Inicio() {
 		setTitle("Laborea");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 1938, 1027);
 
-		//poner ventana en centro de pantalla y tamaño maximo
-		dim = getToolkit().getScreenSize(); // obtener dimensiones de la pantalla de la pc
-		setSize(dim.width, dim.height);
+		// poner ventana en centro de pantalla y tamaño maximo
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);
-
 
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new LineBorder(new Color(0, 0, 0)));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout(0, 0));
 
-		JLabel lblencuentraVacantesSegn = new JLabel("<html><center>Conecta con empresas seg\u00FAn tu perfil. <br> Ingresa y haz crecer tu trayectoria profesional.</center></html>");
-		lblencuentraVacantesSegn.setForeground(Color.WHITE);
-		lblencuentraVacantesSegn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblencuentraVacantesSegn.setFont(new Font("Segoe UI", Font.PLAIN, 30));
-		lblencuentraVacantesSegn.setBounds(0, 617, 1904, 107);
-		contentPane.add(lblencuentraVacantesSegn);
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		contentPane.add(panel, BorderLayout.CENTER);
+		panel.setLayout(null);
 
-		JLabel lblImpulsaTuCarrera = new JLabel("<html><center>Impulsa tu carrera <br>Empieza hoy con Laborea</center></html>");
-		lblImpulsaTuCarrera.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImpulsaTuCarrera.setFont(new Font("Segoe UI", Font.PLAIN, 40));
-		lblImpulsaTuCarrera.setBounds(0, 208, 1904, 107);
-		contentPane.add(lblImpulsaTuCarrera);
+		JLabel label = new JLabel(
+				"<html><center>Conecta con empresas seg\u00FAn tu perfil. <br> Ingresa y haz crecer tu trayectoria profesional.</center></html>");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+		label.setBounds(0, 550, 1917, 82);
+		panel.add(label);
 
-		JLabel lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon(Inicio.class.getResource("/img/Laborea.png")));
-		lblLogo.setBounds(0, 0, 239, 107);
-		contentPane.add(lblLogo);
+		JLabel label_1 = new JLabel("<html><center>Impulsa tu carrera <br>Empieza hoy con Laborea</center></html>");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setFont(new Font("Segoe UI", Font.PLAIN, 40));
+		label_1.setBounds(0, 162, 1917, 108);
+		panel.add(label_1);
 
-		//hacer que el panel tenga bordes redondeados, usando paintcomponent
-		JPanel btnLoginCandidato = new JPanel() {
-			@Override
+		JLabel iconLaborea = new JLabel("");
+		iconLaborea.setIcon(new ImageIcon(Inicio.class.getResource("/img/Laborea.png")));
+		iconLaborea.setHorizontalAlignment(SwingConstants.CENTER);
+		iconLaborea.setBounds(0, 0, 150, 75);
+		panel.add(iconLaborea);
+
+		JLabel lblDerechosAutor = new JLabel("\u00A9 2025 Laborea - Desarrollado por Omar Morales y Mauricio Trejo");
+		lblDerechosAutor.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDerechosAutor.setForeground(Color.WHITE);
+		lblDerechosAutor.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		lblDerechosAutor.setBounds(12, 916, 1881, 62);
+		panel.add(lblDerechosAutor);
+
+		btnInicioSesion = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
@@ -92,74 +105,37 @@ public class Inicio extends JFrame {
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
-		btnLoginCandidato.setOpaque(false);
-
-		btnLoginCandidato.setBackground(new Color(44, 62, 80));
-		btnLoginCandidato.setBounds(551, 450, 372, 101);
-		contentPane.add(btnLoginCandidato);
-		btnLoginCandidato.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Ingresar como candidato");
-		lblNewLabel.addMouseListener(new MouseAdapter() {
+		btnInicioSesion.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LoginCandidatos LC = new LoginCandidatos();
-				LC.setModal(true);
-				LC.setVisible(true);
+				LoginUsuarios pantIniciarSesion = new LoginUsuarios();
+				pantIniciarSesion.setModal(true);
+				pantIniciarSesion.setVisible(true);
+
 			}
 		});
-		lblNewLabel.setIcon(new ImageIcon(Inicio.class.getResource("/img/people.png")));
-		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel.setVerticalTextPosition(SwingConstants.TOP);
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 11, 372, 79);
-		btnLoginCandidato.add(lblNewLabel);
+		btnInicioSesion.setOpaque(false);
+		btnInicioSesion.setBounds(833, 327, 250, 96);
+		panel.add(btnInicioSesion);
+		btnInicioSesion.setLayout(null);
 
-		JPanel btnLoginEmpresa = new JPanel() {
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		JLabel lblIniciarSesion = new JLabel("Iniciar sesi\u00F3n");
+		lblIniciarSesion.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
+		lblIniciarSesion.setHorizontalAlignment(SwingConstants.CENTER);
+		lblIniciarSesion.setBounds(100, 13, 122, 70);
+		btnInicioSesion.add(lblIniciarSesion);
 
-				// Color de fondo
-				g2.setColor(getBackground());
+		JLabel iconLogin = new JLabel("");
+		iconLogin.setHorizontalAlignment(SwingConstants.CENTER);
+		iconLogin.setIcon(new ImageIcon(Inicio.class.getResource("/img/enter.png")));
+		iconLogin.setBounds(12, 13, 79, 74);
+		btnInicioSesion.add(iconLogin);
 
-				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
-				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
-			}
-		};
-		btnLoginEmpresa.setLayout(null);
-		btnLoginEmpresa.setOpaque(false);
-		btnLoginEmpresa.setBackground(new Color(44, 62, 80));
-		btnLoginEmpresa.setBounds(981, 450, 372, 101);
-		contentPane.add(btnLoginEmpresa);
-
-		JLabel lblIngresarComoReclutador = new JLabel("Ingresar como empresa");
-		lblIngresarComoReclutador.setVerticalTextPosition(SwingConstants.TOP);
-		lblIngresarComoReclutador.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblIngresarComoReclutador.setIcon(new ImageIcon(Inicio.class.getResource("/img/business-and-trade.png")));
-		lblIngresarComoReclutador.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIngresarComoReclutador.setForeground(Color.WHITE);
-		lblIngresarComoReclutador.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-		lblIngresarComoReclutador.setBounds(0, 11, 372, 79);
-		btnLoginEmpresa.add(lblIngresarComoReclutador);
-
-		JLabel lblLaborea = new JLabel("<html>\u00A9 2025 Laborea \u2014 Desarrollado por Omar Morales y Mauricio Trejo</html>");
-		lblLaborea.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLaborea.setForeground(Color.WHITE);
-		lblLaborea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblLaborea.setBounds(0, 934, 1894, 107);
-		contentPane.add(lblLaborea);
-
-		JLabel lblFondo = new JLabel("");
-		lblFondo.setIcon(new ImageIcon(Inicio.class.getResource("/img/fondoinicio.png")));
-		lblFondo.setBounds(0, 0, 1904, 1041);
-		contentPane.add(lblFondo);
-
-
-
+		JLabel iconFondoInicio = new JLabel("");
+		iconFondoInicio.setIcon(new ImageIcon(Inicio.class.getResource("/img/fondoinicio.png")));
+		iconFondoInicio.setHorizontalAlignment(SwingConstants.CENTER);
+		iconFondoInicio.setBounds(0, 0, 1917, 1000);
+		panel.add(iconFondoInicio);
 
 	}
 }

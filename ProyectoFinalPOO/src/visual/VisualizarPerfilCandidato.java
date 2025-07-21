@@ -38,11 +38,11 @@ public class VisualizarPerfilCandidato extends JDialog {
 	 */
 	public VisualizarPerfilCandidato(Persona persActiva) {
 		
-		if(persActiva!=null) {
+		/* if(persActiva!=null) {
 			setTitle("Laborea - Perfil de "+ persActiva.getNombre() + " " + persActiva.getApellido());	
 		} else {
 			setTitle("Laborea - Pruebas vista perfil");		
-		}
+		} */
 		
 		setBounds(100, 100, 739, 798);
 		
