@@ -322,8 +322,8 @@ public class Bolsa {
 	 */
 
 	// algoritmo de matching
-	public void realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
-
+	public ArrayList<MatchOferta> realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
+		ArrayList<MatchOferta> MatchesOfertas = new ArrayList<MatchOferta>();
 		for (Oferta oferta : ofertas) {
 			for (Solicitud solicitud : solicitudes) {
 				int totalCriterios = 8;
@@ -364,11 +364,11 @@ public class Bolsa {
 				if (porcentaje >= 60.0) {
 					String codigo = generarCodigoMatch();
 					MatchOferta match = new MatchOferta(codigo, new Date(), oferta, solicitud, false, false);
-					listaMatchOferta.add(match);
+					MatchesOfertas.add(match);
 				}
 			}
 		}
-
+		return MatchesOfertas;
 	}
 
 }
