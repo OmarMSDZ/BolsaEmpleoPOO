@@ -75,8 +75,8 @@ public class LoginUsuarios extends JDialog {
 	private JRadioButton rdbtnSexoM;
 	private JRadioButton rdbtnSexoF;
 	private JTextField txtNombre;
-	private JPasswordField txtValidarPasswd;
 	private JPasswordField txtRegPasswd;
+	private JPasswordField txtValidarPasswd;
 	private JTextField txtRegCorreo;
 	private JTextField txtTelefono;
 	private JTextField txtDireccion;
@@ -395,15 +395,15 @@ public class LoginUsuarios extends JDialog {
 		pnlRegistroUsuarios.add(txtNombre);
 		txtNombre.setColumns(10);
 
-		txtValidarPasswd = new JPasswordField();
-		txtValidarPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtValidarPasswd.setBounds(485, 243, 175, 27);
-		pnlRegistroUsuarios.add(txtValidarPasswd);
-
 		txtRegPasswd = new JPasswordField();
 		txtRegPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtRegPasswd.setBounds(485, 345, 175, 27);
+		txtRegPasswd.setBounds(485, 243, 175, 27);
 		pnlRegistroUsuarios.add(txtRegPasswd);
+
+		txtValidarPasswd = new JPasswordField();
+		txtValidarPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		txtValidarPasswd.setBounds(485, 345, 175, 27);
+		pnlRegistroUsuarios.add(txtValidarPasswd);
 
 		JLabel lblRegPasswd = new JLabel("Contrase\u00F1a:");
 		lblRegPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
