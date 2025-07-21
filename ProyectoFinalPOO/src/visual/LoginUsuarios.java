@@ -54,13 +54,13 @@ public class LoginUsuarios extends JDialog {
 	private JPasswordField txtPasswd;
 	private JTabbedPane jtpSecciones;
 	private JRadioButton rdbtnUniversitario;
-	private JRadioButton rdbtnTecSuperior;
+	private JRadioButton rdbtnTecnico;
 	private JRadioButton rdbtnObrero;
 	private JTabbedPane jtpFormacion;
 	private JRadioButton rdbtnLicenciaSi;
 	private JRadioButton rdbtnLicenciaNo;
 	private JTextField txtApellidoCand;
-	private JTextField txtCedulaCand;
+	private JTextField txtCedula;
 	private JTextField txtTecnico;
 	private JSpinner spnAniosExp;
 	private JSpinner spnFechaNac;
@@ -82,6 +82,8 @@ public class LoginUsuarios extends JDialog {
 	private JTextField txtDireccion;
 	private JTextField txtMunicipio;
 	private JTextField txtRNC;
+	private JComboBox cmbCarreras;
+	private JComboBox cmbTipoEmpresa;
 
 	/**
 	 * Launch the application.
@@ -368,13 +370,13 @@ public class LoginUsuarios extends JDialog {
 		pnlRegistroUsuarios.add(btnContinuar);
 		btnContinuar.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("\r\n");
-		lblNewLabel_1.setBackground(Color.WHITE);
-		lblNewLabel_1.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/iconContinuar.png")));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(12, 13, 74, 34);
-		btnContinuar.add(lblNewLabel_1);
-		
+		JLabel iconFeclaContinuar = new JLabel("\r\n");
+		iconFeclaContinuar.setBackground(Color.WHITE);
+		iconFeclaContinuar.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/iconContinuar.png")));
+		iconFeclaContinuar.setHorizontalAlignment(SwingConstants.CENTER);
+		iconFeclaContinuar.setBounds(12, 13, 74, 34);
+		btnContinuar.add(iconFeclaContinuar);
+
 		JLabel lblContinuar = new JLabel("Continuar");
 		lblContinuar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblContinuar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -557,11 +559,11 @@ public class LoginUsuarios extends JDialog {
 		txtApellidoCand.setBounds(51, 227, 212, 33);
 		pnlRegistroCandidato.add(txtApellidoCand);
 
-		txtCedulaCand = new JTextField();
-		txtCedulaCand.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtCedulaCand.setColumns(10);
-		txtCedulaCand.setBounds(51, 322, 212, 33);
-		pnlRegistroCandidato.add(txtCedulaCand);
+		txtCedula = new JTextField();
+		txtCedula.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		txtCedula.setColumns(10);
+		txtCedula.setBounds(51, 322, 212, 33);
+		pnlRegistroCandidato.add(txtCedula);
 
 		spnFechaNac = new JSpinner();
 		spnFechaNac.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -608,7 +610,7 @@ public class LoginUsuarios extends JDialog {
 		rdbtnUniversitario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnUniversitario.setSelected(true);
-				rdbtnTecSuperior.setSelected(false);
+				rdbtnTecnico.setSelected(false);
 				rdbtnObrero.setSelected(false);
 				jtpFormacion.setSelectedIndex(0);
 			}
@@ -618,26 +620,26 @@ public class LoginUsuarios extends JDialog {
 		rdbtnUniversitario.setBounds(51, 411, 141, 33);
 		pnlRegistroCandidato.add(rdbtnUniversitario);
 
-		rdbtnTecSuperior = new JRadioButton("Tec. Superior");
-		rdbtnTecSuperior.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		rdbtnTecSuperior.addActionListener(new ActionListener() {
+		rdbtnTecnico = new JRadioButton("Tec. Superior");
+		rdbtnTecnico.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		rdbtnTecnico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnUniversitario.setSelected(false);
-				rdbtnTecSuperior.setSelected(true);
+				rdbtnTecnico.setSelected(true);
 				rdbtnObrero.setSelected(false);
 				jtpFormacion.setSelectedIndex(1);
 			}
 		});
-		rdbtnTecSuperior.setBackground(Color.WHITE);
-		rdbtnTecSuperior.setBounds(195, 411, 141, 33);
-		pnlRegistroCandidato.add(rdbtnTecSuperior);
+		rdbtnTecnico.setBackground(Color.WHITE);
+		rdbtnTecnico.setBounds(195, 411, 141, 33);
+		pnlRegistroCandidato.add(rdbtnTecnico);
 
 		rdbtnObrero = new JRadioButton("Obrero");
 		rdbtnObrero.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnObrero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rdbtnUniversitario.setSelected(false);
-				rdbtnTecSuperior.setSelected(false);
+				rdbtnTecnico.setSelected(false);
 				rdbtnObrero.setSelected(true);
 				jtpFormacion.setSelectedIndex(2);
 			}
@@ -815,7 +817,7 @@ public class LoginUsuarios extends JDialog {
 		lblCarrera.setBounds(10, 0, 130, 44);
 		pnlFormUniv.add(lblCarrera);
 
-		JComboBox cmbCarreras = new JComboBox();
+		cmbCarreras = new JComboBox();
 		cmbCarreras.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>",
 				"Administraci\u00F3n de Empresas", "Agronom\u00EDa", "Antropolog\u00EDa", "Animaci\u00F3n Digital",
 				"Arquitectura", "Artes Esc\u00E9nicas", "Artes Pl\u00E1sticas", "Astrobiolog\u00EDa", "Astronom\u00EDa",
@@ -856,12 +858,6 @@ public class LoginUsuarios extends JDialog {
 		cmbCarreras.setBackground(Color.WHITE);
 		cmbCarreras.setBounds(10, 39, 220, 31);
 		pnlFormUniv.add(cmbCarreras);
-
-		JPanel pnlCarrera = new JPanel();
-		pnlCarrera.setLayout(null);
-		pnlCarrera.setBackground(Color.WHITE);
-		pnlCarrera.setBounds(-30, 0, 744, 40);
-		pnlFormUniv.add(pnlCarrera);
 
 		JPanel pnlFormTec = new JPanel();
 		pnlFormTec.setBorder(null);
@@ -1034,7 +1030,7 @@ public class LoginUsuarios extends JDialog {
 		lblTipoEmpresa.setBounds(455, 326, 174, 34);
 		pnlRegistroEmpresas.add(lblTipoEmpresa);
 
-		JComboBox cmbTipoEmpresa = new JComboBox();
+		cmbTipoEmpresa = new JComboBox();
 		cmbTipoEmpresa.setBackground(Color.WHITE);
 		cmbTipoEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		cmbTipoEmpresa.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>", "Agroindustrial",
@@ -1063,28 +1059,48 @@ public class LoginUsuarios extends JDialog {
 		pnlRegistroEmpresas.add(sptRegEmpresa);
 	}
 
+	private void limpiarInicioSesion() {
+		txtCorreo.setText("");
+		txtPasswd.setText("");
+	}
+
+	private void limpiarRegUsuario() {
+
+	}
+
 	private void limpiarRegCand() {
-		/*
-		 * // Limpiar el registro de candidatos txtNombreCand.setText("");
-		 * txtApellidoCand.setText("");
-		 * 
-		 * rdbtnSexoM.setSelected(true); rdbtnSexoF.setSelected(true);
-		 * 
-		 * txtCedulaCand.setText(""); txtCorreoCand.setText("");
-		 * txtTelefonoCand.setText(""); txtDireccionCand.setText("");
-		 * cbxProvinciaCand.setSelectedIndex(0); cbxDispMovilidad.setSelectedIndex(0);
-		 * 
-		 * rdbtnLicenciaSi.setSelected(true); rdbtnLicenciaNo.setSelected(true);
-		 * 
-		 * 
-		 * txtTecnicoCand.setText(""); spnAniosExp.setValue(0);
-		 * 
-		 * chckbxVentas.setSelected(false); chckbxMecanica.setSelected(false);
-		 * chckbxOfimtica.setSelected(false); chckbxElectricidad.setSelected(false);
-		 * chckbxSeguridad.setSelected(false); chckbxMantenimiento.setSelected(false);
-		 * chckbxConduccin.setSelected(false); chckbxLimpieza.setSelected(false);
-		 * 
-		 * passwCandidato.setText(""); passwCandidatoVerificar.setText("");
-		 */
+
+		txtApellidoCand.setText("");
+		txtCedula.setText("");
+
+		rdbtnSexoM.setSelected(false);
+		rdbtnSexoF.setSelected(false);
+
+		txtCedula.setText("");
+		rdbtnLicenciaSi.setSelected(false);
+		rdbtnLicenciaNo.setSelected(false);
+
+		rdbtnUniversitario.setSelected(true);
+		rdbtnTecnico.setSelected(false);
+		rdbtnObrero.setSelected(false);
+
+		cmbCarreras.setSelectedIndex(0);
+
+		txtTecnico.setText("");
+		spnAniosExp.setValue(0);
+
+		chckbxVentas.setSelected(false);
+		chckbxMecanica.setSelected(false);
+		chckbxOfimtica.setSelected(false);
+		chckbxElectricidad.setSelected(false);
+		chckbxSeguridad.setSelected(false);
+		chckbxMantenimiento.setSelected(false);
+		chckbxConduccin.setSelected(false);
+		chckbxLimpieza.setSelected(false);
+	}
+
+	private void limpiarRegEmpresa() {
+		txtRNC.setText("");
+		cmbTipoEmpresa.setSelectedIndex(0);
 	}
 }
