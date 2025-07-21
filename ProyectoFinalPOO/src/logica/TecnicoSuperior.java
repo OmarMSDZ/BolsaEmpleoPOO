@@ -1,19 +1,21 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TecnicoSuperior extends Persona {
 
 	private String tecnico;
-	private int anniosExperiencia;
+	private int aniosExperiencia;
 
 	public TecnicoSuperior(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
-			String provincia, String municipio, String direccion, String apellidos, String sexo, Date fechaNacimiento,
-			String cedula, boolean estadoEmpleado, String tecnico, int anniosExperiencia) {
-		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, apellidos, sexo,
-				fechaNacimiento, cedula, estadoEmpleado);
+			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
+			Date fechaNacimiento, String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes,
+			String tecnico, int aniosExperiencia) {
+		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
+				sexo, fechaNacimiento, cedula, estadoEmpleado, misSolicitudes);
 		this.tecnico = tecnico;
-		this.anniosExperiencia = anniosExperiencia;
+		this.aniosExperiencia = aniosExperiencia;
 	}
 
 	public String getTecnico() {
@@ -24,12 +26,12 @@ public class TecnicoSuperior extends Persona {
 		this.tecnico = tecnico;
 	}
 
-	public int getAnniosExperiencia() {
-		return anniosExperiencia;
+	public int getAniosExperiencia() {
+		return aniosExperiencia;
 	}
 
-	public void setAnniosExperiencia(int anniosExperiencia) {
-		this.anniosExperiencia = anniosExperiencia;
+	public void setAniosExperiencia(int aniosExperiencia) {
+		this.aniosExperiencia = aniosExperiencia;
 	}
 
 }

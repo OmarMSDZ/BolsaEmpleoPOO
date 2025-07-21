@@ -3,7 +3,7 @@ package logica;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class Persona extends Usuario {
+public class Persona extends Usuario {
 
 	protected String apellidos;
 	protected String sexo;
@@ -13,15 +13,15 @@ public abstract class Persona extends Usuario {
 	protected ArrayList<Solicitud> misSolicitudes;
 
 	public Persona(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
-			String provincia, String municipio, String direccion, String apellidos, String sexo, Date fechaNacimiento,
-			String cedula, boolean estadoEmpleado) {
-		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion);
+			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
+			Date fechaNacimiento, String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes) {
+		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado);
 		this.apellidos = apellidos;
 		this.sexo = sexo;
 		this.fechaNacimiento = fechaNacimiento;
 		this.cedula = cedula;
 		this.estadoEmpleado = estadoEmpleado;
-		misSolicitudes = new ArrayList<Solicitud>();
+		this.misSolicitudes = misSolicitudes;
 	}
 
 	public String getApellidos() {
@@ -73,26 +73,13 @@ public abstract class Persona extends Usuario {
 	}
 
 	// Métodos aquí debajo
-	// Insertar solicitud
 	public void insertarSolicitud(Solicitud soli) {
+		// TODO Auto-generated method stub
 		misSolicitudes.add(soli);
 	}
 
-	// validar que la persona no contenga una oferta previamente registrada en una
-	// solicitud
-	public boolean contieneOferta(Oferta oferta) {
-		boolean valido = true;
-		if (!misSolicitudes.isEmpty()) {
-
-			for (Solicitud solicitud : misSolicitudes) {
-				if (solicitud.getOfertaInteres() == oferta) {
-					valido = false;
-				}
-			}
-
-		}
-		return valido;
-
+	public void removerSolicitud(Solicitud soli) {
+		misSolicitudes.remove(soli);
 	}
 
 }

@@ -9,11 +9,12 @@ public class Empresa extends Usuario {
 	private ArrayList<Oferta> misOfertas;
 
 	public Empresa(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
-			String provincia, String municipio, String direccion, String rnc, String tipoEmpresa) {
-		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion);
+			String provincia, String municipio, String direccion, boolean estado, String rnc, String tipoEmpresa,
+			ArrayList<Oferta> misOfertas) {
+		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado);
 		this.rnc = rnc;
 		this.tipoEmpresa = tipoEmpresa;
-		misOfertas = new ArrayList<Oferta>();
+		this.misOfertas = misOfertas;
 	}
 
 	public String getRnc() {

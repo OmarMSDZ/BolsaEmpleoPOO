@@ -1,64 +1,42 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Obrero extends Persona {
 
-	private boolean conduccion;
-	private boolean electricidad;
-	private boolean limpieza;
-	private boolean mantenimiento;
+	private boolean ventas;
 	private boolean mecanica;
 	private boolean ofimatica;
 	private boolean seguridad;
-	private boolean ventas;
+	private boolean electricidad;
+	private boolean mantenimiento;
+	private boolean conduccion;
+	private boolean limpieza;
 
 	public Obrero(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
-			String provincia, String municipio, String direccion, String apellidos, String sexo, Date fechaNacimiento,
-			String cedula, boolean estadoEmpleado, boolean conduccion, boolean electricidad, boolean limpieza,
-			boolean mantenimiento, boolean mecanica, boolean ofimatica, boolean seguridad, boolean ventas) {
-		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, apellidos, sexo,
-				fechaNacimiento, cedula, estadoEmpleado);
-		this.conduccion = conduccion;
-		this.electricidad = electricidad;
-		this.limpieza = limpieza;
-		this.mantenimiento = mantenimiento;
+			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
+			Date fechaNacimiento, String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes,
+			boolean ventas, boolean mecanica, boolean ofimatica, boolean seguridad, boolean electricidad,
+			boolean mantenimiento, boolean conduccion, boolean limpieza) {
+		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
+				sexo, fechaNacimiento, cedula, estadoEmpleado, misSolicitudes);
+		this.ventas = ventas;
 		this.mecanica = mecanica;
 		this.ofimatica = ofimatica;
 		this.seguridad = seguridad;
-		this.ventas = ventas;
-	}
-
-	public boolean isConduccion() {
-		return conduccion;
-	}
-
-	public void setConduccion(boolean conduccion) {
-		this.conduccion = conduccion;
-	}
-
-	public boolean isElectricidad() {
-		return electricidad;
-	}
-
-	public void setElectricidad(boolean electricidad) {
 		this.electricidad = electricidad;
-	}
-
-	public boolean isLimpieza() {
-		return limpieza;
-	}
-
-	public void setLimpieza(boolean limpieza) {
+		this.mantenimiento = mantenimiento;
+		this.conduccion = conduccion;
 		this.limpieza = limpieza;
 	}
 
-	public boolean isMantenimiento() {
-		return mantenimiento;
+	public boolean isVentas() {
+		return ventas;
 	}
 
-	public void setMantenimiento(boolean mantenimiento) {
-		this.mantenimiento = mantenimiento;
+	public void setVentas(boolean ventas) {
+		this.ventas = ventas;
 	}
 
 	public boolean isMecanica() {
@@ -85,12 +63,36 @@ public class Obrero extends Persona {
 		this.seguridad = seguridad;
 	}
 
-	public boolean isVentas() {
-		return ventas;
+	public boolean isElectricidad() {
+		return electricidad;
 	}
 
-	public void setVentas(boolean ventas) {
-		this.ventas = ventas;
+	public void setElectricidad(boolean electricidad) {
+		this.electricidad = electricidad;
+	}
+
+	public boolean isMantenimiento() {
+		return mantenimiento;
+	}
+
+	public void setMantenimiento(boolean mantenimiento) {
+		this.mantenimiento = mantenimiento;
+	}
+
+	public boolean isConduccion() {
+		return conduccion;
+	}
+
+	public void setConduccion(boolean conduccion) {
+		this.conduccion = conduccion;
+	}
+
+	public boolean isLimpieza() {
+		return limpieza;
+	}
+
+	public void setLimpieza(boolean limpieza) {
+		this.limpieza = limpieza;
 	}
 
 }

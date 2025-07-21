@@ -1,39 +1,42 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Bolsa {
 
-	private ArrayList<Persona> listaUsuarios;
+	private ArrayList<Usuario> listaUsuarios;
 	private ArrayList<Solicitud> listaSolicitudes;
+	private ArrayList<MatchOferta> listaMatchOferta;
 	private ArrayList<Oferta> listaOfertas;
-	public static int genCodPers = 0;
+	public static int genCodUsu = 0;
 	public static int genCodSoli = 0;
-	public static int genCodEmpr = 0;
+	public static int genCodMatch = 0;
 	public static int genCodOfer = 0;
 	public static Bolsa bolsaLaboral = null;
 
 	public Bolsa() {
 		super();
-		listaUsuarios = new ArrayList<Persona>();
-		listaSolicitudes = new ArrayList<Solicitud>();
-		listaOfertas = new ArrayList<Oferta>();
+		this.listaUsuarios = new ArrayList<Usuario>();
+		this.listaSolicitudes = new ArrayList<Solicitud>();
+		this.listaMatchOferta = new ArrayList<MatchOferta>();
+		this.listaOfertas = new ArrayList<Oferta>();
 	}
 
 	public static Bolsa getInstancia() {
 		if (bolsaLaboral == null) {
 			bolsaLaboral = new Bolsa();
 		}
-
 		return bolsaLaboral;
 	}
 
-	public ArrayList<Persona> getListaPersonas() {
+	public ArrayList<Usuario> getListaUsuarios() {
 		return listaUsuarios;
 	}
 
-	public void setListaPersonas(ArrayList<Persona> listaPersona) {
-		this.listaUsuarios = listaPersona;
+	public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
+		this.listaUsuarios = listaUsuarios;
 	}
 
 	public ArrayList<Solicitud> getListaSolicitudes() {
@@ -44,26 +47,74 @@ public class Bolsa {
 		this.listaSolicitudes = listaSolicitudes;
 	}
 
+	public ArrayList<MatchOferta> getListaMatchOferta() {
+		return listaMatchOferta;
+	}
+
+	public void setListaMatchOferta(ArrayList<MatchOferta> listaMatchOferta) {
+		this.listaMatchOferta = listaMatchOferta;
+	}
+
 	public ArrayList<Oferta> getListaOfertas() {
 		return listaOfertas;
 	}
 
-	public void setListaOferta(ArrayList<Oferta> listaOferta) {
-		this.listaOfertas = listaOferta;
+	public void setListaOfertas(ArrayList<Oferta> listaOfertas) {
+		this.listaOfertas = listaOfertas;
 	}
 
-	// Métodos aquí debajo
+	public static int getGenCodUsu() {
+		return genCodUsu;
+	}
+
+	public static void setGenCodUsu(int genCodUsu) {
+		Bolsa.genCodUsu = genCodUsu;
+	}
+
+	public static int getGenCodSoli() {
+		return genCodSoli;
+	}
+
+	public static void setGenCodSoli(int genCodSoli) {
+		Bolsa.genCodSoli = genCodSoli;
+	}
+
+	public static int getGenCodMatch() {
+		return genCodMatch;
+	}
+
+	public static void setGenCodMatch(int genCodMatch) {
+		Bolsa.genCodMatch = genCodMatch;
+	}
+
+	public static int getGenCodOfer() {
+		return genCodOfer;
+	}
+
+	public static void setGenCodOfer(int genCodOfer) {
+		Bolsa.genCodOfer = genCodOfer;
+	}
+
+	public static Bolsa getBolsaLaboral() {
+		return bolsaLaboral;
+	}
+
+	public static void setBolsaLaboral(Bolsa bolsaLaboral) {
+		Bolsa.bolsaLaboral = bolsaLaboral;
+	}
+
+	// metodos aqui debajo
 
 	// buscar por codigo
-	public Persona buscarClienteByCodigo(String cod) {
-		Persona aux = null;
+	public Usuario buscarUsuarioByCodigo(String cod) {
+		Usuario aux = null;
 		boolean encontrado = false;
 		int i = 0;
 		while (!encontrado && i < listaUsuarios.size()) { // de esta forma se hace el bucle para buscar el objeto que
-															// tenga el codigo
+			// tenga el codigo
 
 			if (listaUsuarios.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id
-																			// del objeto
+				// del objeto
 				aux = listaUsuarios.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
 				encontrado = true;
 			}
@@ -72,32 +123,15 @@ public class Bolsa {
 		return aux;
 	}
 
-	/* public Empresa buscarEmpresaByCodigo(String cod) {
-		Empresa aux = null;
-		boolean encontrado = false;
-		int i = 0;
-		while (!encontrado && i < listaEmpresas.size()) { // de esta forma se hace el bucle para buscar el objeto que
-															// tenga el codigo
-
-			if (listaEmpresas.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id
-																			// del objeto
-				aux = listaEmpresas.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
-				encontrado = true;
-			}
-			i++;
-		}
-		return aux;
-	} */
-
 	public Oferta buscarOfertaByCodigo(String cod) {
 		Oferta aux = null;
 		boolean encontrado = false;
 		int i = 0;
 		while (!encontrado && i < listaOfertas.size()) { // de esta forma se hace el bucle para buscar el objeto que
-															// tenga el codigo
+			// tenga el codigo
 
 			if (listaOfertas.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id del
-																			// objeto
+				// objeto
 				aux = listaOfertas.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
 				encontrado = true;
 			}
@@ -111,10 +145,10 @@ public class Bolsa {
 		boolean encontrado = false;
 		int i = 0;
 		while (!encontrado && i < listaSolicitudes.size()) { // de esta forma se hace el bucle para buscar el objeto que
-																// tenga el codigo
+			// tenga el codigo
 
 			if (listaSolicitudes.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id
-																				// del objeto
+				// del objeto
 				aux = listaSolicitudes.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
 				encontrado = true;
 			}
@@ -123,8 +157,8 @@ public class Bolsa {
 		return aux;
 	}
 
-	// buscar índice por código
-	private int buscarIndexPersonaByCodigo(String id) {
+	// buscar indice por codigo
+	private int buscarIndexUsuarioByCodigo(String id) {
 		// TODO Auto-generated method stub
 		int index = -1;
 		boolean encontrado = false;
@@ -139,23 +173,6 @@ public class Bolsa {
 
 		return index;
 	}
-
-	/*
-	private int buscarIndexEmpresaByCodigo(String id) {
-		// TODO Auto-generated method stub
-		int index = -1;
-		boolean encontrado = false;
-		int i = 0;
-		while (!encontrado && i < listaEmpresas.size()) {
-			if (listaEmpresas.get(i).getCodigo().equalsIgnoreCase(id)) {
-				index = i;
-				encontrado = true;
-			}
-			i++;
-		}
-
-		return index;
-	} */
 
 	private int buscarIndexSolicitudByCodigo(String id) {
 		// TODO Auto-generated method stub
@@ -189,15 +206,10 @@ public class Bolsa {
 		return index;
 	}
 
-	// Insertar
-	public void insertarPersona(Persona pers) {
-		listaUsuarios.add(pers);
+	// insertar
+	public void insertarUsuario(Usuario usu) {
+		listaUsuarios.add(usu);
 	}
-
-	/*
-	public void insertarEmpresa(Empresa emp) {
-		listaEmpresas.add(emp);
-	} */
 
 	public void insertarOferta(Oferta ofer) {
 		listaOfertas.add(ofer);
@@ -205,15 +217,17 @@ public class Bolsa {
 
 	public void insertarSolicitud(Solicitud soli) {
 		listaSolicitudes.add(soli);
-		// al insertar una solicitud debe agregarse a la lista de persona
+		// al insertar una solicitud debe agregarse a la lista solicitudes hechas por la
+		// persona
 		Persona aux = soli.getSolicitante();
 		aux.insertarSolicitud(soli);
-		modificarPersona(aux);
+		modificarUsuario(aux);
 	}
 
 	// modificar
-	public void modificarPersona(Persona updated) {
-		int index = buscarIndexPersonaByCodigo(updated.getCodigo()); // buscar indice a actualizar
+
+	public void modificarUsuario(Usuario updated) {
+		int index = buscarIndexUsuarioByCodigo(updated.getCodigo()); // buscar indice a actualizar
 		listaUsuarios.set(index, updated); // actualizar elemento del listado en ese indice
 	}
 
@@ -227,19 +241,7 @@ public class Bolsa {
 		listaOfertas.set(index, updated); // actualizar elemento del listado en ese indice
 	}
 
-	/* public void modificarEmpresa(Empresa updated) {
-		int index = buscarIndexEmpresaByCodigo(updated.getCodigo()); // buscar indice a actualizar
-		listaEmpresas.set(index, updated); // actualizar elemento del listado en ese indice
-	} */
-
 	// eliminar
-	public void eliminarPersona(Persona selected) {
-		listaUsuarios.remove(selected);
-	}
-
-	/* public void eliminarEmpresa(Empresa selected) {
-		listaEmpresas.remove(selected);
-	} */
 
 	public void eliminarOferta(Oferta selected) {
 		listaOfertas.remove(selected);
@@ -247,18 +249,12 @@ public class Bolsa {
 
 	public void eliminarSolicitud(Solicitud selected) {
 		listaSolicitudes.remove(selected);
+		Persona aux = selected.getSolicitante();
+		aux.removerSolicitud(selected);
+		modificarUsuario(aux);
 	}
 
 	// generacion de codigos
-	public String generarCodigoPersona() {
-		genCodPers++;
-		return "P-" + genCodPers; // codigo a registrar
-	}
-
-	public String generarCodigoEmpresa() {
-		genCodEmpr++;
-		return "E-" + genCodEmpr; // codigo a registrar
-	}
 
 	public String generarCodigoOferta() {
 		genCodOfer++;
@@ -268,6 +264,11 @@ public class Bolsa {
 	public String generarCodigoSolicitud() {
 		genCodSoli++;
 		return "S-" + genCodSoli; // codigo a registrar
+	}
+
+	public static String generarCodigoMatch() {
+		genCodMatch++;
+		return "MTCH-" + genCodMatch; // codigo a registrar
 	}
 
 	// validar contraseña y email del usuario
@@ -285,51 +286,89 @@ public class Bolsa {
 		return aux;
 	}
 
-	/* // Algoritmo de matcheo de PERSONAS según la oferta, devolver la lista de las
-	// personas organizada por mayor cantidad de requisitos cumplido
+	// Desactivar cuenta usuario
+	public void desactivarCuenta(Persona persActiva) {
+		persActiva.setEstado(false);
+		modificarUsuario(persActiva);
+	}
 
-	public ArrayList<Persona> algMatching(Oferta of) {
+	// validar contraseña y email de empresa
+	/*
+	 * public boolean validarLoginEmpresa(String email, String passwd) { boolean
+	 * valido = false;
+	 * 
+	 * for (Empresa emp : listaEmpresas) {
+	 * if(emp.getCorreo().equalsIgnoreCase(email) &&
+	 * emp.getPassw().equalsIgnoreCase(passwd)) { valido = true; } } return valido;
+	 * }
+	 */
+	// obtener Persona en base a email y contraseña
+	/*
+	 * public Persona obtLoginPersona(String email, String passwd) { Persona aux =
+	 * null;
+	 * 
+	 * for (Persona pers : listaPersonas) {
+	 * if(pers.getCorreoElectronico().equalsIgnoreCase(email) &&
+	 * pers.getPasswd().equalsIgnoreCase(passwd)) { aux = pers; } } return aux; }
+	 */
+	// obtener Empresa en base a email y contraseña
+	/*
+	 * public Empresa obtLoginEmpresa(String email, String passwd) { Empresa aux =
+	 * null;
+	 * 
+	 * for (Empresa emp : listaEmpresas) {
+	 * if(emp.getCorreo().equalsIgnoreCase(email) &&
+	 * emp.getPassw().equalsIgnoreCase(passwd)) { aux = emp; } } return aux; }
+	 */
 
-		ArrayList<Persona> listaPersonasMatch = new ArrayList<Persona>(); // lista a retornar
-		ArrayList<PersonaMatcheo> listaTempPersonasMatch = new ArrayList<PersonaMatcheo>();// temporal
-		// recorrer toda la lista de personas
-		for (Persona persona : listaUsuarios) {
-			int cantidadReqCump = 0; // cantidad requisitos con los que cumple la persona
-			// revisar si tiene licencia o no
-			if ((of.isRequiereLicencia() && persona.isLicencia())
-					|| (!of.isRequiereLicencia() && !persona.isLicencia())) {
-				cantidadReqCump++;
-			}
-			// revisar si puede movilizarse o no
-			if ((of.isRequiereMovilidad() && persona.isDispMudarse())
-					|| (!of.isRequiereMovilidad() && !persona.isDispMudarse())) {
-				cantidadReqCump++;
-			}
-			// revisar la formacion
-			if ((of.getFormacion().equalsIgnoreCase("Universitario") && persona instanceof Universitario)
-					|| (of.getFormacion().equalsIgnoreCase("Tecnico Superior") && persona instanceof TecnicoSuperior)
-					|| (of.getFormacion().equalsIgnoreCase("Obrero") && persona instanceof Obrero)) {
-				cantidadReqCump++;
-			}
+	// algoritmo de matching
+	public void realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
 
-			// revisar disp de horario, modalidad y tipo de trabajo
-			if (of.getHorario() == persona.getDispHorarios())
-				cantidadReqCump++;
-			if (of.getModalidad() == persona.getModalidad())
-				cantidadReqCump++;
-			if (of.getTipo() == persona.getTipoEmpleado())
-				cantidadReqCump++;
-			listaTempPersonasMatch.add(new PersonaMatcheo(persona, cantidadReqCump)); // añadir a lista temporal para
-																						// luego organizar por cant req
+		for (Oferta oferta : ofertas) {
+			for (Solicitud solicitud : solicitudes) {
+				int totalCriterios = 8;
+
+				int criteriosCumplidos = 0;
+
+				if (oferta.getModalidad().equalsIgnoreCase(solicitud.getModalidad()))
+					criteriosCumplidos++;
+				if (oferta.getTipo().equalsIgnoreCase(solicitud.getTipoEmpleo()))
+					criteriosCumplidos++;
+
+				// para los 3 tipos de niveles de estudios
+				if (oferta.getNivelEducacion().equals("Universitario")
+						&& solicitud.getSolicitante() instanceof Universitario)
+					criteriosCumplidos++;
+				if (oferta.getNivelEducacion().equals("Tecnico Superior")
+						&& solicitud.getSolicitante() instanceof TecnicoSuperior)
+					criteriosCumplidos++;
+				if (oferta.getNivelEducacion().equals("Obrero") && solicitud.getSolicitante() instanceof Obrero)
+					criteriosCumplidos++;
+
+				// solo obtener la carrera de los universitarios
+				if (oferta.getArea().equalsIgnoreCase(solicitud.getArea()))
+					criteriosCumplidos++;
+				if (oferta.isRequiereLicencia() == solicitud.isLicencia())
+					criteriosCumplidos++;
+				if (oferta.isRequiereMovilidad() == solicitud.isDispMovilidad())
+					criteriosCumplidos++;
+				if (oferta.getHorario().equalsIgnoreCase(solicitud.getDispHorarios()))
+					criteriosCumplidos++;
+				if (solicitud.getSalarioDeseado() <= oferta.getSalarioEstimado())
+					criteriosCumplidos++;
+
+				double porcentaje = (criteriosCumplidos * 100.0) / totalCriterios;
+
+				// si tiene un porcentaje por encima de 60, recomendar para el puesto y crear el
+				// enlace con la clase de matching
+				if (porcentaje >= 60.0) {
+					String codigo = generarCodigoMatch();
+					MatchOferta match = new MatchOferta(codigo, new Date(), oferta, solicitud, false, false);
+					listaMatchOferta.add(match);
+				}
+			}
 		}
-		// ordenar lista temporal de matcheos e insertar en la lista a retornar
-		listaTempPersonasMatch.sort((a, b) -> Integer.compare(b.reqCumplidos, a.reqCumplidos));
 
-		for (PersonaMatcheo personaMatcheo : listaTempPersonasMatch) {
-			listaPersonasMatch.add(personaMatcheo.getPersona());
-		}
-
-		return listaPersonasMatch;
-	} */
+	}
 
 }

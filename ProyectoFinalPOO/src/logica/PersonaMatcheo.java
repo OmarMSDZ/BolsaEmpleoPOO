@@ -3,6 +3,7 @@ package logica;
 public class PersonaMatcheo {
 
 	// Clase para almacenar las personas junto con la cantidad de requisitos que
+	// clase para almacenar las personas junto con la cantidad de requisitos que
 	// cumplen con respecto a una oferta
 	// para pasarlas por el algoritmo de matcheo
 	Persona persona;
