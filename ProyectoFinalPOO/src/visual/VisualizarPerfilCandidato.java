@@ -216,9 +216,9 @@ public class VisualizarPerfilCandidato extends JDialog {
 		btnEditarInfoPersonal.setFocusable(false);
 		btnEditarInfoPersonal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					EditarInfoPersonalCandidato edit = new EditarInfoPersonalCandidato(persActiva, 0);
-					edit.setModal(true);
-					edit.setVisible(true);
+				EditarInfoPersonalCandidato edit = new EditarInfoPersonalCandidato(persActiva, 0);
+				edit.setModal(true);
+				edit.setVisible(true);
 			}
 		});
 		btnEditarInfoPersonal.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/edit.png")));
@@ -497,12 +497,14 @@ public class VisualizarPerfilCandidato extends JDialog {
 			btnDesactivarCuenta.setFocusable(false);
 			btnDesactivarCuenta.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String input = JOptionPane.showInputDialog(null, "Introduzca su contraseña:", "Verificación", JOptionPane.PLAIN_MESSAGE);
+					String input = JOptionPane.showInputDialog(null, "Introduzca su contraseña:", "Verificación",
+							JOptionPane.PLAIN_MESSAGE);
 					if (persActiva.getPasswd().equals(input)) {
-					    // Acción protegida
-					    Bolsa.getInstancia().desactivarCuenta(persActiva);
+						// Acción protegida
+						Bolsa.getInstancia().desactivarCuenta(persActiva);
 					} else {
-					    JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Acción denegada", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Acción denegada",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -510,7 +512,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			btnDesactivarCuenta.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 			btnDesactivarCuenta.setBounds(21, 825, 216, 40);
 			contentPanel.add(btnDesactivarCuenta);
-			if(persActiva!=null) {
+			if (persActiva != null) {
 				btnDesactivarCuenta.setEnabled(true);
 			}
 		}

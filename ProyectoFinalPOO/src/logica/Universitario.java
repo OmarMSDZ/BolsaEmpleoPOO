@@ -24,10 +24,4 @@ public class Universitario extends Persona {
 		this.carrera = carrera;
 	}
 
-	 
-	
-	
-
-	
-
 }

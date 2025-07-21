@@ -10,7 +10,7 @@ public abstract class Usuario {
 	protected String provincia;
 	protected String municipio;
 	protected String direccion;
-	protected boolean estado; //activo o inactivo
+	protected boolean estado; // Activo o Inactivo
 	public Usuario(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado) {
 		super();
@@ -79,8 +79,6 @@ public abstract class Usuario {
 		this.estado = estado;
 	}
 
-	
-
-	// metodos aqui debajo
+	// Métodos aquí debajo
 
 }

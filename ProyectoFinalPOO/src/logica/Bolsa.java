@@ -270,18 +270,23 @@ public class Bolsa {
 		genCodMatch++;
 		return "MTCH-" + genCodMatch; // codigo a registrar
 	}
-	// validar contraseña y email de persona
-	/*
-	 * public boolean validarLoginPersona(String email, String passwd) { boolean
-	 * valido = false;
-	 * 
-	 * for (Persona pers : listaPersonas) {
-	 * if(pers.getCorreoElectronico().equalsIgnoreCase(email) &&
-	 * pers.getPasswd().equalsIgnoreCase(passwd)) { valido = true; } } return
-	 * valido; }
-	 */
 
-	// desactivar cuenta usuario
+	// validar contraseña y email del usuario
+	public Usuario validarLoginUsuarios(String email, String passwd) {
+		Usuario aux = null;
+		boolean encontrado = false;
+		int i = 0;
+
+		while (!encontrado && i < listaUsuarios.size()) {
+			if (listaUsuarios.get(i).getCorreoElectronico().equalsIgnoreCase(email)
+					&& listaUsuarios.get(i).getPasswd().equalsIgnoreCase(passwd)) {
+				aux = listaUsuarios.get(i);
+			}
+		}
+		return aux;
+	}
+
+	// Desactivar cuenta usuario
 	public void desactivarCuenta(Persona persActiva) {
 		persActiva.setEstado(false);
 		modificarUsuario(persActiva);
@@ -316,20 +321,20 @@ public class Bolsa {
 	 * emp.getPassw().equalsIgnoreCase(passwd)) { aux = emp; } } return aux; }
 	 */
 
-	//algoritmo de matching
+	// algoritmo de matching
 	public void realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
 
 		for (Oferta oferta : ofertas) {
 			for (Solicitud solicitud : solicitudes) {
 				int totalCriterios = 8;
-		 
+
 				int criteriosCumplidos = 0;
 
 				if (oferta.getModalidad().equalsIgnoreCase(solicitud.getModalidad()))
 					criteriosCumplidos++;
 				if (oferta.getTipo().equalsIgnoreCase(solicitud.getTipoEmpleo()))
 					criteriosCumplidos++;
-				
+
 				// para los 3 tipos de niveles de estudios
 				if (oferta.getNivelEducacion().equals("Universitario")
 						&& solicitud.getSolicitante() instanceof Universitario)

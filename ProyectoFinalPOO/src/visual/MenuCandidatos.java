@@ -124,7 +124,7 @@ public class MenuCandidatos extends JFrame {
 	public MenuCandidatos(Persona personaActual) {
 		setResizable(false);
 		if (personaActual != null) {
-			setTitle("Laborea - ¡Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
+			setTitle("Laborea - ï¿½Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
 			persActual = personaActual;
 		} else {
 			// insertar usuario para pruebas
@@ -137,13 +137,13 @@ public class MenuCandidatos extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 687);
 
-		// poner ventana en centro de pantalla y tamaño maximo
+		// poner ventana en centro de pantalla y tamaï¿½o maximo
 		dim = getToolkit().getScreenSize(); // obtener dimensiones de la pantalla de la pc
 		setSize(1920, 1075);
 		setLocationRelativeTo(null);
-		
+
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
+
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -202,7 +202,7 @@ public class MenuCandidatos extends JFrame {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectï¿½ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
@@ -222,7 +222,7 @@ public class MenuCandidatos extends JFrame {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectï¿½ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
@@ -256,7 +256,7 @@ public class MenuCandidatos extends JFrame {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectï¿½ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
@@ -290,7 +290,7 @@ public class MenuCandidatos extends JFrame {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectï¿½ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
@@ -559,15 +559,15 @@ public class MenuCandidatos extends JFrame {
 						Solicitud soli = new Solicitud(codigoGenerado, persActual, dispHorario, dispMovilidad, licencia,
 								tipoEmpleo, modalidad, area, salarioEsperado, new Date(), "ACTIVA");
 						Bolsa.getInstancia().insertarSolicitud(soli);
-						JOptionPane.showMessageDialog(null, "¡Solicitud procesada con éxito!", "Información",
+						JOptionPane.showMessageDialog(null, "ï¿½Solicitud procesada con ï¿½xito!", "Informaciï¿½n",
 								JOptionPane.INFORMATION_MESSAGE);
 						clear();
 					} else {
-						JOptionPane.showMessageDialog(null, "¡Complete los campos correctamente!", "Alerta",
+						JOptionPane.showMessageDialog(null, "ï¿½Complete los campos correctamente!", "Alerta",
 								JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "¡No hay persona activa en esta vista!", "Alerta",
+					JOptionPane.showMessageDialog(null, "ï¿½No hay persona activa en esta vista!", "Alerta",
 							JOptionPane.WARNING_MESSAGE);
 
 				}
@@ -791,12 +791,13 @@ public class MenuCandidatos extends JFrame {
 		JButton btnCancelarSolicitud = new JButton("Cancelar Solicitud");
 		btnCancelarSolicitud.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//cancelar solicitud
-				int option = JOptionPane.showConfirmDialog(null, "Desea cancelar esta solicitud?", "Cancelar",JOptionPane.WARNING_MESSAGE);
-				if(option == JOptionPane.OK_OPTION) {
-				Bolsa.getInstancia().eliminarSolicitud(solicitudSelected);
-				cargarSolicitudes();
-				jtpDescripcionSolicitud.setSelectedIndex(0);
+				// cancelar solicitud
+				int option = JOptionPane.showConfirmDialog(null, "Desea cancelar esta solicitud?", "Cancelar",
+						JOptionPane.WARNING_MESSAGE);
+				if (option == JOptionPane.OK_OPTION) {
+					Bolsa.getInstancia().eliminarSolicitud(solicitudSelected);
+					cargarSolicitudes();
+					jtpDescripcionSolicitud.setSelectedIndex(0);
 				}
 			}
 		});
@@ -828,13 +829,13 @@ public class MenuCandidatos extends JFrame {
 		lblActivarSoloSi.setBackground(Color.WHITE);
 		lblActivarSoloSi.setBounds(652, 704, 219, 142);
 		pnlVistaSolicitud.add(lblActivarSoloSi);
-		
+
 		JLabel lblArea_1 = new JLabel("\u00C1rea:");
 		lblArea_1.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/quality.png")));
 		lblArea_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblArea_1.setBounds(10, 148, 182, 40);
 		pnlVistaSolicitud.add(lblArea_1);
-		
+
 		lblAreaSolicitud = new JLabel("Area Solicitud");
 		lblAreaSolicitud.setForeground(Color.DARK_GRAY);
 		lblAreaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -910,7 +911,7 @@ public class MenuCandidatos extends JFrame {
 					@Override
 					public void mouseClicked(java.awt.event.MouseEvent e) {
 						solicitudSelected = eleSol.getSolicitud();
-						cargarVistaPreviaSolicitud(solicitudSelected); //cargar datos de solicitud en vista previa 
+						cargarVistaPreviaSolicitud(solicitudSelected); // cargar datos de solicitud en vista previa
 						jtpDescripcionSolicitud.setSelectedIndex(1);
 					}
 				});
@@ -923,21 +924,24 @@ public class MenuCandidatos extends JFrame {
 			ContenedorSolicitudes.repaint();
 		}
 	}
+
 	private void cargarVistaPreviaSolicitud(Solicitud soli) {
-		if(soli!=null) {
-			lblTituloSolicitud.setText("Solicitud #"+soli.getCodigo()+" "+soli.getSolicitante().getNombre()+" "+ soli.getSolicitante().getApellidos());
-			lblSolicitanteSolicitud.setText(soli.getSolicitante().getNombre()+" "+ soli.getSolicitante().getApellidos());
+		if (soli != null) {
+			lblTituloSolicitud.setText("Solicitud #" + soli.getCodigo() + " " + soli.getSolicitante().getNombre() + " "
+					+ soli.getSolicitante().getApellidos());
+			lblSolicitanteSolicitud
+					.setText(soli.getSolicitante().getNombre() + " " + soli.getSolicitante().getApellidos());
 			lblAreaSolicitud.setText(soli.getArea());
 			lblSalarioSolicitud.setText(String.valueOf(soli.getSalarioDeseado()));
 			lblTipoEmpleoSolicitud.setText(soli.getTipoEmpleo());
 			lblModalidadSolicitud.setText(soli.getModalidad());
 			lblHorariosSolicitud.setText(soli.getDispHorarios());
-			if(soli.isLicencia()) {
+			if (soli.isLicencia()) {
 				lblLicConducirSolicitud.setText("Posee licencia de conducir");
 			} else {
 				lblLicConducirSolicitud.setText("No posee licencia de conducir");
 			}
-			if(soli.isDispMovilidad()) {
+			if (soli.isDispMovilidad()) {
 				lblMovilizarseSolicitud.setText("Puede movilizarse en caso de ser necesario");
 			} else {
 				lblMovilizarseSolicitud.setText("No puede movilizarse");
@@ -947,8 +951,8 @@ public class MenuCandidatos extends JFrame {
 			String formattedDate = dateFormat.format(fechaSolicitud);
 			lblFechaSolicitud.setText(formattedDate);
 			lblEstadoSolicitud.setText(soli.getEstadoSolicitud());
-			
+
 		}
-		
+
 	}
 }
