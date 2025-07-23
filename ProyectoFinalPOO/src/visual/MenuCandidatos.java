@@ -13,6 +13,7 @@ import logica.Oferta;
 import logica.Persona;
 import logica.Solicitud;
 import logica.Universitario;
+import logica.Usuario;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -109,7 +110,7 @@ public class MenuCandidatos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MenuCandidatos frame = new MenuCandidatos(null);
+					MenuCandidatos frame = new MenuCandidatos();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -121,19 +122,28 @@ public class MenuCandidatos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MenuCandidatos(Persona personaActual) {
+	public MenuCandidatos() {
 		setResizable(false);
-		if (personaActual != null) {
-			persActual = personaActual;
-			setTitle("Laborea - ¡Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
-		} else {
-			// insertar usuario para pruebas
-			persActual = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
-					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
-					new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
-			Bolsa.getInstancia().insertarUsuario(persActual);
-			setTitle("Laborea - Pruebas menu candidatos");
-		}
+
+	    Persona actual = (Persona) Bolsa.getUsuarioActivo();
+
+	    if (actual != null) {
+	        persActual = actual;
+	        setTitle("Laborea - ¡Bienvenido " + actual.getNombre() + " " + actual.getApellidos() + "!");
+	    } else {
+	    	//para pruebas
+	        persActual = new Universitario(
+	            "U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
+	            "Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M",
+	            new Date(), "40215233418", false, new ArrayList<Solicitud>(),
+	            "Ingeniería en Sistemas Computacionales"
+	        );
+
+	        Bolsa.getInstancia().insertarUsuario(persActual);
+	        Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
+	        setTitle("Laborea - Pruebas menú candidatos");
+	    }
+	    
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 687);
 
@@ -178,7 +188,7 @@ public class MenuCandidatos extends JFrame {
 						// abrir menu admin perfil candidato
 						if (persActual != null) {
 
-							VisualizarPerfilCandidato vpc = new VisualizarPerfilCandidato(persActual);
+							VisualizarPerfilCandidato vpc = new VisualizarPerfilCandidato();
 							dispose();
 							vpc.setModal(true);
 							vpc.setVisible(true);

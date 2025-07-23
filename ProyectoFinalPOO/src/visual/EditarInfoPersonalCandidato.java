@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -73,7 +74,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			EditarInfoPersonalCandidato dialog = new EditarInfoPersonalCandidato(null, 0);
+			EditarInfoPersonalCandidato dialog = new EditarInfoPersonalCandidato(0);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -84,18 +85,26 @@ public class EditarInfoPersonalCandidato extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public EditarInfoPersonalCandidato(Persona persActiva, int tipo) {
+	public EditarInfoPersonalCandidato(int tipo) {
 		setResizable(false);
-		if (persActiva != null) {
-			persActual = persActiva;
-		} else {
-			// insertar usuario para pruebas
-			persActiva = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
-					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
-					new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
-			Bolsa.getInstancia().insertarUsuario(persActiva);
-			persActual = persActiva;
-		}
+		  Persona actual = (Persona) Bolsa.getUsuarioActivo();
+
+		    if (actual != null) {
+		        persActual = actual;
+		    } else {
+		    	//para pruebas
+		        persActual = new Universitario(
+		            "U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
+		            "Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M",
+		            new Date(), "40215233418", false, new ArrayList<Solicitud>(),
+		            "Ingeniería en Sistemas Computacionales"
+		        );
+
+		        Bolsa.getInstancia().insertarUsuario(persActual);
+		        Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
+		        persActual = (Persona) Bolsa.getUsuarioActivo();
+		    }
+		 
 		setTitle("Laborea - Editar informaci\u00F3n personal/profesional");
 		setBounds(100, 100, 494, 570);
 		setLocationRelativeTo(null);
@@ -251,8 +260,8 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				spnFechaNacimiento = new JSpinner();
 				spnFechaNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 				spnFechaNacimiento.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_YEAR));
-				JSpinner.DateEditor de_spnFechaDevolucion = new JSpinner.DateEditor(spnFechaNacimiento, "dd/MM/yyyy");
-				spnFechaNacimiento.setEditor(de_spnFechaDevolucion);
+				JSpinner.DateEditor de_spnFechaNacimiento = new JSpinner.DateEditor(spnFechaNacimiento, "dd/MM/yyyy");
+				spnFechaNacimiento.setEditor(de_spnFechaNacimiento);
 
 				spnFechaNacimiento.setBounds(253, 156, 210, 20);
 				pnlInfoPersonal.add(spnFechaNacimiento);
@@ -640,6 +649,8 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				cbxProvincia.setSelectedItem(persActual.getProvincia());
 
 				// obtener fecha de nacimiento
+				spnFechaNacimiento.setValue(persActual.getFechaNacimiento());
+				
 			} else if (tipo == 1) {
 				if (persActual instanceof Universitario) {
 					// cargar info universitario
