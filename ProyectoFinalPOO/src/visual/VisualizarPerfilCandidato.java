@@ -87,7 +87,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 		}
 
 		try {
-			VisualizarPerfilCandidato dialog = new VisualizarPerfilCandidato(null);
+			VisualizarPerfilCandidato dialog = new VisualizarPerfilCandidato();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -98,20 +98,23 @@ public class VisualizarPerfilCandidato extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VisualizarPerfilCandidato(Persona personaActiva) {
+	public VisualizarPerfilCandidato() {
 		setResizable(false);
-		persActiva = personaActiva;
-		if (persActiva != null) {
+		Persona actual = (Persona) Bolsa.getUsuarioActivo();
+
+		if (actual != null) {
+			persActiva = actual;
 			setTitle("Laborea - Perfil de " + persActiva.getNombre() + " " + persActiva.getApellidos());
 		} else {
-			// insertar usuario para pruebas
+			// para pruebas
 			persActiva = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
 					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
 					new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
+
 			Bolsa.getInstancia().insertarUsuario(persActiva);
+			Bolsa.setUsuarioActivo(persActiva); // insertar y establecer como activo para pruebas
 			setTitle("Laborea - Pruebas vista perfil");
 		}
-
 		setBounds(100, 100, 846, 952);
 
 		SwingUtilities.updateComponentTreeUI(this); // actualiza la ventana
@@ -225,7 +228,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 		btnEditarInfoPersonal.setFocusable(false);
 		btnEditarInfoPersonal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditarInfoPersonalCandidato edit = new EditarInfoPersonalCandidato(persActiva, 0);
+				EditarInfoPersonalCandidato edit = new EditarInfoPersonalCandidato(0);
 				edit.setModal(true);
 				edit.setVisible(true);
 			}
@@ -323,14 +326,14 @@ public class VisualizarPerfilCandidato extends JDialog {
 				JButton btnEditarInfoProfesional = new JButton("Editar");
 				btnEditarInfoProfesional.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						EditarInfoPersonalCandidato edit = new EditarInfoPersonalCandidato(persActiva, 1);
+						EditarInfoPersonalCandidato edit = new EditarInfoPersonalCandidato(1);
 						edit.setModal(true);
 						edit.setVisible(true);
 					}
 				});
 				btnEditarInfoProfesional.setFocusable(false);
 				btnEditarInfoProfesional
-				.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/edit.png")));
+						.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/edit.png")));
 				btnEditarInfoProfesional.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 				btnEditarInfoProfesional.setBackground(Color.WHITE);
 				btnEditarInfoProfesional.setBounds(669, 7, 94, 38);
@@ -547,7 +550,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 					}
 
 					// modificar datos usuario
-					Bolsa.getInstancia().modificarUsuario(personaActiva);
+					Bolsa.getInstancia().modificarUsuario(persActiva);
 
 					JOptionPane.showMessageDialog(null, "Contraseña actualizada exitosamente.", "",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -565,7 +568,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 				public void mouseClicked(MouseEvent e) {
 					if (persActiva != null) {
 
-						MenuCandidatos menuCan = new MenuCandidatos(persActiva);
+						MenuCandidatos menuCan = new MenuCandidatos();
 						menuCan.setVisible(true);
 						dispose();
 
@@ -604,7 +607,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (persActiva != null) {
-							MenuCandidatos menuCan = new MenuCandidatos(persActiva);
+							MenuCandidatos menuCan = new MenuCandidatos();
 							menuCan.setVisible(true);
 							dispose();
 						}

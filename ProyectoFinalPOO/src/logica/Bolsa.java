@@ -48,6 +48,14 @@ public class Bolsa implements Serializable{
 		this.listaUsuarios = listaUsuarios;
 	}
 
+	public static Usuario getUsuarioActivo() {
+		return usuarioActivo;
+	}
+
+	public static void setUsuarioActivo(Usuario usuarioActivo) {
+		Bolsa.usuarioActivo = usuarioActivo;
+	}
+
 	public ArrayList<Solicitud> getListaSolicitudes() {
 		return listaSolicitudes;
 	}
