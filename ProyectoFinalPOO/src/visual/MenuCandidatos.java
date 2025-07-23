@@ -130,7 +130,7 @@ public class MenuCandidatos extends JFrame {
 			// insertar usuario para pruebas
 			persActual = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
 					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
-					new ArrayList<Solicitud>(), "Ing. En sistemas");
+					new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
 			Bolsa.getInstancia().insertarUsuario(persActual);
 			setTitle("Laborea - Pruebas menu candidatos");
 		}
@@ -149,41 +149,57 @@ public class MenuCandidatos extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+				
+				JPanel panel_3 = new JPanel();
+				panel_3.setBackground(Color.WHITE);
+				panel_3.setBounds(250, 120, 19, 915);
+				contentPane.add(panel_3);
+				
+				JPanel panel_2 = new JPanel();
+				panel_2.setBackground(Color.WHITE);
+				panel_2.setBounds(257, 1031, 1637, 10);
+				contentPane.add(panel_2);
+				
+				JPanel panel = new JPanel();
+				panel.setBackground(Color.WHITE);
+				panel.setBounds(1885, 64, 19, 971);
+				contentPane.add(panel);
+		
+				JLabel lblMostrarNombreDe = new JLabel("Nombre");
+				lblMostrarNombreDe.setHorizontalAlignment(SwingConstants.RIGHT);
+				lblMostrarNombreDe.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+				lblMostrarNombreDe.setBounds(1442, 27, 340, 74);
+				contentPane.add(lblMostrarNombreDe);
+		
+				label = new JLabel("");
+				label.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						// abrir menu admin perfil candidato
+						if (persActual != null) {
+
+							VisualizarPerfilCandidato vpc = new VisualizarPerfilCandidato(persActual);
+							dispose();
+							vpc.setModal(true);
+							vpc.setVisible(true);
+							
+						}
+					}
+				});
+				label.setHorizontalAlignment(SwingConstants.CENTER);
+				label.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/user.png")));
+				label.setBounds(1792, 27, 102, 74);
+				contentPane.add(label);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(250, 64, 440, 53);
+		panel_1.setBounds(250, 64, 1644, 59);
 		contentPane.add(panel_1);
-
-		JLabel lblMostrarNombreDe = new JLabel("Nombre");
-		lblMostrarNombreDe.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMostrarNombreDe.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-		lblMostrarNombreDe.setBounds(1606, 27, 176, 74);
-		contentPane.add(lblMostrarNombreDe);
 
 		// mostrar nombre completo persona en la esquina de la pantalla
 		if (persActual != null) {
 			lblMostrarNombreDe.setText(persActual.getNombre() + " " + persActual.getApellidos());
 		}
-
-		label = new JLabel("");
-		label.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// abrir menu admin perfil candidato
-				if (persActual != null) {
-
-					VisualizarPerfilCandidato vpc = new VisualizarPerfilCandidato(persActual);
-					vpc.setModal(true);
-					vpc.setVisible(true);
-					dispose();
-				}
-			}
-		});
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/user.png")));
-		label.setBounds(1792, 27, 102, 74);
-		contentPane.add(label);
 
 		label_1 = new JLabel("");
 		label_1.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/Laborea.png")));
@@ -574,7 +590,7 @@ public class MenuCandidatos extends JFrame {
 			}
 
 		});
-		btnRegistrarSolicitud.setBorder(null);
+		btnRegistrarSolicitud.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnRegistrarSolicitud.setBackground(Color.WHITE);
 		btnRegistrarSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnRegistrarSolicitud.setBounds(1242, 808, 313, 66);
@@ -637,7 +653,7 @@ public class MenuCandidatos extends JFrame {
 
 		jtpDescripcionSolicitud = new JTabbedPane(JTabbedPane.TOP);
 		jtpDescripcionSolicitud.setBorder(null);
-		jtpDescripcionSolicitud.setBounds(0, -24, 1263, 919);
+		jtpDescripcionSolicitud.setBounds(0, -32, 1276, 927);
 		pnlDescSolicitudes.add(jtpDescripcionSolicitud);
 
 		JPanel pnlMensajeSolicitud = new JPanel();
@@ -855,8 +871,10 @@ public class MenuCandidatos extends JFrame {
 			} else if (persActual.getSexo().equalsIgnoreCase("F")) {
 				lblInfSexo.setText("Femenino");
 			}
-
-			lblInfFechaNacimiento.setText(persActual.getFechaNacimiento().toString());
+			Date fechaSolicitud = persActual.getFechaNacimiento();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			String formattedDate = dateFormat.format(fechaSolicitud);
+			lblInfFechaNacimiento.setText(formattedDate);
 
 			lblInfNumeroSolicitudes.setText(String.valueOf(persActual.getMisSolicitudes().size()));
 

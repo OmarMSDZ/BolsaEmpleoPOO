@@ -1,10 +1,15 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TecnicoSuperior extends Persona {
+public class TecnicoSuperior extends Persona implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String tecnico;
 	private int aniosExperiencia;
 

@@ -1,10 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Bolsa {
+public class Bolsa implements Serializable{
+	 
+	 
+	private static final long serialVersionUID = 1L;
 
 	private ArrayList<Usuario> listaUsuarios;
 	private ArrayList<Solicitud> listaSolicitudes;
@@ -15,7 +19,8 @@ public class Bolsa {
 	public static int genCodMatch = 0;
 	public static int genCodOfer = 0;
 	public static Bolsa bolsaLaboral = null;
-
+	public static Usuario usuarioActivo = null;
+	
 	public Bolsa() {
 		super();
 		this.listaUsuarios = new ArrayList<Usuario>();
@@ -30,7 +35,11 @@ public class Bolsa {
 		}
 		return bolsaLaboral;
 	}
-
+	
+	public static void setInstancia(Bolsa bolsa) {
+	    bolsaLaboral = bolsa;
+	}
+	
 	public ArrayList<Usuario> getListaUsuarios() {
 		return listaUsuarios;
 	}
