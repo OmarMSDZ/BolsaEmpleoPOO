@@ -124,8 +124,8 @@ public class MenuCandidatos extends JFrame {
 	public MenuCandidatos(Persona personaActual) {
 		setResizable(false);
 		if (personaActual != null) {
-			setTitle("Laborea - �Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
 			persActual = personaActual;
+			setTitle("Laborea - ¡Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
 		} else {
 			// insertar usuario para pruebas
 			persActual = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
@@ -176,7 +176,7 @@ public class MenuCandidatos extends JFrame {
 					VisualizarPerfilCandidato vpc = new VisualizarPerfilCandidato(persActual);
 					vpc.setModal(true);
 					vpc.setVisible(true);
-
+					dispose();
 				}
 			}
 		});
@@ -575,7 +575,7 @@ public class MenuCandidatos extends JFrame {
 
 		});
 		btnRegistrarSolicitud.setBorder(null);
-		btnRegistrarSolicitud.setBackground(new Color(46, 204, 113));
+		btnRegistrarSolicitud.setBackground(Color.WHITE);
 		btnRegistrarSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		btnRegistrarSolicitud.setBounds(1242, 808, 313, 66);
 		pnlSolicitudes.add(btnRegistrarSolicitud);

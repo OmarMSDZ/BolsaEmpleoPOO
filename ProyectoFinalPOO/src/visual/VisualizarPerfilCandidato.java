@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import logica.Bolsa;
 import logica.Obrero;
 import logica.Persona;
+import logica.Solicitud;
 import logica.TecnicoSuperior;
 import logica.Universitario;
 
@@ -21,6 +22,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -35,12 +37,14 @@ import javax.swing.JSeparator;
 import javax.swing.border.LineBorder;
 import javax.swing.JTabbedPane;
 import javax.swing.JCheckBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VisualizarPerfilCandidato extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JLabel lblNombrePersona;
-	private static Persona persActiva = null;
+	private static Persona persActiva;
 	private JLabel lblApellidoPersona;
 	private JLabel lblTelefonoPersona;
 	private JLabel lblCorreoPersona;
@@ -100,6 +104,11 @@ public class VisualizarPerfilCandidato extends JDialog {
 		if (persActiva != null) {
 			setTitle("Laborea - Perfil de " + persActiva.getNombre() + " " + persActiva.getApellidos());
 		} else {
+			// insertar usuario para pruebas
+			persActiva = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
+					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
+					new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
+			Bolsa.getInstancia().insertarUsuario(persActiva);
 			setTitle("Laborea - Pruebas vista perfil");
 		}
 
@@ -116,7 +125,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 		{
 			JLabel lblNewLabel = new JLabel("");
 			lblNewLabel.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/Laborea.png")));
-			lblNewLabel.setBounds(-51, 0, 216, 118);
+			lblNewLabel.setBounds(-51, -14, 216, 118);
 			contentPanel.add(lblNewLabel);
 		}
 		{
@@ -295,7 +304,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			panel.setOpaque(false);
 			panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 			panel.setBackground(Color.WHITE);
-			panel.setBounds(21, 525, 790, 265);
+			panel.setBounds(21, 525, 790, 213);
 			contentPanel.add(panel);
 			{
 				JLabel lblInformacinProfesional = new JLabel("Informaci\u00F3n Profesional");
@@ -321,7 +330,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 				});
 				btnEditarInfoProfesional.setFocusable(false);
 				btnEditarInfoProfesional
-						.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/edit.png")));
+				.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/edit.png")));
 				btnEditarInfoProfesional.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 				btnEditarInfoProfesional.setBackground(Color.WHITE);
 				btnEditarInfoProfesional.setBounds(669, 7, 94, 38);
@@ -351,19 +360,19 @@ public class VisualizarPerfilCandidato extends JDialog {
 			{
 				JPanel panel_1 = new JPanel();
 				panel_1.setBackground(Color.WHITE);
-				panel_1.setBounds(152, 57, 21, 197);
+				panel_1.setBounds(152, 57, 21, 149);
 				panel.add(panel_1);
 			}
 			{
 				JPanel panel_1 = new JPanel();
 				panel_1.setBackground(Color.WHITE);
-				panel_1.setBounds(774, 80, 6, 174);
+				panel_1.setBounds(774, 80, 6, 123);
 				panel.add(panel_1);
 			}
 			{
 				JPanel panel_1 = new JPanel();
 				panel_1.setBackground(Color.WHITE);
-				panel_1.setBounds(168, 248, 612, 6);
+				panel_1.setBounds(168, 189, 612, 6);
 				panel.add(panel_1);
 			}
 			// seleccionado
@@ -373,7 +382,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 
 			jtpNivelEducativo.setFocusable(false);
 			jtpNivelEducativo.setEnabled(false);
-			jtpNivelEducativo.setBounds(168, 21, 612, 233);
+			jtpNivelEducativo.setBounds(168, 21, 612, 174);
 			panel.add(jtpNivelEducativo);
 
 			JPanel pnlNivelUniversitario = new JPanel();
@@ -390,7 +399,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			{
 				lblCarreraPersona = new JLabel("Carrera");
 				lblCarreraPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-				lblCarreraPersona.setBounds(10, 58, 189, 46);
+				lblCarreraPersona.setBounds(10, 58, 571, 46);
 				pnlNivelUniversitario.add(lblCarreraPersona);
 			}
 
@@ -510,10 +519,64 @@ public class VisualizarPerfilCandidato extends JDialog {
 			});
 			btnDesactivarCuenta.setBackground(Color.WHITE);
 			btnDesactivarCuenta.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-			btnDesactivarCuenta.setBounds(21, 825, 216, 40);
+			btnDesactivarCuenta.setBounds(247, 769, 216, 40);
 			contentPanel.add(btnDesactivarCuenta);
+
+			JButton btnCambiarContraseña = new JButton("Cambiar Contrase\u00F1a");
+			btnCambiarContraseña.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String actual = JOptionPane.showInputDialog(null, "Ingrese su contraseña actual:", "Verificación",
+							JOptionPane.PLAIN_MESSAGE);
+
+					if (actual == null)
+						return; // Cancelado
+
+					if (!persActiva.getPasswd().equals(actual)) {
+						JOptionPane.showMessageDialog(null, "Contraseña incorrecta. No se pudo cambiar.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					String nueva = JOptionPane.showInputDialog(null, "Ingrese su nueva contraseña:", "Nueva contraseña",
+							JOptionPane.PLAIN_MESSAGE);
+
+					if (nueva == null || nueva.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "No se ingresó una nueva contraseña.", "Alerta",
+								JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+
+					// modificar datos usuario
+					Bolsa.getInstancia().modificarUsuario(personaActiva);
+
+					JOptionPane.showMessageDialog(null, "Contraseña actualizada exitosamente.", "",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			});
+			btnCambiarContraseña.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+			btnCambiarContraseña.setFocusable(false);
+			btnCambiarContraseña.setBackground(Color.WHITE);
+			btnCambiarContraseña.setBounds(21, 769, 216, 40);
+			contentPanel.add(btnCambiarContraseña);
+
+			JLabel btnRegresar = new JLabel("");
+			btnRegresar.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (persActiva != null) {
+
+						MenuCandidatos menuCan = new MenuCandidatos(persActiva);
+						menuCan.setVisible(true);
+						dispose();
+
+					}
+				}
+			});
+			btnRegresar.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/flechaRegresar.png")));
+			btnRegresar.setBounds(740, -14, 90, 118);
+			contentPanel.add(btnRegresar);
 			if (persActiva != null) {
-				btnDesactivarCuenta.setEnabled(true);
+				btnDesactivarCuenta.setEnabled(true); // solo activar si hay persona activa en esta vista
 			}
 		}
 		{
@@ -529,7 +592,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 					}
 				});
 				okButton.setFocusable(false);
-				okButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+				okButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 				okButton.setBackground(Color.WHITE);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
@@ -543,7 +606,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 						dispose();
 					}
 				});
-				cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+				cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 				cancelButton.setBackground(Color.WHITE);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
@@ -564,7 +627,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			lblMunicipioPersona.setText(persActiva.getMunicipio());
 			lblDireccionPersona.setText(persActiva.getDireccion());
 			Date fechaSolicitud = persActiva.getFechaNacimiento();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			String formattedDate = dateFormat.format(fechaSolicitud);
 			lblFechaNacimientoPersona.setText(formattedDate);
 			// informacion profesional
