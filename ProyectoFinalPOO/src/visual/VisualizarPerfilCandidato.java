@@ -603,7 +603,11 @@ public class VisualizarPerfilCandidato extends JDialog {
 				cancelButton.setFocusable(false);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						dispose();
+						if (persActiva != null) {
+							MenuCandidatos menuCan = new MenuCandidatos(persActiva);
+							menuCan.setVisible(true);
+							dispose();
+						}
 					}
 				});
 				cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));

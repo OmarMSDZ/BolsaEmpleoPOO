@@ -1,9 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Empresa extends Usuario {
+public class Empresa extends Usuario implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String rnc;
 	private String tipoEmpresa;
 	private ArrayList<Oferta> misOfertas;

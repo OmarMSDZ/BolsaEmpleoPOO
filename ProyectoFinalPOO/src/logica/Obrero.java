@@ -1,10 +1,15 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Obrero extends Persona {
+public class Obrero extends Persona implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean ventas;
 	private boolean mecanica;
 	private boolean ofimatica;

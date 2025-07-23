@@ -1,9 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Solicitud {
+public class Solicitud implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String codigo;
 	private Persona solicitante;
 	private String dispHorarios;
