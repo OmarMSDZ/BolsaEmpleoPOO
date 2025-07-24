@@ -239,7 +239,7 @@ public class LoginUsuarios extends JDialog {
 							JOptionPane.INFORMATION_MESSAGE);
 					if (usuarioLogin instanceof Persona) {
 						Persona personaReg = (Persona) usuarioLogin;
-						MenuCandidatos menuCand = new MenuCandidatos(personaReg);
+						MenuCandidatos menuCand = new MenuCandidatos();
 						menuCand.setVisible(true);
 					} else if (usuarioLogin instanceof Empresa) {
 						MenuEmpresas menuEmpr = new MenuEmpresas();
