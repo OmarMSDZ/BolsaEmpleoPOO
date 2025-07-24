@@ -1,9 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Oferta {
+public class Oferta implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String codigo, puestoTrab, descripcion, modalidad, tipoEmpleo, horario, nivelEducacion; 
 	private String area; //tecnologia, salud, servicios, etc...
 	private int aniosExp;

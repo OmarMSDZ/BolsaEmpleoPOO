@@ -1,10 +1,15 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Bolsa {
+import javax.swing.JTextField;
+
+public class Bolsa implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private ArrayList<Usuario> listaUsuarios;
 	private ArrayList<Solicitud> listaSolicitudes;
@@ -15,13 +20,14 @@ public class Bolsa {
 	public static int genCodMatch = 0;
 	public static int genCodOfer = 0;
 	public static Bolsa bolsaLaboral = null;
+	public static Usuario usuarioActivo = null;
 
 	public Bolsa() {
 		super();
-		this.listaUsuarios = new ArrayList<Usuario>();
-		this.listaSolicitudes = new ArrayList<Solicitud>();
-		this.listaMatchOferta = new ArrayList<MatchOferta>();
-		this.listaOfertas = new ArrayList<Oferta>();
+		listaUsuarios = new ArrayList<Usuario>();
+		listaSolicitudes = new ArrayList<Solicitud>();
+		listaMatchOferta = new ArrayList<MatchOferta>();
+		listaOfertas = new ArrayList<Oferta>();
 	}
 
 	public static Bolsa getInstancia() {
@@ -31,12 +37,24 @@ public class Bolsa {
 		return bolsaLaboral;
 	}
 
+	public static void setInstancia(Bolsa bolsa) {
+		bolsaLaboral = bolsa;
+	}
+
 	public ArrayList<Usuario> getListaUsuarios() {
 		return listaUsuarios;
 	}
 
 	public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
 		this.listaUsuarios = listaUsuarios;
+	}
+
+	public static Usuario getUsuarioActivo() {
+		return usuarioActivo;
+	}
+
+	public static void setUsuarioActivo(Usuario usuarioActivo) {
+		Bolsa.usuarioActivo = usuarioActivo;
 	}
 
 	public ArrayList<Solicitud> getListaSolicitudes() {
@@ -111,9 +129,8 @@ public class Bolsa {
 		boolean encontrado = false;
 		int i = 0;
 		while (!encontrado && i < listaUsuarios.size()) {
-			if (listaUsuarios.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id
-				// del objeto
-				aux = listaUsuarios.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
+			if (listaUsuarios.get(i).getCodigo().equalsIgnoreCase(cod)) {
+				aux = listaUsuarios.get(i);
 				encontrado = true;
 			}
 			i++;
@@ -125,12 +142,10 @@ public class Bolsa {
 		Oferta aux = null;
 		boolean encontrado = false;
 		int i = 0;
-		while (!encontrado && i < listaOfertas.size()) { // De esta forma se hace el bucle para buscar el objeto que
-			// tenga el codigo
+		while (!encontrado && i < listaOfertas.size()) {
 
-			if (listaOfertas.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id del
-				// objeto
-				aux = listaOfertas.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
+			if (listaOfertas.get(i).getCodigo().equalsIgnoreCase(cod)) {
+				aux = listaOfertas.get(i);
 				encontrado = true;
 			}
 			i++;
@@ -142,12 +157,10 @@ public class Bolsa {
 		Solicitud aux = null;
 		boolean encontrado = false;
 		int i = 0;
-		while (!encontrado && i < listaSolicitudes.size()) { // de esta forma se hace el bucle para buscar el objeto que
-			// tenga el codigo
+		while (!encontrado && i < listaSolicitudes.size()) {
 
-			if (listaSolicitudes.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id
-				// del objeto
-				aux = listaSolicitudes.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
+			if (listaSolicitudes.get(i).getCodigo().equalsIgnoreCase(cod)) {
+				aux = listaSolicitudes.get(i);
 				encontrado = true;
 			}
 			i++;
@@ -275,6 +288,7 @@ public class Bolsa {
 			if (listaUsuarios.get(i).getCorreoElectronico().equalsIgnoreCase(email)
 					&& listaUsuarios.get(i).getPasswd().equalsIgnoreCase(passwd)) {
 				aux = listaUsuarios.get(i);
+				encontrado = true;
 			}
 			i++;
 		}
@@ -287,9 +301,9 @@ public class Bolsa {
 		modificarUsuario(persActiva);
 	}
 
-	// Algoritmo de matcheo V1
-	public void realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
-
+	// algoritmo de matching
+	public ArrayList<MatchOferta> realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
+		ArrayList<MatchOferta> MatchesOfertas = new ArrayList<MatchOferta>();
 		for (Oferta oferta : ofertas) {
 			for (Solicitud solicitud : solicitudes) {
 				int totalCriterios = 8;
@@ -330,10 +344,23 @@ public class Bolsa {
 				if (porcentaje >= 60.0) {
 					String codigo = generarCodigoMatch();
 					MatchOferta match = new MatchOferta(codigo, new Date(), oferta, solicitud, false, false);
-					listaMatchOferta.add(match);
+					MatchesOfertas.add(match);
 				}
 			}
 		}
+		return MatchesOfertas;
+	}
 
+	public boolean validarCorreo(String correoIngresado) {
+		boolean valido = true;
+		int i = 0;
+
+		while (valido && i < listaUsuarios.size()) {
+			if (listaUsuarios.get(i).correoElectronico.equalsIgnoreCase(correoIngresado)) {
+				valido = false;
+			}
+			i++;
+		}
+		return valido;
 	}
 }
