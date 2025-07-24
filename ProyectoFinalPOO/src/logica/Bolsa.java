@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Bolsa implements Serializable{
-	 
-	 
+import javax.swing.JTextField;
+
+public class Bolsa implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	private ArrayList<Usuario> listaUsuarios;
@@ -20,13 +21,13 @@ public class Bolsa implements Serializable{
 	public static int genCodOfer = 0;
 	public static Bolsa bolsaLaboral = null;
 	public static Usuario usuarioActivo = null;
-	
+
 	public Bolsa() {
 		super();
-		this.listaUsuarios = new ArrayList<Usuario>();
-		this.listaSolicitudes = new ArrayList<Solicitud>();
-		this.listaMatchOferta = new ArrayList<MatchOferta>();
-		this.listaOfertas = new ArrayList<Oferta>();
+		listaUsuarios = new ArrayList<Usuario>();
+		listaSolicitudes = new ArrayList<Solicitud>();
+		listaMatchOferta = new ArrayList<MatchOferta>();
+		listaOfertas = new ArrayList<Oferta>();
 	}
 
 	public static Bolsa getInstancia() {
@@ -35,11 +36,11 @@ public class Bolsa implements Serializable{
 		}
 		return bolsaLaboral;
 	}
-	
+
 	public static void setInstancia(Bolsa bolsa) {
-	    bolsaLaboral = bolsa;
+		bolsaLaboral = bolsa;
 	}
-	
+
 	public ArrayList<Usuario> getListaUsuarios() {
 		return listaUsuarios;
 	}
@@ -120,19 +121,16 @@ public class Bolsa implements Serializable{
 		Bolsa.bolsaLaboral = bolsaLaboral;
 	}
 
-	// metodos aqui debajo
+	// Métodos aquí debajo
 
-	// buscar por codigo
+	// Buscar por código
 	public Usuario buscarUsuarioByCodigo(String cod) {
 		Usuario aux = null;
 		boolean encontrado = false;
 		int i = 0;
-		while (!encontrado && i < listaUsuarios.size()) { // de esta forma se hace el bucle para buscar el objeto que
-			// tenga el codigo
-
-			if (listaUsuarios.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id
-				// del objeto
-				aux = listaUsuarios.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
+		while (!encontrado && i < listaUsuarios.size()) {
+			if (listaUsuarios.get(i).getCodigo().equalsIgnoreCase(cod)) {
+				aux = listaUsuarios.get(i);
 				encontrado = true;
 			}
 			i++;
@@ -144,12 +142,10 @@ public class Bolsa implements Serializable{
 		Oferta aux = null;
 		boolean encontrado = false;
 		int i = 0;
-		while (!encontrado && i < listaOfertas.size()) { // de esta forma se hace el bucle para buscar el objeto que
-			// tenga el codigo
+		while (!encontrado && i < listaOfertas.size()) {
 
-			if (listaOfertas.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id del
-				// objeto
-				aux = listaOfertas.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
+			if (listaOfertas.get(i).getCodigo().equalsIgnoreCase(cod)) {
+				aux = listaOfertas.get(i);
 				encontrado = true;
 			}
 			i++;
@@ -161,12 +157,10 @@ public class Bolsa implements Serializable{
 		Solicitud aux = null;
 		boolean encontrado = false;
 		int i = 0;
-		while (!encontrado && i < listaSolicitudes.size()) { // de esta forma se hace el bucle para buscar el objeto que
-			// tenga el codigo
+		while (!encontrado && i < listaSolicitudes.size()) {
 
-			if (listaSolicitudes.get(i).getCodigo().equalsIgnoreCase(cod)) { // con equal se busca si cod es igual al id
-				// del objeto
-				aux = listaSolicitudes.get(i); // en caso de encontrar se asigna a aux y se pone encontrado como true
+			if (listaSolicitudes.get(i).getCodigo().equalsIgnoreCase(cod)) {
+				aux = listaSolicitudes.get(i);
 				encontrado = true;
 			}
 			i++;
@@ -174,9 +168,8 @@ public class Bolsa implements Serializable{
 		return aux;
 	}
 
-	// buscar indice por codigo
+	// Buscar índice por código
 	private int buscarIndexUsuarioByCodigo(String id) {
-		// TODO Auto-generated method stub
 		int index = -1;
 		boolean encontrado = false;
 		int i = 0;
@@ -187,12 +180,10 @@ public class Bolsa implements Serializable{
 			}
 			i++;
 		}
-
 		return index;
 	}
 
 	private int buscarIndexSolicitudByCodigo(String id) {
-		// TODO Auto-generated method stub
 		int index = -1;
 		boolean encontrado = false;
 		int i = 0;
@@ -203,7 +194,6 @@ public class Bolsa implements Serializable{
 			}
 			i++;
 		}
-
 		return index;
 	}
 
@@ -223,9 +213,9 @@ public class Bolsa implements Serializable{
 		return index;
 	}
 
-	// insertar
-	public void insertarUsuario(Usuario usu) {
-		listaUsuarios.add(usu);
+	// Insertar
+	public void insertarUsuario(Usuario usuario) {
+		listaUsuarios.add(usuario);
 	}
 
 	public void insertarOferta(Oferta ofer) {
@@ -234,32 +224,28 @@ public class Bolsa implements Serializable{
 
 	public void insertarSolicitud(Solicitud soli) {
 		listaSolicitudes.add(soli);
-		// al insertar una solicitud debe agregarse a la lista solicitudes hechas por la
-		// persona
 		Persona aux = soli.getSolicitante();
 		aux.insertarSolicitud(soli);
 		modificarUsuario(aux);
 	}
 
-	// modificar
-
+	// Modificar
 	public void modificarUsuario(Usuario updated) {
-		int index = buscarIndexUsuarioByCodigo(updated.getCodigo()); // buscar indice a actualizar
-		listaUsuarios.set(index, updated); // actualizar elemento del listado en ese indice
+		int index = buscarIndexUsuarioByCodigo(updated.getCodigo());
+		listaUsuarios.set(index, updated);
 	}
 
 	public void modificarSolicitud(Solicitud updated) {
-		int index = buscarIndexSolicitudByCodigo(updated.getCodigo()); // buscar indice a actualizar
-		listaSolicitudes.set(index, updated); // actualizar elemento del listado en ese indice
+		int index = buscarIndexSolicitudByCodigo(updated.getCodigo());
+		listaSolicitudes.set(index, updated);
 	}
 
 	public void modificarOferta(Oferta updated) {
-		int index = buscarIndexOfertaByCodigo(updated.getCodigo()); // buscar indice a actualizar
-		listaOfertas.set(index, updated); // actualizar elemento del listado en ese indice
+		int index = buscarIndexOfertaByCodigo(updated.getCodigo());
+		listaOfertas.set(index, updated);
 	}
 
-	// eliminar
-
+	// Eliminar
 	public void eliminarOferta(Oferta selected) {
 		listaOfertas.remove(selected);
 	}
@@ -271,24 +257,28 @@ public class Bolsa implements Serializable{
 		modificarUsuario(aux);
 	}
 
-	// generacion de codigos
+	// Generación de códigos
+	public String generarCodigoUsuario() {
+		genCodUsu++;
+		return "U-" + genCodUsu;
+	}
 
 	public String generarCodigoOferta() {
 		genCodOfer++;
-		return "O-" + genCodOfer; // codigo a registrar
+		return "O-" + genCodOfer;
 	}
 
 	public String generarCodigoSolicitud() {
 		genCodSoli++;
-		return "S-" + genCodSoli; // codigo a registrar
+		return "S-" + genCodSoli;
 	}
 
 	public static String generarCodigoMatch() {
 		genCodMatch++;
-		return "MTCH-" + genCodMatch; // codigo a registrar
+		return "MTCH-" + genCodMatch;
 	}
 
-	// validar contraseña y email del usuario
+	// Validar contraseña y email del usuario
 	public Usuario validarLoginUsuarios(String email, String passwd) {
 		Usuario aux = null;
 		boolean encontrado = false;
@@ -311,35 +301,6 @@ public class Bolsa implements Serializable{
 		modificarUsuario(persActiva);
 	}
 
-	// validar contraseña y email de empresa
-	/*
-	 * public boolean validarLoginEmpresa(String email, String passwd) { boolean
-	 * valido = false;
-	 * 
-	 * for (Empresa emp : listaEmpresas) {
-	 * if(emp.getCorreo().equalsIgnoreCase(email) &&
-	 * emp.getPassw().equalsIgnoreCase(passwd)) { valido = true; } } return valido;
-	 * }
-	 */
-	// obtener Persona en base a email y contraseña
-	/*
-	 * public Persona obtLoginPersona(String email, String passwd) { Persona aux =
-	 * null;
-	 * 
-	 * for (Persona pers : listaPersonas) {
-	 * if(pers.getCorreoElectronico().equalsIgnoreCase(email) &&
-	 * pers.getPasswd().equalsIgnoreCase(passwd)) { aux = pers; } } return aux; }
-	 */
-	// obtener Empresa en base a email y contraseña
-	/*
-	 * public Empresa obtLoginEmpresa(String email, String passwd) { Empresa aux =
-	 * null;
-	 * 
-	 * for (Empresa emp : listaEmpresas) {
-	 * if(emp.getCorreo().equalsIgnoreCase(email) &&
-	 * emp.getPassw().equalsIgnoreCase(passwd)) { aux = emp; } } return aux; }
-	 */
-
 	// algoritmo de matching
 	public ArrayList<MatchOferta> realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
 		ArrayList<MatchOferta> MatchesOfertas = new ArrayList<MatchOferta>();
@@ -354,7 +315,7 @@ public class Bolsa implements Serializable{
 				if (oferta.getTipo().equalsIgnoreCase(solicitud.getTipoEmpleo()))
 					criteriosCumplidos++;
 
-				// para los 3 tipos de niveles de estudios
+				// Para los 3 tipos de niveles de estudios
 				if (oferta.getNivelEducacion().equals("Universitario")
 						&& solicitud.getSolicitante() instanceof Universitario)
 					criteriosCumplidos++;
@@ -364,7 +325,7 @@ public class Bolsa implements Serializable{
 				if (oferta.getNivelEducacion().equals("Obrero") && solicitud.getSolicitante() instanceof Obrero)
 					criteriosCumplidos++;
 
-				// solo obtener la carrera de los universitarios
+				// Solo obtener la carrera de los universitarios
 				if (oferta.getArea().equalsIgnoreCase(solicitud.getArea()))
 					criteriosCumplidos++;
 				if (oferta.isRequiereLicencia() == solicitud.isLicencia())
@@ -378,7 +339,7 @@ public class Bolsa implements Serializable{
 
 				double porcentaje = (criteriosCumplidos * 100.0) / totalCriterios;
 
-				// si tiene un porcentaje por encima de 60, recomendar para el puesto y crear el
+				// Si tiene un porcentaje por encima de 60, recomendar para el puesto y crear el
 				// enlace con la clase de matching
 				if (porcentaje >= 60.0) {
 					String codigo = generarCodigoMatch();
@@ -390,4 +351,16 @@ public class Bolsa implements Serializable{
 		return MatchesOfertas;
 	}
 
+	public boolean validarCorreo(String correoIngresado) {
+		boolean valido = true;
+		int i = 0;
+
+		while (valido && i < listaUsuarios.size()) {
+			if (listaUsuarios.get(i).correoElectronico.equalsIgnoreCase(correoIngresado)) {
+				valido = false;
+			}
+			i++;
+		}
+		return valido;
+	}
 }

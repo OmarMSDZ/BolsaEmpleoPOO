@@ -11,15 +11,17 @@ public class Empresa extends Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String rnc;
 	private String tipoEmpresa;
+	private String sectorEmpresarial;
 	private ArrayList<Oferta> misOfertas;
 
 	public Empresa(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String rnc, String tipoEmpresa,
-			ArrayList<Oferta> misOfertas) {
+			String sectorEmpresial) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado);
 		this.rnc = rnc;
 		this.tipoEmpresa = tipoEmpresa;
-		this.misOfertas = misOfertas;
+		this.sectorEmpresarial = sectorEmpresial;
+		misOfertas = new ArrayList<Oferta>();
 	}
 
 	public String getRnc() {
@@ -32,6 +34,14 @@ public class Empresa extends Usuario implements Serializable {
 
 	public String getTipoEmpresa() {
 		return tipoEmpresa;
+	}
+
+	public String getSectorEmpresarial() {
+		return sectorEmpresarial;
+	}
+
+	public void setSectorEmpresarial(String sectorEmpresarial) {
+		this.sectorEmpresarial = sectorEmpresarial;
 	}
 
 	public void setTipoEmpresa(String tipoEmpresa) {
