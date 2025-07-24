@@ -389,5 +389,12 @@ public class Bolsa implements Serializable{
 		}
 		return MatchesOfertas;
 	}
+	
+	//ejecutar match, solo si hay al menos una oferta y una solicitud registrada
+	public void match() {
+		if(listaOfertas.size()>0 && listaSolicitudes.size()>0) {	
+		setListaMatchOferta(realizarMatching(listaOfertas, listaSolicitudes));
+		}
+	}
 
 }
