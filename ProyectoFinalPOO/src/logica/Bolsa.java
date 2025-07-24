@@ -298,7 +298,9 @@ public class Bolsa implements Serializable{
 			if (listaUsuarios.get(i).getCorreoElectronico().equalsIgnoreCase(email)
 					&& listaUsuarios.get(i).getPasswd().equalsIgnoreCase(passwd)) {
 				aux = listaUsuarios.get(i);
+				encontrado = true;
 			}
+			i++;
 		}
 		return aux;
 	}

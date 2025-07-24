@@ -330,6 +330,7 @@ public class MenuCandidatos extends JFrame {
 		lblSalir.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Bolsa.setUsuarioActivo(null); //quitar usuario activo de la clase 
 				dispose(); // cerrar ventana
 			}
 		});

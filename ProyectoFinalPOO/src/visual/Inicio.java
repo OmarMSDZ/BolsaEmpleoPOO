@@ -18,8 +18,22 @@ import java.awt.RenderingHints;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.FileSystemNotFoundException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.awt.BorderLayout;
 import javax.swing.border.LineBorder;
+
+import logica.Bolsa;
+import logica.Persona;
+import logica.Solicitud;
+import logica.Universitario;
 
 public class Inicio extends JFrame {
 
@@ -32,6 +46,46 @@ public class Inicio extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+
+				FileInputStream bolsaIn;
+				FileOutputStream bolsaOut;
+				ObjectInputStream bolsaRead;
+				ObjectOutputStream bolsaWrite;
+				try {
+					bolsaIn = new FileInputStream("BdLaborea.dat");
+					bolsaRead = new ObjectInputStream(bolsaIn);
+					Bolsa temp = (Bolsa) bolsaRead.readObject();
+					Bolsa.setBolsaLaboral(temp);
+					bolsaIn.close();
+					bolsaRead.close();
+				} catch (FileNotFoundException e) {
+					// TODO: handle exception
+					try {
+						bolsaOut = new FileOutputStream("BdLaborea.dat");
+						bolsaWrite = new ObjectOutputStream(bolsaOut);
+						Persona aux = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
+								"Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418",
+								false, new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
+
+						Bolsa.getInstancia().insertarUsuario(aux);
+						bolsaWrite.writeObject(Bolsa.getInstancia());
+						bolsaOut.close();
+						bolsaWrite.close();
+
+					} catch (FileSystemNotFoundException e1) {
+
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				try {
 					Inicio frame = new Inicio();
 					frame.setVisible(true);
