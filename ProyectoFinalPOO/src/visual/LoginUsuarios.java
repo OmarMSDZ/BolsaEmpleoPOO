@@ -248,8 +248,10 @@ public class LoginUsuarios extends JDialog {
 					JOptionPane.showMessageDialog(null, "¡Bienvenido/a a Laborea!", "Información",
 							JOptionPane.INFORMATION_MESSAGE);
 					if (usuarioLogin instanceof Persona) {
+						Bolsa.setUsuarioActivo(usuarioLogin);
 						MenuCandidatos menuCand = new MenuCandidatos();
 						menuCand.setVisible(true);
+						
 					} else if (usuarioLogin instanceof Empresa) {
 						MenuEmpresas menuEmpr = new MenuEmpresas();
 						menuEmpr.setVisible(true);

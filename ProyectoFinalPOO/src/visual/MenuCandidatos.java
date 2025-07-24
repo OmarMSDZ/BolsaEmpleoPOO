@@ -25,6 +25,12 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -112,6 +118,16 @@ public class MenuCandidatos extends JFrame {
 				try {
 					MenuCandidatos frame = new MenuCandidatos();
 					frame.setVisible(true);
+					frame.addWindowListener(new WindowAdapter() {
+						@Override
+						public void windowClosing(WindowEvent e) {
+							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+								bolsaWrite.writeObject(Bolsa.getInstancia());
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -123,6 +139,7 @@ public class MenuCandidatos extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuCandidatos() {
+		  
 		setResizable(false);
 
 		Persona actual = (Persona) Bolsa.getUsuarioActivo();
@@ -135,12 +152,13 @@ public class MenuCandidatos extends JFrame {
 			persActual = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
 					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
 					"Ingeniería en Sistemas Computacionales");
-
-			Bolsa.getInstancia().insertarUsuario(persActual);
-			Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
-			setTitle("Laborea - Pruebas menú candidatos");
-		}
-
+	        Bolsa.getInstancia().insertarUsuario(persActual);
+	        Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
+	        setTitle("Laborea - Pruebas menú candidatos");
+	    }
+	    
+	  
+ 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 687);
 
