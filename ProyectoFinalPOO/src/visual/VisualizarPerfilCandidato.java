@@ -106,18 +106,18 @@ public class VisualizarPerfilCandidato extends JDialog {
 			persActiva = actual;
 			setTitle("Laborea - Perfil de " + persActiva.getNombre() + " " + persActiva.getApellidos());
 		} else {
-			// para pruebas
+			// Para pruebas
 			persActiva = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
 					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
-					new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
+					"Ingeniería en Sistemas Computacionales");
 
 			Bolsa.getInstancia().insertarUsuario(persActiva);
-			Bolsa.setUsuarioActivo(persActiva); // insertar y establecer como activo para pruebas
+			Bolsa.setUsuarioActivo(persActiva); // Insertar y establecer como activo para pruebas
 			setTitle("Laborea - Pruebas vista perfil");
 		}
 		setBounds(100, 100, 846, 952);
 
-		SwingUtilities.updateComponentTreeUI(this); // actualiza la ventana
+		SwingUtilities.updateComponentTreeUI(this); // Actualiza la ventana
 		setLocationRelativeTo(null);
 
 		getContentPane().setLayout(new BorderLayout());

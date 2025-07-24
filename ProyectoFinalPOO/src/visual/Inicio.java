@@ -65,7 +65,7 @@ public class Inicio extends JFrame {
 						bolsaWrite = new ObjectOutputStream(bolsaOut);
 						Persona aux = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
 								"Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418",
-								false, new ArrayList<Solicitud>(), "Ingeniería en Sistemas Computacionales");
+								false, "Ingeniería en Sistemas Computacionales");
 
 						Bolsa.getInstancia().insertarUsuario(aux);
 						bolsaWrite.writeObject(Bolsa.getInstancia());
@@ -165,7 +165,6 @@ public class Inicio extends JFrame {
 				LoginUsuarios pantIniciarSesion = new LoginUsuarios();
 				pantIniciarSesion.setModal(true);
 				pantIniciarSesion.setVisible(true);
-
 			}
 		});
 		btnInicioSesion.setOpaque(false);

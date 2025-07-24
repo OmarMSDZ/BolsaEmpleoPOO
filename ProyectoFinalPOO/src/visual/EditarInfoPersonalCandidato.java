@@ -96,7 +96,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 		        persActual = new Universitario(
 		            "U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
 		            "Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M",
-		            new Date(), "40215233418", false, new ArrayList<Solicitud>(),
+		            new Date(), "40215233418", false,
 		            "Ingeniería en Sistemas Computacionales"
 		        );
 

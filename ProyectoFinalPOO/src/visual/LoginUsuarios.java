@@ -33,6 +33,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,7 +52,12 @@ import java.awt.event.ActionEvent;
 public class LoginUsuarios extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+
+	// Variables para la captura de datos
 	private int eleccion = -1;
+	private String passwd;
+	private String passwdC;
+	private JSpinner.DateEditor de_spnFechaNac;
 	private JTextField txtCorreo;
 	private JPasswordField txtPasswd;
 	private JTabbedPane jtpSecciones;
@@ -57,20 +65,18 @@ public class LoginUsuarios extends JDialog {
 	private JRadioButton rdbtnTecnico;
 	private JRadioButton rdbtnObrero;
 	private JTabbedPane jtpFormacion;
-	private JRadioButton rdbtnLicenciaSi;
-	private JRadioButton rdbtnLicenciaNo;
-	private JTextField txtApellidoCand;
+	private JTextField txtApellido;
 	private JTextField txtCedula;
 	private JTextField txtTecnico;
 	private JSpinner spnAniosExp;
 	private JSpinner spnFechaNac;
 	private JCheckBox chckbxVentas;
 	private JCheckBox chckbxMecanica;
-	private JCheckBox chckbxOfimtica;
+	private JCheckBox chckbxOfimatica;
 	private JCheckBox chckbxElectricidad;
 	private JCheckBox chckbxSeguridad;
 	private JCheckBox chckbxMantenimiento;
-	private JCheckBox chckbxConduccin;
+	private JCheckBox chckbxConduccion;
 	private JCheckBox chckbxLimpieza;
 	private JRadioButton rdbtnSexoM;
 	private JRadioButton rdbtnSexoF;
@@ -84,6 +90,8 @@ public class LoginUsuarios extends JDialog {
 	private JTextField txtRNC;
 	private JComboBox cmbCarreras;
 	private JComboBox cmbTipoEmpresa;
+	private JComboBox cmbProvincia;
+	private JTextField txtSector;
 
 	/**
 	 * Launch the application.
@@ -153,7 +161,7 @@ public class LoginUsuarios extends JDialog {
 		txtCorreo.setHorizontalAlignment(SwingConstants.LEFT);
 		txtCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		txtCorreo.setBackground(Color.WHITE);
-		txtCorreo.setBounds(99, 312, 613, 46);
+		txtCorreo.setBounds(99, 312, 600, 35);
 		pnlLoginUsuarios.add(txtCorreo);
 		txtCorreo.setColumns(10);
 
@@ -161,7 +169,7 @@ public class LoginUsuarios extends JDialog {
 		txtPasswd.setHorizontalAlignment(SwingConstants.LEFT);
 		txtPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		txtPasswd.setBackground(Color.WHITE);
-		txtPasswd.setBounds(99, 441, 613, 46);
+		txtPasswd.setBounds(99, 441, 600, 35);
 		pnlLoginUsuarios.add(txtPasswd);
 
 		JLabel iconLlaves = new JLabel("");
@@ -225,6 +233,7 @@ public class LoginUsuarios extends JDialog {
 		btnIniciarSesion.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+
 				String email = txtCorreo.getText();
 				char[] passwdChars = txtPasswd.getPassword();
 				String passwd = new String(passwdChars);
@@ -232,23 +241,26 @@ public class LoginUsuarios extends JDialog {
 
 				if (email.equalsIgnoreCase("correoadmin@gmail.com") && passwd.equalsIgnoreCase("1234")) {
 					MenuAdmins nuevoMenuAdmin = new MenuAdmins();
+					nuevoMenuAdmin.setModal(true);
 					nuevoMenuAdmin.setVisible(true);
 					dispose();
 				} else if (usuarioLogin != null) {
 					JOptionPane.showMessageDialog(null, "¡Bienvenido/a a Laborea!", "Información",
 							JOptionPane.INFORMATION_MESSAGE);
 					if (usuarioLogin instanceof Persona) {
-						Persona personaReg = (Persona) usuarioLogin;
+						Bolsa.setUsuarioActivo(usuarioLogin);
 						MenuCandidatos menuCand = new MenuCandidatos();
 						menuCand.setVisible(true);
+						
 					} else if (usuarioLogin instanceof Empresa) {
 						MenuEmpresas menuEmpr = new MenuEmpresas();
 						menuEmpr.setVisible(true);
 					}
+					limpiarInicioSesion();
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null,
-							"Error: ¡No se encuentró el usuario registrado con esta información! Verique los datos.",
+							"¡No se encuentró el usuario registrado con esta información! Verique los datos.",
 							"Advertencia", JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -293,6 +305,7 @@ public class LoginUsuarios extends JDialog {
 				eleccion = JOptionPane.showOptionDialog(null, "Indique el tipo de usuario:", "Registro de usuarios",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 				if (eleccion == 0 || eleccion == 1) {
+					limpiarInicioSesion();
 					jtpSecciones.setSelectedIndex(1);
 				} else {
 					JOptionPane.showMessageDialog(null, "Error: Debe indicar el tipo de usuario", "Advertencia",
@@ -319,6 +332,7 @@ public class LoginUsuarios extends JDialog {
 		iconRegresarRegUsu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				limpiarRegUsuario();
 				jtpSecciones.setSelectedIndex(0);
 			}
 		});
@@ -357,14 +371,35 @@ public class LoginUsuarios extends JDialog {
 		btnContinuar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (eleccion == 0) {
-					jtpSecciones.setSelectedIndex(2);
-				} else if (eleccion == 1) {
-					jtpSecciones.setSelectedIndex(3);
+				String correoIngresado = txtRegCorreo.getText();
+				passwd = new String(txtRegPasswd.getPassword());
+				passwdC = new String(txtValidarPasswd.getPassword());
+
+				if (validarDatosUsuario()) {
+					if (Bolsa.getInstancia().validarCorreo(correoIngresado)) {
+						if (confirmarPasswd(passwd, passwdC)) {
+							if (eleccion == 0) {
+								jtpSecciones.setSelectedIndex(2);
+							} else if (eleccion == 1) {
+								jtpSecciones.setSelectedIndex(3);
+							} else {
+								JOptionPane.showMessageDialog(null, "Error: Aún no se ha indicado el tipo de usuario.",
+										"Advertencia", JOptionPane.WARNING_MESSAGE, null);
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Ambas contraseñas deben ser iguales.", "Advertencia",
+									JOptionPane.WARNING_MESSAGE, null);
+						}
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"El correo ingresado ya está registrado. Por favor, utiliza otro.", "Advertencia",
+								JOptionPane.WARNING_MESSAGE, null);
+					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Error: Aún no se ha indicado el tipo de usuario.",
+					JOptionPane.showMessageDialog(null, "Todos los campos de datos deben llenarse antes de continuar.",
 							"Advertencia", JOptionPane.WARNING_MESSAGE, null);
 				}
+
 			}
 		});
 		btnContinuar.setBounds(599, 638, 175, 60);
@@ -387,78 +422,78 @@ public class LoginUsuarios extends JDialog {
 
 		JLabel lblNombre = new JLabel("Nombre:");
 		lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblNombre.setBounds(160, 220, 175, 27);
+		lblNombre.setBounds(144, 208, 200, 35);
 		pnlRegistroUsuarios.add(lblNombre);
 
 		txtNombre = new JTextField();
 		txtNombre.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtNombre.setBounds(160, 244, 175, 25);
+		txtNombre.setBounds(144, 242, 200, 35);
 		pnlRegistroUsuarios.add(txtNombre);
 		txtNombre.setColumns(10);
 
 		txtRegPasswd = new JPasswordField();
 		txtRegPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtRegPasswd.setBounds(485, 243, 175, 27);
+		txtRegPasswd.setBounds(467, 242, 200, 35);
 		pnlRegistroUsuarios.add(txtRegPasswd);
 
 		txtValidarPasswd = new JPasswordField();
 		txtValidarPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtValidarPasswd.setBounds(485, 345, 175, 27);
+		txtValidarPasswd.setBounds(467, 340, 200, 35);
 		pnlRegistroUsuarios.add(txtValidarPasswd);
 
 		JLabel lblRegPasswd = new JLabel("Contrase\u00F1a:");
 		lblRegPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblRegPasswd.setBounds(485, 220, 175, 27);
+		lblRegPasswd.setBounds(467, 208, 200, 35);
 		pnlRegistroUsuarios.add(lblRegPasswd);
 
 		JLabel lblValidarPasswd = new JLabel("Confirmar contrase\u00F1a:");
 		lblValidarPasswd.setHorizontalAlignment(SwingConstants.LEFT);
 		lblValidarPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblValidarPasswd.setBounds(485, 317, 175, 27);
+		lblValidarPasswd.setBounds(467, 303, 200, 35);
 		pnlRegistroUsuarios.add(lblValidarPasswd);
 
 		JLabel lblRegCorreo = new JLabel("Correo electr\u00F3nico:");
 		lblRegCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblRegCorreo.setBounds(160, 317, 175, 27);
+		lblRegCorreo.setBounds(144, 303, 200, 35);
 		pnlRegistroUsuarios.add(lblRegCorreo);
 
 		txtRegCorreo = new JTextField();
 		txtRegCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtRegCorreo.setBounds(160, 345, 175, 27);
+		txtRegCorreo.setBounds(144, 340, 200, 35);
 		pnlRegistroUsuarios.add(txtRegCorreo);
 		txtRegCorreo.setColumns(10);
 
 		JLabel lblTelefono = new JLabel("Tel\u00E9fono:");
 		lblTelefono.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblTelefono.setBounds(160, 419, 175, 27);
+		lblTelefono.setBounds(144, 408, 200, 35);
 		pnlRegistroUsuarios.add(lblTelefono);
 
 		txtTelefono = new JTextField();
 		txtTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtTelefono.setBounds(160, 444, 175, 27);
+		txtTelefono.setBounds(144, 441, 200, 35);
 		pnlRegistroUsuarios.add(txtTelefono);
 		txtTelefono.setColumns(10);
 
 		JLabel lblDireccion = new JLabel("Direcci\u00F3n:");
 		lblDireccion.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblDireccion.setBounds(485, 419, 175, 27);
+		lblDireccion.setBounds(467, 408, 200, 35);
 		pnlRegistroUsuarios.add(lblDireccion);
 
 		txtDireccion = new JTextField();
 		txtDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtDireccion.setBounds(485, 444, 175, 27);
+		txtDireccion.setBounds(467, 441, 200, 35);
 		pnlRegistroUsuarios.add(txtDireccion);
 		txtDireccion.setColumns(10);
 
 		JLabel lblProvincia = new JLabel("Provincia:");
 		lblProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblProvincia.setHorizontalAlignment(SwingConstants.LEFT);
-		lblProvincia.setBounds(160, 527, 175, 27);
+		lblProvincia.setBounds(144, 514, 200, 35);
 		pnlRegistroUsuarios.add(lblProvincia);
 
-		JComboBox cmbProvincia = new JComboBox();
+		cmbProvincia = new JComboBox();
 		cmbProvincia.setBackground(Color.WHITE);
 		cmbProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		cmbProvincia.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>", "Azua", "Bahoruco",
@@ -468,17 +503,17 @@ public class LoginUsuarios extends JDialog {
 				"Peravia", "Puerto Plata", "Saman\u00E1", "San Crist\u00F3bal", "San Jos\u00E9 de Ocoa", "San Juan",
 				"San Pedro de Macor\u00EDs", "S\u00E1nchez Ram\u00EDrez", "Santiago", "Santiago Rodr\u00EDguez",
 				"Santo Domingo", "Valverde" }));
-		cmbProvincia.setBounds(160, 558, 175, 27);
+		cmbProvincia.setBounds(144, 552, 200, 35);
 		pnlRegistroUsuarios.add(cmbProvincia);
 
 		JLabel lblMunicipio = new JLabel("Municipio:");
 		lblMunicipio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblMunicipio.setBounds(485, 527, 175, 27);
+		lblMunicipio.setBounds(467, 514, 200, 35);
 		pnlRegistroUsuarios.add(lblMunicipio);
 
 		txtMunicipio = new JTextField();
 		txtMunicipio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtMunicipio.setBounds(485, 558, 175, 27);
+		txtMunicipio.setBounds(467, 552, 200, 35);
 		pnlRegistroUsuarios.add(txtMunicipio);
 		txtMunicipio.setColumns(10);
 
@@ -527,86 +562,57 @@ public class LoginUsuarios extends JDialog {
 		JLabel lblApellidos = new JLabel("Apellido/s:");
 		lblApellidos.setHorizontalAlignment(SwingConstants.LEFT);
 		lblApellidos.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblApellidos.setBounds(51, 195, 212, 33);
+		lblApellidos.setBounds(51, 195, 200, 35);
 		pnlRegistroCandidato.add(lblApellidos);
 
 		JLabel lblSexo = new JLabel("Sexo:");
 		lblSexo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSexo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblSexo.setBounds(321, 200, 212, 33);
+		lblSexo.setBounds(321, 195, 200, 35);
 		pnlRegistroCandidato.add(lblSexo);
 
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de nacimiento:");
 		lblFechaDeNacimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFechaDeNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblFechaDeNacimiento.setBounds(321, 293, 212, 33);
+		lblFechaDeNacimiento.setBounds(321, 293, 200, 35);
 		pnlRegistroCandidato.add(lblFechaDeNacimiento);
 
 		JLabel lblCedula = new JLabel("C\u00E9dula:");
 		lblCedula.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCedula.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblCedula.setBounds(51, 293, 212, 33);
+		lblCedula.setBounds(51, 293, 200, 35);
 		pnlRegistroCandidato.add(lblCedula);
 
-		JLabel lblPoseeLicenciaDe = new JLabel("Posee licencia de conducir:");
-		lblPoseeLicenciaDe.setHorizontalAlignment(SwingConstants.LEFT);
-		lblPoseeLicenciaDe.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblPoseeLicenciaDe.setBounds(511, 200, 201, 33);
-		pnlRegistroCandidato.add(lblPoseeLicenciaDe);
-
-		txtApellidoCand = new JTextField();
-		txtApellidoCand.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtApellidoCand.setColumns(10);
-		txtApellidoCand.setBounds(51, 227, 212, 33);
-		pnlRegistroCandidato.add(txtApellidoCand);
+		txtApellido = new JTextField();
+		txtApellido.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		txtApellido.setColumns(10);
+		txtApellido.setBounds(51, 227, 200, 35);
+		pnlRegistroCandidato.add(txtApellido);
 
 		txtCedula = new JTextField();
 		txtCedula.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		txtCedula.setColumns(10);
-		txtCedula.setBounds(51, 322, 212, 33);
+		txtCedula.setBounds(51, 331, 200, 35);
 		pnlRegistroCandidato.add(txtCedula);
 
 		spnFechaNac = new JSpinner();
 		spnFechaNac.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		spnFechaNac.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_YEAR));
 
-		JSpinner.DateEditor de_spnFechaNac = new JSpinner.DateEditor(spnFechaNac, "dd/MM/yyyy");
+		de_spnFechaNac = new JSpinner.DateEditor(spnFechaNac, "dd/MM/yyyy");
 		spnFechaNac.setEditor(de_spnFechaNac);
 
-		spnFechaNac.setBounds(321, 325, 212, 33);
+		spnFechaNac.setBounds(321, 331, 200, 35);
 		pnlRegistroCandidato.add(spnFechaNac);
-
-		rdbtnLicenciaSi = new JRadioButton("S\u00ED\r\n");
-		rdbtnLicenciaSi.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		rdbtnLicenciaSi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnLicenciaSi.setSelected(true);
-				rdbtnLicenciaNo.setSelected(false);
-			}
-		});
-		rdbtnLicenciaSi.setBackground(Color.WHITE);
-		rdbtnLicenciaSi.setBounds(511, 232, 60, 33);
-		pnlRegistroCandidato.add(rdbtnLicenciaSi);
-
-		rdbtnLicenciaNo = new JRadioButton("No");
-		rdbtnLicenciaNo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		rdbtnLicenciaNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnLicenciaSi.setSelected(false);
-				rdbtnLicenciaNo.setSelected(true);
-			}
-		});
-		rdbtnLicenciaNo.setBackground(Color.WHITE);
-		rdbtnLicenciaNo.setBounds(575, 232, 60, 33);
-		pnlRegistroCandidato.add(rdbtnLicenciaNo);
 
 		JLabel lblFormacin = new JLabel("Formaci\u00F3n:");
 		lblFormacin.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFormacin.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblFormacin.setBounds(51, 368, 130, 33);
+		lblFormacin.setBounds(51, 368, 200, 35);
 		pnlRegistroCandidato.add(lblFormacin);
 
 		rdbtnUniversitario = new JRadioButton("Universitario/a");
+		rdbtnUniversitario.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnUniversitario.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnUniversitario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -618,10 +624,11 @@ public class LoginUsuarios extends JDialog {
 		});
 		rdbtnUniversitario.setBackground(Color.WHITE);
 		rdbtnUniversitario.setSelected(true);
-		rdbtnUniversitario.setBounds(51, 411, 141, 33);
+		rdbtnUniversitario.setBounds(51, 411, 200, 35);
 		pnlRegistroCandidato.add(rdbtnUniversitario);
 
-		rdbtnTecnico = new JRadioButton("Tec. Superior");
+		rdbtnTecnico = new JRadioButton("T\u00E9c. Superior");
+		rdbtnTecnico.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnTecnico.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnTecnico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -632,10 +639,11 @@ public class LoginUsuarios extends JDialog {
 			}
 		});
 		rdbtnTecnico.setBackground(Color.WHITE);
-		rdbtnTecnico.setBounds(195, 411, 141, 33);
+		rdbtnTecnico.setBounds(255, 411, 200, 35);
 		pnlRegistroCandidato.add(rdbtnTecnico);
 
 		rdbtnObrero = new JRadioButton("Obrero");
+		rdbtnObrero.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnObrero.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnObrero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -646,7 +654,7 @@ public class LoginUsuarios extends JDialog {
 			}
 		});
 		rdbtnObrero.setBackground(Color.WHITE);
-		rdbtnObrero.setBounds(340, 411, 141, 33);
+		rdbtnObrero.setBounds(459, 411, 200, 35);
 		pnlRegistroCandidato.add(rdbtnObrero);
 
 		JPanel pnlRegistrarCand = new JPanel() {
@@ -665,7 +673,71 @@ public class LoginUsuarios extends JDialog {
 		pnlRegistrarCand.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (validarDatosCand()) {
+					Usuario nuevoUsuario = null;
 
+					String codigoUsuario = Bolsa.getInstancia().generarCodigoUsuario();
+					String nombre = txtNombre.getText();
+					char[] passwdChars = txtRegPasswd.getPassword();
+					passwd = new String(passwdChars);
+					String telefono = txtTelefono.getText();
+					String correo = txtRegCorreo.getText();
+					String provincia = cmbProvincia.getSelectedItem().toString();
+					String municipio = txtMunicipio.getText();
+					String direccion = txtDireccion.getText();
+					String apellidos = txtApellido.getText();
+					String cedula = txtCedula.getText();
+					String sexo;
+
+					if (rdbtnSexoM.isSelected()) {
+						sexo = rdbtnSexoM.getText();
+					} else {
+						sexo = rdbtnSexoF.getText();
+					}
+
+					Date fechaNacimiento = (Date) spnFechaNac.getValue();
+
+					if (validarEdad(fechaNacimiento)) {
+						if (rdbtnUniversitario.isSelected()) {
+							String carrera = cmbCarreras.getSelectedItem().toString();
+							nuevoUsuario = new Universitario(codigoUsuario, nombre, passwd, telefono, correo, provincia,
+									municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula, false,
+									carrera);
+						} else if (rdbtnTecnico.isSelected()) {
+							String tecnicoS = txtTecnico.getText();
+							int anniosExp = (int) spnAniosExp.getValue();
+							nuevoUsuario = new TecnicoSuperior(codigoUsuario, nombre, passwd, telefono, correo,
+									provincia, municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula,
+									false, tecnicoS, anniosExp);
+						} else {
+							boolean conduccion = chckbxConduccion.isSelected();
+							boolean electricidad = chckbxElectricidad.isSelected();
+							boolean limpieza = chckbxLimpieza.isSelected();
+							boolean mantenimiento = chckbxMantenimiento.isSelected();
+							boolean mecanica = chckbxMecanica.isSelected();
+							boolean ofimatica = chckbxOfimatica.isSelected();
+							boolean seguridad = chckbxSeguridad.isSelected();
+							boolean ventas = chckbxVentas.isSelected();
+							nuevoUsuario = new Obrero(codigoUsuario, nombre, passwd, telefono, correo, provincia,
+									municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula, false, ventas,
+									mecanica, ofimatica, seguridad, electricidad, mantenimiento, conduccion, limpieza);
+						}
+						Bolsa.getInstancia().insertarUsuario(nuevoUsuario);
+						JOptionPane.showMessageDialog(null,
+								"¡Se ha registrado satisfactoriamente! Regrese a la pantalla principal e inicie sesión.",
+								"Información", JOptionPane.INFORMATION_MESSAGE, null);
+						limpiarRegUsuario();
+						limpiarRegCand();
+						jtpSecciones.setSelectedIndex(0);
+					} else {
+						JOptionPane.showMessageDialog(null, "No es posible registrarse si es menor a 17 años.",
+								"Advertencia", JOptionPane.WARNING_MESSAGE, null);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Todos los datos deben ser proporcionados antes de efectuar el registro. Verique la información",
+							"Advertencia", JOptionPane.WARNING_MESSAGE, null);
+				}
 			}
 		});
 		pnlRegistrarCand.setOpaque(false);
@@ -677,71 +749,6 @@ public class LoginUsuarios extends JDialog {
 
 		JLabel btnRegistrarCand = new JLabel("Registrar");
 		btnRegistrarCand.setBackground(Color.WHITE);
-		btnRegistrarCand.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				/*
-				 * // OJO: colocar validaciones Persona aux = null;
-				 * 
-				 * String codigoGenerado = Bolsa.getInstancia().generarCodigoPersona(); String
-				 * nombre = txtNombreCand.getText(); String apellido =
-				 * txtApellidoCand.getText(); String sexo = ""; // obtener valor de
-				 * passwordfield char[] passwdChars = passwCandidato.getPassword(); String
-				 * passwd = new String(passwdChars);
-				 * 
-				 * if (rdbtnSexoM.isSelected()) { sexo = "M"; } else if
-				 * (rdbtnSexoF.isSelected()) { sexo = "F"; } String cedula =
-				 * txtCedulaCand.getText(); String telefono = txtTelefonoCand.getText(); String
-				 * correo = txtCorreoCand.getText(); String provi =
-				 * cbxProvinciaCand.getSelectedItem().toString(); String direccion =
-				 * txtDireccionCand.getText(); Date fechaNacimiento = (Date)
-				 * spnFechaNacCand.getValue(); String horarios =
-				 * cbxHorario.getSelectedItem().toString(); boolean movilidad = false; if
-				 * (cbxDispMovilidad.getSelectedIndex() == 1) { movilidad = true; } boolean
-				 * licencia = false; if (rdbtnLicenciaSi.isSelected()) { licencia = true; }
-				 * 
-				 * String tipoEmpleo = cbxTipoEmpleo.getSelectedItem().toString(); String
-				 * modalidad = cbxModalidad.getSelectedItem().toString();
-				 * 
-				 * if (rdbtnUniversitario.isSelected()) { String carrera =
-				 * cbxCarrera.getSelectedItem().toString(); aux = new
-				 * Universitario(codigoGenerado, nombre, apellido, sexo, passwd,
-				 * fechaNacimiento, cedula, telefono, correo, provi, direccion, horarios,
-				 * movilidad, licencia, tipoEmpleo, modalidad, false, null, carrera); }
-				 * 
-				 * if (rdbtnTecSuperior.isSelected()) { String tecnico =
-				 * txtTecnicoCand.getText(); int aniosexp = (int) spnAniosExp.getValue(); aux =
-				 * new TecnicoSuperior(codigoGenerado, nombre, apellido, sexo, passwd,
-				 * fechaNacimiento, cedula, telefono, correo, provi, direccion, horarios,
-				 * movilidad, licencia, tipoEmpleo, modalidad, false, null, tecnico, aniosexp);
-				 * }
-				 * 
-				 * if (rdbtnObrero.isSelected()) { ArrayList<String> Habilidades = new
-				 * ArrayList<String>();
-				 * 
-				 * if (chckbxVentas.isSelected()) Habilidades.add("Ventas"); if
-				 * (chckbxConduccin.isSelected()) Habilidades.add("Conduccion"); if
-				 * (chckbxElectricidad.isSelected()) Habilidades.add("Electricidad"); if
-				 * (chckbxLimpieza.isSelected()) Habilidades.add("Limpieza"); if
-				 * (chckbxMantenimiento.isSelected()) Habilidades.add("Mantenimiento"); if
-				 * (chckbxMecanica.isSelected()) Habilidades.add("Mecanica"); if
-				 * (chckbxOfimtica.isSelected()) Habilidades.add("Ofimatica"); if
-				 * (chckbxSeguridad.isSelected()) Habilidades.add("Seguridad"); aux = new
-				 * Obrero(codigoGenerado, nombre, apellido, sexo, passwd, fechaNacimiento,
-				 * cedula, telefono, correo, provi, direccion, horarios, movilidad, licencia,
-				 * tipoEmpleo, modalidad, false, null, Habilidades);
-				 * 
-				 * }
-				 * 
-				 * Bolsa.getInstancia().insertarPersona(aux);
-				 * JOptionPane.showMessageDialog(null,
-				 * "Registro Satisfactorio! Proceda a iniciar sesión", "Informacion",
-				 * JOptionPane.INFORMATION_MESSAGE); limpiarRegCand();
-				 * jtpSecciones.setSelectedIndex(0); // volver a la pagina de login general
-				 */
-			}
-		});
 
 		JLabel iconAddPerson = new JLabel("");
 		iconAddPerson.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/iconAddPerson.png")));
@@ -765,7 +772,7 @@ public class LoginUsuarios extends JDialog {
 		rdbtnSexoM.setHorizontalAlignment(SwingConstants.CENTER);
 		rdbtnSexoM.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnSexoM.setBackground(Color.WHITE);
-		rdbtnSexoM.setBounds(321, 237, 48, 23);
+		rdbtnSexoM.setBounds(321, 227, 48, 35);
 		pnlRegistroCandidato.add(rdbtnSexoM);
 
 		rdbtnSexoF = new JRadioButton("F");
@@ -778,32 +785,32 @@ public class LoginUsuarios extends JDialog {
 		rdbtnSexoF.setHorizontalAlignment(SwingConstants.CENTER);
 		rdbtnSexoF.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnSexoF.setBackground(Color.WHITE);
-		rdbtnSexoF.setBounds(385, 237, 48, 23);
+		rdbtnSexoF.setBounds(385, 227, 48, 35);
 		pnlRegistroCandidato.add(rdbtnSexoF);
 
 		JPanel pnlOcultoSup = new JPanel();
 		pnlOcultoSup.setBackground(Color.WHITE);
-		pnlOcultoSup.setBounds(59, 466, 730, 27);
+		pnlOcultoSup.setBounds(35, 448, 764, 33);
 		pnlRegistroCandidato.add(pnlOcultoSup);
-
-		JPanel pnlOcultoLateralIzq = new JPanel();
-		pnlOcultoLateralIzq.setBackground(Color.WHITE);
-		pnlOcultoLateralIzq.setBounds(51, 466, 16, 100);
-		pnlRegistroCandidato.add(pnlOcultoLateralIzq);
-
-		JPanel pnlOcultoLateralDer = new JPanel();
-		pnlOcultoLateralDer.setBackground(Color.WHITE);
-		pnlOcultoLateralDer.setBounds(776, 453, 16, 140);
-		pnlRegistroCandidato.add(pnlOcultoLateralDer);
 
 		JPanel pnlOcultoInf = new JPanel();
 		pnlOcultoInf.setBackground(Color.WHITE);
-		pnlOcultoInf.setBounds(59, 565, 738, 23);
+		pnlOcultoInf.setBounds(34, 553, 764, 17);
 		pnlRegistroCandidato.add(pnlOcultoInf);
+
+		JPanel pnlOcultoLateralDer = new JPanel();
+		pnlOcultoLateralDer.setBounds(772, 447, 25, 123);
+		pnlRegistroCandidato.add(pnlOcultoLateralDer);
+		pnlOcultoLateralDer.setBackground(Color.WHITE);
+
+		JPanel pnlOcultoLateralIzq = new JPanel();
+		pnlOcultoLateralIzq.setBounds(24, 448, 17, 123);
+		pnlRegistroCandidato.add(pnlOcultoLateralIzq);
+		pnlOcultoLateralIzq.setBackground(Color.WHITE);
 
 		jtpFormacion = new JTabbedPane(JTabbedPane.TOP);
 		jtpFormacion.setBorder(null);
-		jtpFormacion.setBounds(59, 466, 730, 114);
+		jtpFormacion.setBounds(35, 448, 764, 114);
 		pnlRegistroCandidato.add(jtpFormacion);
 		jtpFormacion.setEnabled(false);
 
@@ -812,17 +819,52 @@ public class LoginUsuarios extends JDialog {
 		pnlFormUniv.setLayout(null);
 		pnlFormUniv.setBackground(Color.WHITE);
 
-		JLabel lblCarrera = new JLabel("Carrera");
+		JLabel lblCarrera = new JLabel("Carrera:");
 		lblCarrera.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCarrera.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblCarrera.setBounds(10, 0, 130, 44);
+		lblCarrera.setBounds(22, 0, 200, 35);
 		pnlFormUniv.add(lblCarrera);
 
 		cmbCarreras = new JComboBox();
-		cmbCarreras.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Administraci\u00F3n de Empresas", "Agronom\u00EDa", "Antropolog\u00EDa", "Animaci\u00F3n Digital", "Arquitectura", "Artes Esc\u00E9nicas", "Artes Pl\u00E1sticas", "Astrobiolog\u00EDa", "Astronom\u00EDa", "Bellas Artes", "Bioinform\u00E1tica", "Biolog\u00EDa", "Biomedicina", "Biotecnolog\u00EDa", "Bioqu\u00EDmica", "Ciencia de Datos", "Ciencia y Tecnolog\u00EDa de Materiales Avanzados", "Ciencias Ambientales", "Ciencias de la Computaci\u00F3n", "Ciencias de la Comunicaci\u00F3n", "Ciencias de la Tierra", "Ciencias Forenses", "Ciencias Pol\u00EDticas", "Comercio Internacional", "Computaci\u00F3n Cu\u00E1ntica", "Contabilidad", "Criminolog\u00EDa", "Ciberseguridad", "Cine", "Danza", "Derecho", "Dise\u00F1o de Interiores", "Dise\u00F1o de Moda", "Dise\u00F1o Gr\u00E1fico", "Dise\u00F1o Industrial", "Dise\u00F1o Multimedia", "Dise\u00F1o UX-UI", "Dise\u00F1o y Gesti\u00F3n de Ciudades Inteligentes", "Econom\u00EDa", "Educaci\u00F3n", "Enfermer\u00EDa", "Entretenimiento Digital", "Estad\u00EDstica", "Farmacia", "Filosof\u00EDa", "Fisioterapia", "Finanzas", "Foniatr\u00EDa", "Fotograf\u00EDa", "Geograf\u00EDa", "Geof\u00EDsica", "Geolog\u00EDa", "Gen\u00E9tica", "Gerontolog\u00EDa", "Gesti\u00F3n Ambiental", "Gesti\u00F3n de la Innovaci\u00F3n y Emprendimiento", "Gesti\u00F3n de Riesgos y Desastres", "Gesti\u00F3n P\u00FAblica", "Historia", "Imagenolog\u00EDa", "Ingenier\u00EDa Aeroespacial", "Ingenier\u00EDa Agr\u00F3noma", "Ingenier\u00EDa Ambiental", "Ingenier\u00EDa Biom\u00E9dica", "Ingenier\u00EDa Civil", "Ingenier\u00EDa de Materiales", "Ingenier\u00EDa El\u00E9ctrica", "Ingenier\u00EDa Electr\u00F3nica", "Ingenier\u00EDa en Automatizaci\u00F3n y Control", "Ingenier\u00EDa en Energ\u00EDas Renovables", "Ingenier\u00EDa en Inteligencia Artificial", "Ingenier\u00EDa en Mecatr\u00F3nica", "Ingenier\u00EDa en Minas y Metalurgia", "Ingenier\u00EDa en Nanotecnolog\u00EDa", "Ingenier\u00EDa en Sistemas Computacionales", "Ingenier\u00EDa en Software", "Ingenier\u00EDa en Telecomunicaciones", "Ingenier\u00EDa en Transporte y V\u00EDas", "Ingenier\u00EDa Forestal", "Ingenier\u00EDa Gen\u00E9tica", "Ingenier\u00EDa Industrial", "Ingenier\u00EDa Mec\u00E1nica", "Ingenier\u00EDa Naval", "Ingenier\u00EDa Petrolera", "Ingenier\u00EDa Qu\u00EDmica", "Ingenier\u00EDa en Energ\u00EDa y Sustentabilidad", "Lenguas Modernas", "Ling\u00FC\u00EDstica", "Log\u00EDstica y Transporte", "Logopedia", "Laboratorio Cl\u00EDnico", "Matem\u00E1ticas", "Marketing", "Medicina", "Medicina Veterinaria", "Mercadotecnia", "M\u00FAsica", "Nanotecnolog\u00EDa Aplicada", "Negocios Internacionales", "Neurociencias", "Nutrici\u00F3n", "Oceanograf\u00EDa", "Odontolog\u00EDa", "Optometr\u00EDa", "Paleontolog\u00EDa", "Pedagog\u00EDa", "Periodismo", "Producci\u00F3n Audiovisual", "Publicidad y Relaciones P\u00FAblicas", "Psicolog\u00EDa", "Psicolog\u00EDa Cl\u00EDnica", "Qu\u00EDmica", "Realidad Virtual y Aumentada", "Relaciones Internacionales", "Rob\u00F3tica", "Sociolog\u00EDa", "Tecnolog\u00EDa de Alimentos", "Tecnolog\u00EDa M\u00E9dica", "Teatro", "Teolog\u00EDa", "Traducci\u00F3n e Interpretaci\u00F3n", "Trabajo Social", "Turismo y Hoteler\u00EDa", "Videojuegos", "Zootecnia"}));
+		cmbCarreras.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>",
+				"Administraci\u00F3n de Empresas", "Agronom\u00EDa", "Antropolog\u00EDa", "Animaci\u00F3n Digital",
+				"Arquitectura", "Artes Esc\u00E9nicas", "Artes Pl\u00E1sticas", "Astrobiolog\u00EDa", "Astronom\u00EDa",
+				"Bellas Artes", "Bioinform\u00E1tica", "Biolog\u00EDa", "Biomedicina", "Biotecnolog\u00EDa",
+				"Bioqu\u00EDmica", "Ciencia de Datos", "Ciencia y Tecnolog\u00EDa de Materiales Avanzados",
+				"Ciencias Ambientales", "Ciencias de la Computaci\u00F3n", "Ciencias de la Comunicaci\u00F3n",
+				"Ciencias de la Tierra", "Ciencias Forenses", "Ciencias Pol\u00EDticas", "Comercio Internacional",
+				"Computaci\u00F3n Cu\u00E1ntica", "Contabilidad", "Criminolog\u00EDa", "Ciberseguridad", "Cine",
+				"Danza", "Derecho", "Dise\u00F1o de Interiores", "Dise\u00F1o de Moda", "Dise\u00F1o Gr\u00E1fico",
+				"Dise\u00F1o Industrial", "Dise\u00F1o Multimedia", "Dise\u00F1o UX-UI",
+				"Dise\u00F1o y Gesti\u00F3n de Ciudades Inteligentes", "Econom\u00EDa", "Educaci\u00F3n",
+				"Enfermer\u00EDa", "Entretenimiento Digital", "Estad\u00EDstica", "Farmacia", "Filosof\u00EDa",
+				"Fisioterapia", "Finanzas", "Foniatr\u00EDa", "Fotograf\u00EDa", "Geograf\u00EDa", "Geof\u00EDsica",
+				"Geolog\u00EDa", "Gen\u00E9tica", "Gerontolog\u00EDa", "Gesti\u00F3n Ambiental",
+				"Gesti\u00F3n de la Innovaci\u00F3n y Emprendimiento", "Gesti\u00F3n de Riesgos y Desastres",
+				"Gesti\u00F3n P\u00FAblica", "Historia", "Imagenolog\u00EDa", "Ingenier\u00EDa Aeroespacial",
+				"Ingenier\u00EDa Agr\u00F3noma", "Ingenier\u00EDa Ambiental", "Ingenier\u00EDa Biom\u00E9dica",
+				"Ingenier\u00EDa Civil", "Ingenier\u00EDa de Materiales", "Ingenier\u00EDa El\u00E9ctrica",
+				"Ingenier\u00EDa Electr\u00F3nica", "Ingenier\u00EDa en Automatizaci\u00F3n y Control",
+				"Ingenier\u00EDa en Energ\u00EDas Renovables", "Ingenier\u00EDa en Inteligencia Artificial",
+				"Ingenier\u00EDa en Mecatr\u00F3nica", "Ingenier\u00EDa en Minas y Metalurgia",
+				"Ingenier\u00EDa en Nanotecnolog\u00EDa", "Ingenier\u00EDa en Sistemas Computacionales",
+				"Ingenier\u00EDa en Software", "Ingenier\u00EDa en Telecomunicaciones",
+				"Ingenier\u00EDa en Transporte y V\u00EDas", "Ingenier\u00EDa Forestal",
+				"Ingenier\u00EDa Gen\u00E9tica", "Ingenier\u00EDa Industrial", "Ingenier\u00EDa Mec\u00E1nica",
+				"Ingenier\u00EDa Naval", "Ingenier\u00EDa Petrolera", "Ingenier\u00EDa Qu\u00EDmica",
+				"Ingenier\u00EDa en Energ\u00EDa y Sustentabilidad", "Lenguas Modernas", "Ling\u00FC\u00EDstica",
+				"Log\u00EDstica y Transporte", "Logopedia", "Laboratorio Cl\u00EDnico", "Matem\u00E1ticas", "Marketing",
+				"Medicina", "Medicina Veterinaria", "Mercadotecnia", "M\u00FAsica", "Nanotecnolog\u00EDa Aplicada",
+				"Negocios Internacionales", "Neurociencias", "Nutrici\u00F3n", "Oceanograf\u00EDa", "Odontolog\u00EDa",
+				"Optometr\u00EDa", "Paleontolog\u00EDa", "Pedagog\u00EDa", "Periodismo", "Producci\u00F3n Audiovisual",
+				"Publicidad y Relaciones P\u00FAblicas", "Psicolog\u00EDa", "Psicolog\u00EDa Cl\u00EDnica",
+				"Qu\u00EDmica", "Realidad Virtual y Aumentada", "Relaciones Internacionales", "Rob\u00F3tica",
+				"Sociolog\u00EDa", "Tecnolog\u00EDa de Alimentos", "Tecnolog\u00EDa M\u00E9dica", "Teatro",
+				"Teolog\u00EDa", "Traducci\u00F3n e Interpretaci\u00F3n", "Trabajo Social", "Turismo y Hoteler\u00EDa",
+				"Videojuegos", "Zootecnia" }));
 		cmbCarreras.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		cmbCarreras.setBackground(Color.WHITE);
-		cmbCarreras.setBounds(10, 39, 220, 31);
+		cmbCarreras.setBounds(22, 40, 200, 35);
 		pnlFormUniv.add(cmbCarreras);
 
 		JPanel pnlFormTec = new JPanel();
@@ -834,25 +876,27 @@ public class LoginUsuarios extends JDialog {
 		JLabel lblTecnicoCursado = new JLabel("T\u00E9cnico cursado:");
 		lblTecnicoCursado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTecnicoCursado.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblTecnicoCursado.setBounds(10, 0, 212, 33);
+		lblTecnicoCursado.setBounds(10, 0, 200, 35);
 		pnlFormTec.add(lblTecnicoCursado);
 
 		txtTecnico = new JTextField();
+		txtTecnico.setBackground(Color.WHITE);
 		txtTecnico.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtTecnico.setBounds(10, 37, 212, 33);
+		txtTecnico.setBounds(10, 37, 200, 35);
 		pnlFormTec.add(txtTecnico);
 		txtTecnico.setColumns(10);
 
 		JLabel lblAnnosDeExperiencia = new JLabel("A\u00F1os de experiencia:");
 		lblAnnosDeExperiencia.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAnnosDeExperiencia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblAnnosDeExperiencia.setBounds(238, 0, 212, 33);
+		lblAnnosDeExperiencia.setBounds(238, 0, 200, 35);
 		pnlFormTec.add(lblAnnosDeExperiencia);
 
 		spnAniosExp = new JSpinner();
+		spnAniosExp.setBackground(Color.WHITE);
 		spnAniosExp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		spnAniosExp.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		spnAniosExp.setBounds(238, 37, 212, 33);
+		spnAniosExp.setBounds(238, 37, 200, 35);
 		pnlFormTec.add(spnAniosExp);
 
 		JPanel pnlFormObrero = new JPanel();
@@ -860,7 +904,7 @@ public class LoginUsuarios extends JDialog {
 		jtpFormacion.addTab("New tab", null, pnlFormObrero, null);
 		pnlFormObrero.setLayout(null);
 
-		JLabel lblHabilidadesQuePosee = new JLabel("Habilidades que posee");
+		JLabel lblHabilidadesQuePosee = new JLabel("Habilidades que posee:");
 		lblHabilidadesQuePosee.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHabilidadesQuePosee.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblHabilidadesQuePosee.setBounds(10, 0, 187, 54);
@@ -870,56 +914,56 @@ public class LoginUsuarios extends JDialog {
 		chckbxVentas.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxVentas.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		chckbxVentas.setBackground(Color.WHITE);
-		chckbxVentas.setBounds(185, 16, 112, 23);
+		chckbxVentas.setBounds(185, 16, 112, 25);
 		pnlFormObrero.add(chckbxVentas);
 
 		chckbxMecanica = new JCheckBox("Mec\u00E1nica");
 		chckbxMecanica.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxMecanica.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		chckbxMecanica.setBackground(Color.WHITE);
-		chckbxMecanica.setBounds(185, 44, 112, 23);
+		chckbxMecanica.setBounds(185, 44, 112, 25);
 		pnlFormObrero.add(chckbxMecanica);
 
-		chckbxConduccin = new JCheckBox("Conducci\u00F3n");
-		chckbxConduccin.setHorizontalAlignment(SwingConstants.LEFT);
-		chckbxConduccin.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		chckbxConduccin.setBackground(Color.WHITE);
-		chckbxConduccin.setBounds(553, 16, 135, 23);
-		pnlFormObrero.add(chckbxConduccin);
+		chckbxConduccion = new JCheckBox("Conducci\u00F3n");
+		chckbxConduccion.setHorizontalAlignment(SwingConstants.LEFT);
+		chckbxConduccion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		chckbxConduccion.setBackground(Color.WHITE);
+		chckbxConduccion.setBounds(553, 16, 135, 25);
+		pnlFormObrero.add(chckbxConduccion);
 
 		chckbxElectricidad = new JCheckBox("Electricidad");
 		chckbxElectricidad.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxElectricidad.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		chckbxElectricidad.setBackground(Color.WHITE);
-		chckbxElectricidad.setBounds(298, 44, 112, 23);
+		chckbxElectricidad.setBounds(298, 44, 112, 25);
 		pnlFormObrero.add(chckbxElectricidad);
 
-		chckbxOfimtica = new JCheckBox("Ofim\u00E1tica");
-		chckbxOfimtica.setHorizontalAlignment(SwingConstants.LEFT);
-		chckbxOfimtica.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		chckbxOfimtica.setBackground(Color.WHITE);
-		chckbxOfimtica.setBounds(298, 16, 112, 23);
-		pnlFormObrero.add(chckbxOfimtica);
+		chckbxOfimatica = new JCheckBox("Ofim\u00E1tica");
+		chckbxOfimatica.setHorizontalAlignment(SwingConstants.LEFT);
+		chckbxOfimatica.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		chckbxOfimatica.setBackground(Color.WHITE);
+		chckbxOfimatica.setBounds(298, 16, 112, 25);
+		pnlFormObrero.add(chckbxOfimatica);
 
 		chckbxMantenimiento = new JCheckBox("Mantenimiento");
 		chckbxMantenimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxMantenimiento.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		chckbxMantenimiento.setBackground(Color.WHITE);
-		chckbxMantenimiento.setBounds(414, 44, 135, 23);
+		chckbxMantenimiento.setBounds(414, 44, 135, 25);
 		pnlFormObrero.add(chckbxMantenimiento);
 
 		chckbxSeguridad = new JCheckBox("Seguridad");
 		chckbxSeguridad.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxSeguridad.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		chckbxSeguridad.setBackground(Color.WHITE);
-		chckbxSeguridad.setBounds(414, 16, 135, 23);
+		chckbxSeguridad.setBounds(414, 16, 135, 25);
 		pnlFormObrero.add(chckbxSeguridad);
 
 		chckbxLimpieza = new JCheckBox("Limpieza");
 		chckbxLimpieza.setHorizontalAlignment(SwingConstants.LEFT);
 		chckbxLimpieza.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		chckbxLimpieza.setBackground(Color.WHITE);
-		chckbxLimpieza.setBounds(553, 44, 135, 23);
+		chckbxLimpieza.setBounds(553, 44, 135, 25);
 		pnlFormObrero.add(chckbxLimpieza);
 
 		JPanel pnlRegistroEmpresas = new JPanel();
@@ -958,6 +1002,42 @@ public class LoginUsuarios extends JDialog {
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
+		btnRegEmpresa.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (validarDatosEmp()) {
+					Usuario nuevaEmpresa = null;
+
+					String codigoEmpresa = Bolsa.getInstancia().generarCodigoUsuario();
+					String nombre = txtNombre.getText();
+					char[] passwdChars = txtRegPasswd.getPassword();
+					passwd = new String(passwdChars);
+					String telefono = txtTelefono.getText();
+					String correo = txtRegCorreo.getText();
+					String provincia = cmbProvincia.getSelectedItem().toString();
+					String municipio = txtMunicipio.getText();
+					String direccion = txtDireccion.getText();
+					String rnc = txtRNC.getText();
+					String tipoEmpresa = cmbTipoEmpresa.getSelectedItem().toString();
+					String sector = txtSector.getText();
+
+					nuevaEmpresa = new Empresa(codigoEmpresa, nombre, passwd, telefono, correo, provincia, municipio,
+							direccion, true, rnc, tipoEmpresa, sector);
+
+					Bolsa.getInstancia().insertarUsuario(nuevaEmpresa);
+					JOptionPane.showMessageDialog(null,
+							"¡Se ha registrado satisfactoriamente! Regrese a la pantalla principal e inicie sesión.",
+							"Información", JOptionPane.INFORMATION_MESSAGE, null);
+					limpiarRegEmpresa();
+					limpiarRegCand();
+					jtpSecciones.setSelectedIndex(0);
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Todos los datos deben ser proporcionados antes de efectuar el registro. Verique la información",
+							"Advertencia", JOptionPane.WARNING_MESSAGE, null);
+				}
+			}
+		});
 		btnRegEmpresa.setOpaque(false);
 		btnRegEmpresa.setBackground(new Color(60, 179, 113));
 		btnRegEmpresa.setBounds(609, 641, 175, 60);
@@ -981,19 +1061,19 @@ public class LoginUsuarios extends JDialog {
 		JLabel lblRNC = new JLabel("RNC:");
 		lblRNC.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblRNC.setHorizontalAlignment(SwingConstants.LEFT);
-		lblRNC.setBounds(178, 326, 174, 34);
+		lblRNC.setBounds(180, 225, 174, 34);
 		pnlRegistroEmpresas.add(lblRNC);
 
 		txtRNC = new JTextField();
 		txtRNC.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtRNC.setBounds(178, 358, 174, 34);
+		txtRNC.setBounds(180, 257, 174, 34);
 		pnlRegistroEmpresas.add(txtRNC);
 		txtRNC.setColumns(10);
 
 		JLabel lblTipoEmpresa = new JLabel("Tipo de empresa:");
 		lblTipoEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblTipoEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
-		lblTipoEmpresa.setBounds(455, 326, 174, 34);
+		lblTipoEmpresa.setBounds(441, 225, 174, 34);
 		pnlRegistroEmpresas.add(lblTipoEmpresa);
 
 		cmbTipoEmpresa = new JComboBox();
@@ -1010,19 +1090,104 @@ public class LoginUsuarios extends JDialog {
 				"Hospitalaria", "Inmobiliaria", "Instituci\u00F3n Bancaria", "Instituci\u00F3n de Seguros",
 				"Metal\u00FArgica", "Naviera", "Petrolera", "Qu\u00EDmica", "Retail", "Salud y Bienestar",
 				"Sider\u00FArgica", "Tecnol\u00F3gica", "Textil" }));
-		cmbTipoEmpresa.setBounds(455, 358, 174, 34);
+		cmbTipoEmpresa.setBounds(441, 257, 174, 34);
 		pnlRegistroEmpresas.add(cmbTipoEmpresa);
 
 		JLabel lblRegEmpMensaje = new JLabel("Registrate como empresa y p\u00FAblica ofertas de trabajo");
 		lblRegEmpMensaje.setBackground(Color.WHITE);
 		lblRegEmpMensaje.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegEmpMensaje.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblRegEmpMensaje.setBounds(12, 154, 787, 40);
+		lblRegEmpMensaje.setBounds(12, 131, 787, 40);
 		pnlRegistroEmpresas.add(lblRegEmpMensaje);
 
 		JSeparator sptRegEmpresa = new JSeparator();
-		sptRegEmpresa.setBounds(135, 195, 540, 16);
+		sptRegEmpresa.setBounds(135, 172, 540, 16);
 		pnlRegistroEmpresas.add(sptRegEmpresa);
+
+		JLabel lblSector = new JLabel("Sector empresarial:");
+		lblSector.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		lblSector.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSector.setBounds(180, 332, 174, 34);
+		pnlRegistroEmpresas.add(lblSector);
+
+		txtSector = new JTextField();
+		txtSector.setHorizontalAlignment(SwingConstants.LEFT);
+		txtSector.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		txtSector.setBounds(180, 369, 174, 34);
+		pnlRegistroEmpresas.add(txtSector);
+		txtSector.setColumns(10);
+	}
+
+	private boolean confirmarPasswd(String passwd, String passwdC) {
+		boolean valido = false;
+		if (passwd.equalsIgnoreCase(passwdC)) {
+			valido = true;
+		}
+		return valido;
+	}
+
+	private boolean validarDatosUsuario() {
+		boolean valido = true;
+
+		if (txtNombre.getText().trim().isEmpty() || passwd.trim().isEmpty() || passwdC.trim().isEmpty()
+				|| txtTelefono.getText().trim().isEmpty() || txtRegCorreo.getText().trim().isEmpty()
+				|| cmbProvincia.getSelectedIndex() == 0 || txtMunicipio.getText().trim().isEmpty()
+				|| txtDireccion.getText().trim().isEmpty()) {
+			valido = false;
+		}
+		return valido;
+	}
+
+	private boolean validarDatosCand() {
+		boolean valido = true;
+
+		if (txtApellido.getText().trim().isEmpty() || txtCedula.getText().trim().isEmpty()
+				|| (!rdbtnSexoF.isSelected() && !rdbtnSexoM.isSelected())
+				|| (!rdbtnUniversitario.isSelected() && !rdbtnTecnico.isSelected() && !rdbtnObrero.isSelected())) {
+			valido = false;
+		} else if (rdbtnUniversitario.isSelected()) {
+			if (cmbCarreras.getSelectedIndex() == 0) {
+				valido = false;
+			}
+		} else if (rdbtnTecnico.isSelected()) {
+			if (txtTecnico.getText().trim().isEmpty()) {
+				valido = false;
+			}
+		} else if (rdbtnObrero.isSelected()) {
+			if (!chckbxConduccion.isSelected() && !chckbxElectricidad.isSelected() && !chckbxLimpieza.isSelected()
+					&& !chckbxMantenimiento.isSelected() && !chckbxMecanica.isSelected()
+					&& !chckbxOfimatica.isSelected() && !chckbxSeguridad.isSelected() && !chckbxVentas.isSelected()) {
+				valido = false;
+			}
+		}
+
+		return valido;
+	}
+
+	private boolean validarEdad(Date fechaNacimiento) {
+		boolean validarEdad = true;
+		LocalDate fechaNac = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+		LocalDate fechaActual = LocalDate.now();
+
+		int edad = Period.between(fechaNac, fechaActual).getYears();
+
+		if (edad < 17) {
+			validarEdad = false;
+		}
+
+		return validarEdad;
+	}
+
+	private boolean validarDatosEmp() {
+		boolean valido = true;
+
+		if (txtRNC.getText().trim().isEmpty() || cmbTipoEmpresa.getSelectedIndex() == 0
+				|| txtSector.getText().trim().isEmpty()) {
+			valido = false;
+		}
+
+		return valido;
 	}
 
 	private void limpiarInicioSesion() {
@@ -1031,42 +1196,42 @@ public class LoginUsuarios extends JDialog {
 	}
 
 	private void limpiarRegUsuario() {
-
+		txtNombre.setText("");
+		txtTelefono.setText("");
+		txtRegCorreo.setText("");
+		cmbProvincia.setSelectedIndex(0);
+		txtMunicipio.setText("");
+		txtDireccion.setText("");
+		txtRegPasswd.setText("");
+		txtValidarPasswd.setText("");
 	}
 
 	private void limpiarRegCand() {
-
-		txtApellidoCand.setText("");
+		txtApellido.setText("");
 		txtCedula.setText("");
-
 		rdbtnSexoM.setSelected(false);
 		rdbtnSexoF.setSelected(false);
-
 		txtCedula.setText("");
-		rdbtnLicenciaSi.setSelected(false);
-		rdbtnLicenciaNo.setSelected(false);
-
+		spnFechaNac.setEditor(de_spnFechaNac);
 		rdbtnUniversitario.setSelected(true);
 		rdbtnTecnico.setSelected(false);
 		rdbtnObrero.setSelected(false);
-
 		cmbCarreras.setSelectedIndex(0);
-
 		txtTecnico.setText("");
 		spnAniosExp.setValue(0);
-
 		chckbxVentas.setSelected(false);
 		chckbxMecanica.setSelected(false);
-		chckbxOfimtica.setSelected(false);
+		chckbxOfimatica.setSelected(false);
 		chckbxElectricidad.setSelected(false);
 		chckbxSeguridad.setSelected(false);
 		chckbxMantenimiento.setSelected(false);
-		chckbxConduccin.setSelected(false);
+		chckbxConduccion.setSelected(false);
 		chckbxLimpieza.setSelected(false);
 	}
 
 	private void limpiarRegEmpresa() {
 		txtRNC.setText("");
 		cmbTipoEmpresa.setSelectedIndex(0);
+		txtSector.setText("");
 	}
 }
