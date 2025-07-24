@@ -16,11 +16,11 @@ public class Obrero extends Persona {
 
 	public Obrero(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
-			Date fechaNacimiento, String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes,
-			boolean ventas, boolean mecanica, boolean ofimatica, boolean seguridad, boolean electricidad,
-			boolean mantenimiento, boolean conduccion, boolean limpieza) {
+			Date fechaNacimiento, String cedula, boolean estadoEmpleado, boolean ventas, boolean mecanica,
+			boolean ofimatica, boolean seguridad, boolean electricidad, boolean mantenimiento, boolean conduccion,
+			boolean limpieza) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
-				sexo, fechaNacimiento, cedula, estadoEmpleado, misSolicitudes);
+				sexo, fechaNacimiento, cedula, estadoEmpleado);
 		this.ventas = ventas;
 		this.mecanica = mecanica;
 		this.ofimatica = ofimatica;

@@ -124,13 +124,13 @@ public class MenuCandidatos extends JFrame {
 	public MenuCandidatos(Persona personaActual) {
 		setResizable(false);
 		if (personaActual != null) {
-			setTitle("Laborea - �Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
+			setTitle("Laborea - ¡Bienvenido " + persActual.getNombre() + " " + persActual.getApellidos() + "!");
 			persActual = personaActual;
 		} else {
-			// insertar usuario para pruebas
+			// Insertar usuario para pruebas
 			persActual = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
 					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
-					new ArrayList<Solicitud>(), "Ing. En sistemas");
+					"Ing. En sistemas");
 			Bolsa.getInstancia().insertarUsuario(persActual);
 			setTitle("Laborea - Pruebas menu candidatos");
 		}
@@ -598,7 +598,7 @@ public class MenuCandidatos extends JFrame {
 		pnlSolicitudes.add(lblArea);
 
 		cbxAreaSolicitud = new JComboBox();
-		cbxAreaSolicitud.setModel(new DefaultComboBoxModel(new String[] { "<Seleccione>",
+		cbxAreaSolicitud.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>",
 				"Tecnolog\u00EDa / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
 				"Administraci\u00F3n / Oficina", "Recursos Humanos", "Finanzas / Contabilidad",
 				"Log\u00EDstica y Distribuci\u00F3n", "Ingenier\u00EDa", "Salud / Medicina",

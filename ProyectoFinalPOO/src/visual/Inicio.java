@@ -111,7 +111,6 @@ public class Inicio extends JFrame {
 				LoginUsuarios pantIniciarSesion = new LoginUsuarios();
 				pantIniciarSesion.setModal(true);
 				pantIniciarSesion.setVisible(true);
-
 			}
 		});
 		btnInicioSesion.setOpaque(false);

@@ -14,14 +14,14 @@ public class Persona extends Usuario {
 
 	public Persona(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
-			Date fechaNacimiento, String cedula, boolean estadoEmpleado, ArrayList<Solicitud> misSolicitudes) {
+			Date fechaNacimiento, String cedula, boolean estadoEmpleado) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado);
 		this.apellidos = apellidos;
 		this.sexo = sexo;
 		this.fechaNacimiento = fechaNacimiento;
 		this.cedula = cedula;
 		this.estadoEmpleado = estadoEmpleado;
-		this.misSolicitudes = misSolicitudes;
+		misSolicitudes = new ArrayList<Solicitud>();
 	}
 
 	public String getApellidos() {
