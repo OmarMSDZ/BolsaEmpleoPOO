@@ -73,16 +73,12 @@ public class VisualizarPerfilCandidato extends JDialog {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -99,6 +95,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 	 * Create the dialog.
 	 */
 	public VisualizarPerfilCandidato() {
+		setBackground(Color.WHITE);
 		setResizable(false);
 		Persona actual = (Persona) Bolsa.getUsuarioActivo();
 
@@ -127,8 +124,9 @@ public class VisualizarPerfilCandidato extends JDialog {
 		contentPanel.setLayout(null);
 		{
 			JLabel lblNewLabel = new JLabel("");
+			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/Laborea.png")));
-			lblNewLabel.setBounds(-51, -14, 216, 118);
+			lblNewLabel.setBounds(0, 0, 177, 69);
 			contentPanel.add(lblNewLabel);
 		}
 		{
@@ -169,7 +167,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 		contentPanel.add(pnlInfoPersonal);
 		pnlInfoPersonal.setLayout(null);
 		{
-			JLabel lblInformacinPersonal = new JLabel("Informaci\u00F3n Personal");
+			JLabel lblInformacinPersonal = new JLabel("Informaci\u00F3n personal");
 			lblInformacinPersonal.setBounds(10, 0, 263, 46);
 			pnlInfoPersonal.add(lblInformacinPersonal);
 			lblInformacinPersonal.setFont(new Font("Segoe UI", Font.PLAIN, 18));
@@ -280,7 +278,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			pnlInfoPersonal.add(lblMunicipioPersona);
 		}
 		{
-			lblDireccionPersona = new JLabel("Direccion");
+			lblDireccionPersona = new JLabel("Direcci\u00F3n");
 			lblDireccionPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 			lblDireccionPersona.setBounds(630, 189, 189, 46);
 			pnlInfoPersonal.add(lblDireccionPersona);
@@ -563,6 +561,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			contentPanel.add(btnCambiarContraseña);
 
 			JLabel btnRegresar = new JLabel("");
+			btnRegresar.setHorizontalAlignment(SwingConstants.CENTER);
 			btnRegresar.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -576,7 +575,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 				}
 			});
 			btnRegresar.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/flechaRegresar.png")));
-			btnRegresar.setBounds(740, -14, 90, 118);
+			btnRegresar.setBounds(754, 0, 90, 91);
 			contentPanel.add(btnRegresar);
 			if (persActiva != null) {
 				btnDesactivarCuenta.setEnabled(true); // solo activar si hay persona activa en esta vista

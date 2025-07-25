@@ -142,7 +142,7 @@ public class LoginUsuarios extends JDialog {
 		JLabel iconLaborea = new JLabel("");
 		iconLaborea.setHorizontalAlignment(SwingConstants.CENTER);
 		iconLaborea.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
-		iconLaborea.setBounds(12, 13, 150, 84);
+		iconLaborea.setBounds(12, 13, 150, 75);
 		pnlLoginUsuarios.add(iconLaborea);
 
 		JLabel lblBienvenido = new JLabel("Bienvenido/a.");
@@ -323,7 +323,7 @@ public class LoginUsuarios extends JDialog {
 		JLabel iconLaboreaRegUsu = new JLabel("");
 		iconLaboreaRegUsu.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
 		iconLaboreaRegUsu.setHorizontalAlignment(SwingConstants.CENTER);
-		iconLaboreaRegUsu.setBounds(12, 13, 150, 84);
+		iconLaboreaRegUsu.setBounds(12, 13, 150, 75);
 		pnlRegistroUsuarios.add(iconLaboreaRegUsu);
 
 		JLabel iconRegresarRegUsu = new JLabel("");
@@ -336,7 +336,7 @@ public class LoginUsuarios extends JDialog {
 		});
 		iconRegresarRegUsu.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/flechaRegresar.png")));
 		iconRegresarRegUsu.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegresarRegUsu.setBounds(701, 13, 98, 76);
+		iconRegresarRegUsu.setBounds(701, 13, 100, 75);
 		pnlRegistroUsuarios.add(iconRegresarRegUsu);
 
 		JLabel lblBienvenidaRegUsuario = new JLabel("Bienvenido/a.");
@@ -535,13 +535,13 @@ public class LoginUsuarios extends JDialog {
 		});
 		iconRegresarRegCand.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/flechaRegresar.png")));
 		iconRegresarRegCand.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegresarRegCand.setBounds(701, 13, 98, 76);
+		iconRegresarRegCand.setBounds(701, 13, 100, 75);
 		pnlRegistroCandidato.add(iconRegresarRegCand);
 
 		JLabel iconLaboreaRegCand = new JLabel("");
 		iconLaboreaRegCand.setHorizontalAlignment(SwingConstants.CENTER);
 		iconLaboreaRegCand.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
-		iconLaboreaRegCand.setBounds(12, 13, 150, 84);
+		iconLaboreaRegCand.setBounds(12, 13, 150, 75);
 		pnlRegistroCandidato.add(iconLaboreaRegCand);
 
 		JLabel lblRegCand = new JLabel(
@@ -978,13 +978,13 @@ public class LoginUsuarios extends JDialog {
 		});
 		iconRegresarRegEmp.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/flechaRegresar.png")));
 		iconRegresarRegEmp.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegresarRegEmp.setBounds(701, 13, 98, 76);
+		iconRegresarRegEmp.setBounds(701, 13, 100, 75);
 		pnlRegistroEmpresas.add(iconRegresarRegEmp);
 
 		JLabel iconLaboreaRegEmp = new JLabel("");
 		iconLaboreaRegEmp.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
 		iconLaboreaRegEmp.setHorizontalAlignment(SwingConstants.CENTER);
-		iconLaboreaRegEmp.setBounds(12, 13, 150, 84);
+		iconLaboreaRegEmp.setBounds(12, 13, 150, 75);
 		pnlRegistroEmpresas.add(iconLaboreaRegEmp);
 
 		JPanel btnRegEmpresa = new JPanel() {
@@ -1043,18 +1043,12 @@ public class LoginUsuarios extends JDialog {
 		btnRegEmpresa.setLayout(null);
 
 		JLabel lblRegEmpresa = new JLabel("Registrar");
+		lblRegEmpresa.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/iconAddCompany.png")));
 		lblRegEmpresa.setBackground(Color.WHITE);
 		lblRegEmpresa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegEmpresa.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
-		lblRegEmpresa.setBounds(65, 13, 85, 37);
+		lblRegEmpresa.setBounds(12, 13, 138, 37);
 		btnRegEmpresa.add(lblRegEmpresa);
-
-		JLabel iconRegEmpresa = new JLabel("");
-		iconRegEmpresa.setBackground(Color.WHITE);
-		iconRegEmpresa.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/iconAddCompany.png")));
-		iconRegEmpresa.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegEmpresa.setBounds(24, 13, 43, 37);
-		btnRegEmpresa.add(iconRegEmpresa);
 
 		JLabel lblRNC = new JLabel("RNC:");
 		lblRNC.setFont(new Font("Segoe UI", Font.PLAIN, 16));
