@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 public class Empresa extends Usuario implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String rnc;
 	private String tipoEmpresa;
@@ -54,6 +51,10 @@ public class Empresa extends Usuario implements Serializable {
 
 	public void setMisOfertas(ArrayList<Oferta> misOfertas) {
 		this.misOfertas = misOfertas;
+	}
+
+	public void insertarOferta(Oferta oferta) {
+		misOfertas.add(oferta);
 	}
 
 }

@@ -929,7 +929,6 @@ public class MenuCandidatos extends JFrame {
 
 	// limpiar form solicitudes
 	private void clear() {
-		// TODO Auto-generated method stub
 		cbxHorarioSolicitud.setSelectedIndex(0);
 		cbxTipoEmpleo.setSelectedIndex(0);
 		cbxModalidad.setSelectedIndex(0);
@@ -1009,8 +1008,6 @@ public class MenuCandidatos extends JFrame {
 			String formattedDate = dateFormat.format(fechaSolicitud);
 			lblFechaSolicitud.setText(formattedDate);
 			lblEstadoSolicitud.setText(soli.getEstadoSolicitud());
-
 		}
-
 	}
 }

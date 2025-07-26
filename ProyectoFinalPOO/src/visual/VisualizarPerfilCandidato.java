@@ -566,16 +566,14 @@ public class VisualizarPerfilCandidato extends JDialog {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (persActiva != null) {
-
 						MenuCandidatos menuCan = new MenuCandidatos();
 						menuCan.setVisible(true);
 						dispose();
-
 					}
 				}
 			});
 			btnRegresar.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/flechaRegresar.png")));
-			btnRegresar.setBounds(754, 0, 90, 91);
+			btnRegresar.setBounds(738, 0, 90, 91);
 			contentPanel.add(btnRegresar);
 			if (persActiva != null) {
 				btnDesactivarCuenta.setEnabled(true); // solo activar si hay persona activa en esta vista
