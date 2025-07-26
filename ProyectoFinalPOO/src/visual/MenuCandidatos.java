@@ -112,28 +112,20 @@ public class MenuCandidatos extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					MenuCandidatos frame = new MenuCandidatos();
 					frame.setVisible(true);
-					frame.addWindowListener(new WindowAdapter() {
-						@Override
-						public void windowClosing(WindowEvent e) {
-							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
-								bolsaWrite.writeObject(Bolsa.getInstancia());
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
-					});
+				 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -160,6 +152,18 @@ public class MenuCandidatos extends JFrame {
 	  
  
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		  addWindowListener(new WindowAdapter() {
+		        @Override
+		        public void windowClosing(WindowEvent e) {
+		            try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+		                bolsaWrite.writeObject(Bolsa.getInstancia());
+		                System.out.println("Datos guardados desde MenuCandidatos");
+		            } catch (IOException e1) {
+		                e1.printStackTrace();
+		            }
+		        }
+		    });
+		  
 		setBounds(100, 100, 1100, 687);
 
 		// Poner ventana en centro de pantalla y tamaño máximo

@@ -18,6 +18,8 @@ import java.awt.RenderingHints;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -89,6 +91,16 @@ public class Inicio extends JFrame {
 				try {
 					Inicio frame = new Inicio();
 					frame.setVisible(true);
+					frame.addWindowListener(new WindowAdapter() {
+						@Override
+						public void windowClosing(WindowEvent e) {
+							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+								bolsaWrite.writeObject(Bolsa.getInstancia());
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+					});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -165,6 +177,7 @@ public class Inicio extends JFrame {
 				LoginUsuarios pantIniciarSesion = new LoginUsuarios();
 				pantIniciarSesion.setModal(true);
 				pantIniciarSesion.setVisible(true);
+
 			}
 		});
 		btnInicioSesion.setOpaque(false);
