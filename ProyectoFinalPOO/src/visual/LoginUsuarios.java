@@ -33,6 +33,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -101,6 +106,16 @@ public class LoginUsuarios extends JDialog {
 			LoginUsuarios dialog = new LoginUsuarios();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
+			dialog.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+						bolsaWrite.writeObject(Bolsa.getInstancia());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -251,17 +266,21 @@ public class LoginUsuarios extends JDialog {
 						Bolsa.setUsuarioActivo(usuarioLogin);
 						MenuCandidatos menuCand = new MenuCandidatos();
 						menuCand.setVisible(true);
-						
+						limpiarInicioSesion();
+						 
+						dispose();
 					} else if (usuarioLogin instanceof Empresa) {
 						MenuEmpresas menuEmpr = new MenuEmpresas();
 						menuEmpr.setVisible(true);
+						limpiarInicioSesion();
+						dispose();
 					}
 					limpiarInicioSesion();
-					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"¡No se encuentró el usuario registrado con esta información! Verique los datos.",
 							"Advertencia", JOptionPane.WARNING_MESSAGE);
+					limpiarInicioSesion();
 				}
 			}
 		});
@@ -422,75 +441,75 @@ public class LoginUsuarios extends JDialog {
 
 		JLabel lblNombre = new JLabel("Nombre:");
 		lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblNombre.setBounds(144, 208, 200, 35);
+		lblNombre.setBounds(104, 183, 200, 35);
 		pnlRegistroUsuarios.add(lblNombre);
 
 		txtNombre = new JTextField();
 		txtNombre.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtNombre.setBounds(144, 242, 200, 35);
+		txtNombre.setBounds(104, 217, 607, 35);
 		pnlRegistroUsuarios.add(txtNombre);
 		txtNombre.setColumns(10);
 
 		txtRegPasswd = new JPasswordField();
 		txtRegPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtRegPasswd.setBounds(467, 242, 200, 35);
+		txtRegPasswd.setBounds(104, 559, 287, 35);
 		pnlRegistroUsuarios.add(txtRegPasswd);
 
 		txtValidarPasswd = new JPasswordField();
 		txtValidarPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtValidarPasswd.setBounds(467, 340, 200, 35);
+		txtValidarPasswd.setBounds(424, 559, 287, 35);
 		pnlRegistroUsuarios.add(txtValidarPasswd);
 
 		JLabel lblRegPasswd = new JLabel("Contrase\u00F1a:");
 		lblRegPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblRegPasswd.setBounds(467, 208, 200, 35);
+		lblRegPasswd.setBounds(104, 525, 200, 35);
 		pnlRegistroUsuarios.add(lblRegPasswd);
 
 		JLabel lblValidarPasswd = new JLabel("Confirmar contrase\u00F1a:");
 		lblValidarPasswd.setHorizontalAlignment(SwingConstants.LEFT);
 		lblValidarPasswd.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblValidarPasswd.setBounds(467, 303, 200, 35);
+		lblValidarPasswd.setBounds(424, 525, 200, 35);
 		pnlRegistroUsuarios.add(lblValidarPasswd);
 
 		JLabel lblRegCorreo = new JLabel("Correo electr\u00F3nico:");
 		lblRegCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblRegCorreo.setBounds(144, 303, 200, 35);
+		lblRegCorreo.setBounds(104, 263, 200, 35);
 		pnlRegistroUsuarios.add(lblRegCorreo);
 
 		txtRegCorreo = new JTextField();
 		txtRegCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtRegCorreo.setBounds(144, 340, 200, 35);
+		txtRegCorreo.setBounds(104, 300, 607, 35);
 		pnlRegistroUsuarios.add(txtRegCorreo);
 		txtRegCorreo.setColumns(10);
 
 		JLabel lblTelefono = new JLabel("Tel\u00E9fono:");
 		lblTelefono.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblTelefono.setBounds(144, 408, 200, 35);
+		lblTelefono.setBounds(104, 345, 200, 35);
 		pnlRegistroUsuarios.add(lblTelefono);
 
 		txtTelefono = new JTextField();
 		txtTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtTelefono.setBounds(144, 441, 200, 35);
+		txtTelefono.setBounds(104, 379, 607, 35);
 		pnlRegistroUsuarios.add(txtTelefono);
 		txtTelefono.setColumns(10);
 
 		JLabel lblDireccion = new JLabel("Direcci\u00F3n:");
 		lblDireccion.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblDireccion.setBounds(467, 408, 200, 35);
+		lblDireccion.setBounds(511, 425, 200, 35);
 		pnlRegistroUsuarios.add(lblDireccion);
 
 		txtDireccion = new JTextField();
 		txtDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtDireccion.setBounds(467, 441, 200, 35);
+		txtDireccion.setBounds(511, 462, 200, 35);
 		pnlRegistroUsuarios.add(txtDireccion);
 		txtDireccion.setColumns(10);
 
 		JLabel lblProvincia = new JLabel("Provincia:");
 		lblProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblProvincia.setHorizontalAlignment(SwingConstants.LEFT);
-		lblProvincia.setBounds(144, 514, 200, 35);
+		lblProvincia.setBounds(104, 424, 200, 35);
 		pnlRegistroUsuarios.add(lblProvincia);
 
 		cmbProvincia = new JComboBox();
@@ -503,24 +522,24 @@ public class LoginUsuarios extends JDialog {
 				"Peravia", "Puerto Plata", "Saman\u00E1", "San Crist\u00F3bal", "San Jos\u00E9 de Ocoa", "San Juan",
 				"San Pedro de Macor\u00EDs", "S\u00E1nchez Ram\u00EDrez", "Santiago", "Santiago Rodr\u00EDguez",
 				"Santo Domingo", "Valverde" }));
-		cmbProvincia.setBounds(144, 552, 200, 35);
+		cmbProvincia.setBounds(104, 462, 200, 35);
 		pnlRegistroUsuarios.add(cmbProvincia);
 
 		JLabel lblMunicipio = new JLabel("Municipio:");
 		lblMunicipio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblMunicipio.setBounds(467, 514, 200, 35);
+		lblMunicipio.setBounds(326, 424, 200, 35);
 		pnlRegistroUsuarios.add(lblMunicipio);
 
 		txtMunicipio = new JTextField();
 		txtMunicipio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtMunicipio.setBounds(467, 552, 200, 35);
+		txtMunicipio.setBounds(326, 462, 157, 35);
 		pnlRegistroUsuarios.add(txtMunicipio);
 		txtMunicipio.setColumns(10);
 
 		JSeparator sptSubrayadoRegUsuario = new JSeparator();
 		sptSubrayadoRegUsuario.setBackground(Color.WHITE);
 		sptSubrayadoRegUsuario.setForeground(Color.BLACK);
-		sptSubrayadoRegUsuario.setBounds(144, 172, 523, 27);
+		sptSubrayadoRegUsuario.setBounds(108, 172, 603, 27);
 		pnlRegistroUsuarios.add(sptSubrayadoRegUsuario);
 
 		JPanel pnlRegistroCandidato = new JPanel();
@@ -568,19 +587,19 @@ public class LoginUsuarios extends JDialog {
 		JLabel lblSexo = new JLabel("Sexo:");
 		lblSexo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSexo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblSexo.setBounds(321, 195, 200, 35);
+		lblSexo.setBounds(512, 195, 200, 35);
 		pnlRegistroCandidato.add(lblSexo);
 
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de nacimiento:");
 		lblFechaDeNacimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFechaDeNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblFechaDeNacimiento.setBounds(321, 293, 200, 35);
+		lblFechaDeNacimiento.setBounds(51, 284, 200, 35);
 		pnlRegistroCandidato.add(lblFechaDeNacimiento);
 
 		JLabel lblCedula = new JLabel("C\u00E9dula:");
 		lblCedula.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCedula.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblCedula.setBounds(51, 293, 200, 35);
+		lblCedula.setBounds(280, 194, 200, 35);
 		pnlRegistroCandidato.add(lblCedula);
 
 		txtApellido = new JTextField();
@@ -592,7 +611,7 @@ public class LoginUsuarios extends JDialog {
 		txtCedula = new JTextField();
 		txtCedula.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		txtCedula.setColumns(10);
-		txtCedula.setBounds(51, 331, 200, 35);
+		txtCedula.setBounds(280, 232, 200, 35);
 		pnlRegistroCandidato.add(txtCedula);
 
 		spnFechaNac = new JSpinner();
@@ -602,7 +621,7 @@ public class LoginUsuarios extends JDialog {
 		de_spnFechaNac = new JSpinner.DateEditor(spnFechaNac, "dd/MM/yyyy");
 		spnFechaNac.setEditor(de_spnFechaNac);
 
-		spnFechaNac.setBounds(321, 331, 200, 35);
+		spnFechaNac.setBounds(51, 322, 429, 35);
 		pnlRegistroCandidato.add(spnFechaNac);
 
 		JLabel lblFormacin = new JLabel("Formaci\u00F3n:");
@@ -772,7 +791,7 @@ public class LoginUsuarios extends JDialog {
 		rdbtnSexoM.setHorizontalAlignment(SwingConstants.CENTER);
 		rdbtnSexoM.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnSexoM.setBackground(Color.WHITE);
-		rdbtnSexoM.setBounds(321, 227, 48, 35);
+		rdbtnSexoM.setBounds(512, 227, 48, 35);
 		pnlRegistroCandidato.add(rdbtnSexoM);
 
 		rdbtnSexoF = new JRadioButton("F");
@@ -785,7 +804,7 @@ public class LoginUsuarios extends JDialog {
 		rdbtnSexoF.setHorizontalAlignment(SwingConstants.CENTER);
 		rdbtnSexoF.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnSexoF.setBackground(Color.WHITE);
-		rdbtnSexoF.setBounds(385, 227, 48, 35);
+		rdbtnSexoF.setBounds(576, 227, 48, 35);
 		pnlRegistroCandidato.add(rdbtnSexoF);
 
 		JPanel pnlOcultoSup = new JPanel();
@@ -864,7 +883,7 @@ public class LoginUsuarios extends JDialog {
 				"Videojuegos", "Zootecnia" }));
 		cmbCarreras.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		cmbCarreras.setBackground(Color.WHITE);
-		cmbCarreras.setBounds(22, 40, 200, 35);
+		cmbCarreras.setBounds(22, 40, 473, 35);
 		pnlFormUniv.add(cmbCarreras);
 
 		JPanel pnlFormTec = new JPanel();
@@ -882,21 +901,21 @@ public class LoginUsuarios extends JDialog {
 		txtTecnico = new JTextField();
 		txtTecnico.setBackground(Color.WHITE);
 		txtTecnico.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtTecnico.setBounds(10, 37, 200, 35);
+		txtTecnico.setBounds(10, 37, 364, 35);
 		pnlFormTec.add(txtTecnico);
 		txtTecnico.setColumns(10);
 
 		JLabel lblAnnosDeExperiencia = new JLabel("A\u00F1os de experiencia:");
 		lblAnnosDeExperiencia.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAnnosDeExperiencia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblAnnosDeExperiencia.setBounds(238, 0, 200, 35);
+		lblAnnosDeExperiencia.setBounds(384, 0, 200, 35);
 		pnlFormTec.add(lblAnnosDeExperiencia);
 
 		spnAniosExp = new JSpinner();
 		spnAniosExp.setBackground(Color.WHITE);
 		spnAniosExp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		spnAniosExp.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		spnAniosExp.setBounds(238, 37, 200, 35);
+		spnAniosExp.setBounds(384, 37, 200, 35);
 		pnlFormTec.add(spnAniosExp);
 
 		JPanel pnlFormObrero = new JPanel();
