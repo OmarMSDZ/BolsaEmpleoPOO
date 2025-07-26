@@ -6,6 +6,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -77,6 +82,16 @@ public class EditarInfoPersonalCandidato extends JDialog {
 			EditarInfoPersonalCandidato dialog = new EditarInfoPersonalCandidato(0);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
+			dialog.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+						bolsaWrite.writeObject(Bolsa.getInstancia());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -272,7 +287,6 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				pnlInfoPersonal.add(lblSexo);
 
 				rdbtnSexoM = new JRadioButton("Masculino");
-				rdbtnSexoM.setSelected(true);
 				rdbtnSexoM.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (rdbtnSexoM.isSelected()) {
@@ -282,7 +296,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				});
 				rdbtnSexoM.setBackground(Color.WHITE);
 				rdbtnSexoM.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-				rdbtnSexoM.setBounds(67, 196, 109, 23);
+				rdbtnSexoM.setBounds(67, 193, 109, 23);
 				pnlInfoPersonal.add(rdbtnSexoM);
 
 				rdbtnSexoF = new JRadioButton("Femenino");
@@ -295,7 +309,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				});
 				rdbtnSexoF.setBackground(Color.WHITE);
 				rdbtnSexoF.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-				rdbtnSexoF.setBounds(201, 196, 109, 23);
+				rdbtnSexoF.setBounds(179, 193, 109, 23);
 				pnlInfoPersonal.add(rdbtnSexoF);
 			}
 			{
@@ -483,6 +497,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnGuardar = new JButton("Modificar");
+				btnGuardar.setIcon(new ImageIcon(EditarInfoPersonalCandidato.class.getResource("/img/diskette.png")));
 				btnGuardar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (persActual != null) {
@@ -559,6 +574,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 			}
 			{
 				JButton btnCancelar = new JButton("Cancelar");
+				btnCancelar.setIcon(new ImageIcon(EditarInfoPersonalCandidato.class.getResource("/img/cancelar16px.png")));
 				btnCancelar.setFocusable(false);
 				btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 				btnCancelar.addActionListener(new ActionListener() {

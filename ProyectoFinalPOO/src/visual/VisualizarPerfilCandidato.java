@@ -39,6 +39,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JCheckBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class VisualizarPerfilCandidato extends JDialog {
 
@@ -86,6 +91,16 @@ public class VisualizarPerfilCandidato extends JDialog {
 			VisualizarPerfilCandidato dialog = new VisualizarPerfilCandidato();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
+			dialog.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+						bolsaWrite.writeObject(Bolsa.getInstancia());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -586,6 +601,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Recargar");
+				okButton.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/refresh.png")));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						cargarInfo();
@@ -600,6 +616,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cerrar");
+				cancelButton.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/cancelar16px.png")));
 				cancelButton.setFocusable(false);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
