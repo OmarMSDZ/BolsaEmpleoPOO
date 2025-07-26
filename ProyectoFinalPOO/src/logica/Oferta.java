@@ -10,7 +10,7 @@ public class Oferta implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String codigo, puestoTrab, descripcion, modalidad, tipoEmpleo, horario, nivelEducacion; 
-	private String area; //tecnologia, salud, servicios, etc...
+	private String area;
 	private int aniosExp;
 	private float salarioEstimado;
 	private boolean requiereLicencia;
@@ -22,7 +22,7 @@ public class Oferta implements Serializable{
 
 	public Oferta(String codigo, String puestoTrab, String descripcion, String modalidad, String tipo, String horario,
 			String nivelEducacion, String area, int aniosExp, float salarioEstimado, boolean requiereLicencia,
-			boolean requiereMovilidad, Date fechaOferta, String provincia, int cantVacantes, boolean estadoOferta,
+			boolean requiereMovilidad, Date fechaOferta, int cantVacantes, boolean estadoOferta,
 			Empresa empReclutadora) {
 		super();
 		this.codigo = codigo;
@@ -38,7 +38,6 @@ public class Oferta implements Serializable{
 		this.requiereLicencia = requiereLicencia;
 		this.requiereMovilidad = requiereMovilidad;
 		this.fechaOferta = fechaOferta;
-		
 		this.cantVacantes = cantVacantes;
 		this.estadoOferta = estadoOferta;
 		this.empReclutadora = empReclutadora;

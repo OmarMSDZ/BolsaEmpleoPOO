@@ -9,8 +9,6 @@ import logica.Solicitud;
 public class ElementoSolicitud extends JPanel {
 
     private Solicitud soli;
-   
-
     private JLabel lblTitulo;
     private JLabel lblSalario;
     private JLabel lblModalidad;
@@ -30,35 +28,42 @@ public class ElementoSolicitud extends JPanel {
         this.soli = soli;
 
         lblTitulo = new JLabel("Título");
+        lblTitulo.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
         lblTitulo.setAlignmentX(LEFT_ALIGNMENT);
         add(lblTitulo);
         
-        lblArea = new JLabel("Area");
+        lblArea = new JLabel("\u00C1rea");
+        lblArea.setHorizontalAlignment(SwingConstants.LEFT);
         lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblArea.setAlignmentX(0.0f);
         add(lblArea);
 
         lblSalario = new JLabel("Salario");
+        lblSalario.setHorizontalAlignment(SwingConstants.LEFT);
         lblSalario.setIcon(new ImageIcon(ElementoSolicitud.class.getResource("/img/money.png")));
         lblSalario.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblSalario.setAlignmentX(LEFT_ALIGNMENT);
         add(lblSalario);
 
         lblModalidad = new JLabel("Modalidad");
+        lblModalidad.setHorizontalAlignment(SwingConstants.LEFT);
         lblModalidad.setIcon(new ImageIcon(ElementoSolicitud.class.getResource("/img/info.png")));
         lblModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblModalidad.setAlignmentX(LEFT_ALIGNMENT);
         add(lblModalidad);
 
         lblTipo = new JLabel("Tipo");
+        lblTipo.setHorizontalAlignment(SwingConstants.LEFT);
         lblTipo.setIcon(new ImageIcon(ElementoSolicitud.class.getResource("/img/briefcase.png")));
         lblTipo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblTipo.setAlignmentX(LEFT_ALIGNMENT);
         add(lblTipo);
 
-        lblFecha = new JLabel("Fecha");
-        lblFecha.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        lblFecha = new JLabel("Fecha:");
+        lblFecha.setIcon(new ImageIcon(ElementoSolicitud.class.getResource("/img/calendar.png")));
+        lblFecha.setHorizontalAlignment(SwingConstants.LEFT);
+        lblFecha.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblFecha.setAlignmentX(LEFT_ALIGNMENT);
         add(lblFecha);
 

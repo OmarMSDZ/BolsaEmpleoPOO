@@ -198,7 +198,6 @@ public class Bolsa implements Serializable {
 	}
 
 	private int buscarIndexOfertaByCodigo(String id) {
-		// TODO Auto-generated method stub
 		int index = -1;
 		boolean encontrado = false;
 		int i = 0;
@@ -209,7 +208,6 @@ public class Bolsa implements Serializable {
 			}
 			i++;
 		}
-
 		return index;
 	}
 
@@ -218,14 +216,17 @@ public class Bolsa implements Serializable {
 		listaUsuarios.add(usuario);
 	}
 
-	public void insertarOferta(Oferta ofer) {
-		listaOfertas.add(ofer);
+	public void insertarOferta(Oferta oferta) {
+		listaOfertas.add(oferta);
+		Empresa auxEmpresa = oferta.getEmpReclutadora();
+		auxEmpresa.insertarOferta(oferta);
+		modificarUsuario(auxEmpresa);
 	}
 
-	public void insertarSolicitud(Solicitud soli) {
-		listaSolicitudes.add(soli);
-		Persona aux = soli.getSolicitante();
-		aux.insertarSolicitud(soli);
+	public void insertarSolicitud(Solicitud solicitud) {
+		listaSolicitudes.add(solicitud);
+		Persona aux = solicitud.getSolicitante();
+		aux.insertarSolicitud(solicitud);
 		modificarUsuario(aux);
 	}
 
@@ -301,7 +302,7 @@ public class Bolsa implements Serializable {
 		modificarUsuario(persActiva);
 	}
 
-	// algoritmo de matching
+	// Algoritmo de matching
 	public ArrayList<MatchOferta> realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
 		ArrayList<MatchOferta> MatchesOfertas = new ArrayList<MatchOferta>();
 		for (Oferta oferta : ofertas) {
@@ -350,11 +351,11 @@ public class Bolsa implements Serializable {
 		}
 		return MatchesOfertas;
 	}
-	
-	//ejecutar match, solo si hay al menos una oferta y una solicitud registrada
+
+	// Ejecutar match, solo si hay al menos una oferta y una solicitud registrada
 	public void match() {
-		if(listaOfertas.size()>0 && listaSolicitudes.size()>0) {	
-		setListaMatchOferta(realizarMatching(listaOfertas, listaSolicitudes));
+		if (listaOfertas.size() > 0 && listaSolicitudes.size() > 0) {
+			setListaMatchOferta(realizarMatching(listaOfertas, listaSolicitudes));
 		}
 	}
 

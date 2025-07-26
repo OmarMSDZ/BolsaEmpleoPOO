@@ -94,7 +94,8 @@ public class Inicio extends JFrame {
 					frame.addWindowListener(new WindowAdapter() {
 						@Override
 						public void windowClosing(WindowEvent e) {
-							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(
+									new FileOutputStream("BdLaborea.dat"))) {
 								bolsaWrite.writeObject(Bolsa.getInstancia());
 							} catch (IOException e1) {
 								e1.printStackTrace();
@@ -177,7 +178,7 @@ public class Inicio extends JFrame {
 				LoginUsuarios pantIniciarSesion = new LoginUsuarios();
 				pantIniciarSesion.setModal(true);
 				pantIniciarSesion.setVisible(true);
-
+				dispose();
 			}
 		});
 		btnInicioSesion.setOpaque(false);

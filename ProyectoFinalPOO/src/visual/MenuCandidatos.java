@@ -82,7 +82,7 @@ public class MenuCandidatos extends JFrame {
 	private JTabbedPane jtpDescripcionSolicitud;
 	private JLabel lblHorariosSolicitud;
 
-	// solicitud seleccionada
+	// Solicitud seleccionada
 	private static Solicitud solicitudSelected = null;
 	private static Persona persActual = null;
 
@@ -231,9 +231,10 @@ public class MenuCandidatos extends JFrame {
 		}
 
 		label_1 = new JLabel("");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
 		label_1.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/Laborea.png")));
 		label_1.setFont(new Font("Segoe UI", Font.PLAIN, 26));
-		label_1.setBounds(-11, 11, 271, 74);
+		label_1.setBounds(12, 13, 199, 59);
 		contentPane.add(label_1);
 
 		// hacer que el panel tenga bordes redondeados, usando paintcomponent
@@ -501,31 +502,37 @@ public class MenuCandidatos extends JFrame {
 		pnlSolicitudes.add(separator_3);
 
 		JLabel lblNombreCompleto = new JLabel("Nombre completo:");
+		lblNombreCompleto.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNombreCompleto.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblNombreCompleto.setBounds(10, 168, 260, 51);
 		pnlSolicitudes.add(lblNombreCompleto);
 
 		JLabel lblSexo = new JLabel("Sexo:");
+		lblSexo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSexo.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblSexo.setBounds(10, 292, 260, 51);
 		pnlSolicitudes.add(lblSexo);
 
 		JLabel lblFechaNacimiento = new JLabel("Fecha nacimiento:");
+		lblFechaNacimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFechaNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblFechaNacimiento.setBounds(10, 358, 260, 51);
 		pnlSolicitudes.add(lblFechaNacimiento);
 
 		JLabel lblCedula = new JLabel("C\u00E9dula:");
+		lblCedula.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCedula.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblCedula.setBounds(10, 230, 260, 51);
 		pnlSolicitudes.add(lblCedula);
 
 		JLabel lblnumsoli = new JLabel("N\u00FAmero solicitudes:");
+		lblnumsoli.setHorizontalAlignment(SwingConstants.LEFT);
 		lblnumsoli.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblnumsoli.setBounds(10, 429, 260, 51);
 		pnlSolicitudes.add(lblnumsoli);
 
 		JLabel lblEstado = new JLabel("Estado:");
+		lblEstado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEstado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblEstado.setBounds(10, 501, 260, 51);
 		pnlSolicitudes.add(lblEstado);
@@ -541,36 +548,42 @@ public class MenuCandidatos extends JFrame {
 		pnlSolicitudes.add(separator_4);
 
 		lblInfNombreCompleto = new JLabel("Nombre Completo");
+		lblInfNombreCompleto.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfNombreCompleto.setForeground(Color.DARK_GRAY);
 		lblInfNombreCompleto.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfNombreCompleto.setBounds(247, 168, 468, 51);
 		pnlSolicitudes.add(lblInfNombreCompleto);
 
 		lblInfCedula = new JLabel("Cedula");
+		lblInfCedula.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfCedula.setForeground(Color.DARK_GRAY);
 		lblInfCedula.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfCedula.setBounds(247, 230, 468, 51);
 		pnlSolicitudes.add(lblInfCedula);
 
 		lblInfSexo = new JLabel("Sexo");
+		lblInfSexo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfSexo.setForeground(Color.DARK_GRAY);
 		lblInfSexo.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfSexo.setBounds(247, 292, 468, 51);
 		pnlSolicitudes.add(lblInfSexo);
 
 		lblInfFechaNacimiento = new JLabel("Fecha Nacimiento");
+		lblInfFechaNacimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfFechaNacimiento.setForeground(Color.DARK_GRAY);
 		lblInfFechaNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfFechaNacimiento.setBounds(247, 358, 468, 51);
 		pnlSolicitudes.add(lblInfFechaNacimiento);
 
 		lblInfNumeroSolicitudes = new JLabel("N\u00FAmero Solicitudes");
+		lblInfNumeroSolicitudes.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfNumeroSolicitudes.setForeground(Color.DARK_GRAY);
 		lblInfNumeroSolicitudes.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfNumeroSolicitudes.setBounds(247, 429, 468, 51);
 		pnlSolicitudes.add(lblInfNumeroSolicitudes);
 
 		lblInfEstado = new JLabel("Estado");
+		lblInfEstado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfEstado.setForeground(Color.DARK_GRAY);
 		lblInfEstado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblInfEstado.setBounds(247, 501, 468, 51);
@@ -920,7 +933,6 @@ public class MenuCandidatos extends JFrame {
 
 	// limpiar form solicitudes
 	private void clear() {
-		// TODO Auto-generated method stub
 		cbxHorarioSolicitud.setSelectedIndex(0);
 		cbxTipoEmpleo.setSelectedIndex(0);
 		cbxModalidad.setSelectedIndex(0);
@@ -1000,8 +1012,6 @@ public class MenuCandidatos extends JFrame {
 			String formattedDate = dateFormat.format(fechaSolicitud);
 			lblFechaSolicitud.setText(formattedDate);
 			lblEstadoSolicitud.setText(soli.getEstadoSolicitud());
-
 		}
-
 	}
 }

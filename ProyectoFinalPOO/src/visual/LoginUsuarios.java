@@ -96,7 +96,7 @@ public class LoginUsuarios extends JDialog {
 	private JComboBox cmbCarreras;
 	private JComboBox cmbTipoEmpresa;
 	private JComboBox cmbProvincia;
-	private JTextField txtSector;
+	private JComboBox cmbSectorEmp;
 
 	/**
 	 * Launch the application.
@@ -109,7 +109,8 @@ public class LoginUsuarios extends JDialog {
 			dialog.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
-					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(
+							new FileOutputStream("BdLaborea.dat"))) {
 						bolsaWrite.writeObject(Bolsa.getInstancia());
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -157,7 +158,7 @@ public class LoginUsuarios extends JDialog {
 		JLabel iconLaborea = new JLabel("");
 		iconLaborea.setHorizontalAlignment(SwingConstants.CENTER);
 		iconLaborea.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
-		iconLaborea.setBounds(12, 13, 150, 84);
+		iconLaborea.setBounds(12, 13, 150, 75);
 		pnlLoginUsuarios.add(iconLaborea);
 
 		JLabel lblBienvenido = new JLabel("Bienvenido/a.");
@@ -267,9 +268,11 @@ public class LoginUsuarios extends JDialog {
 						MenuCandidatos menuCand = new MenuCandidatos();
 						menuCand.setVisible(true);
 						limpiarInicioSesion();
-						 
+
 						dispose();
+
 					} else if (usuarioLogin instanceof Empresa) {
+						Bolsa.setUsuarioActivo(usuarioLogin);
 						MenuEmpresas menuEmpr = new MenuEmpresas();
 						menuEmpr.setVisible(true);
 						limpiarInicioSesion();
@@ -302,6 +305,8 @@ public class LoginUsuarios extends JDialog {
 		iconVolverInicio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Inicio pantallaPrincipal = new Inicio();
+				pantallaPrincipal.setVisible(true);
 				dispose();
 			}
 		});
@@ -344,7 +349,7 @@ public class LoginUsuarios extends JDialog {
 		JLabel iconLaboreaRegUsu = new JLabel("");
 		iconLaboreaRegUsu.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
 		iconLaboreaRegUsu.setHorizontalAlignment(SwingConstants.CENTER);
-		iconLaboreaRegUsu.setBounds(12, 13, 150, 84);
+		iconLaboreaRegUsu.setBounds(12, 13, 150, 75);
 		pnlRegistroUsuarios.add(iconLaboreaRegUsu);
 
 		JLabel iconRegresarRegUsu = new JLabel("");
@@ -357,7 +362,7 @@ public class LoginUsuarios extends JDialog {
 		});
 		iconRegresarRegUsu.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/flechaRegresar.png")));
 		iconRegresarRegUsu.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegresarRegUsu.setBounds(701, 13, 98, 76);
+		iconRegresarRegUsu.setBounds(701, 13, 100, 75);
 		pnlRegistroUsuarios.add(iconRegresarRegUsu);
 
 		JLabel lblBienvenidaRegUsuario = new JLabel("Bienvenido/a.");
@@ -556,13 +561,13 @@ public class LoginUsuarios extends JDialog {
 		});
 		iconRegresarRegCand.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/flechaRegresar.png")));
 		iconRegresarRegCand.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegresarRegCand.setBounds(701, 13, 98, 76);
+		iconRegresarRegCand.setBounds(701, 13, 100, 75);
 		pnlRegistroCandidato.add(iconRegresarRegCand);
 
 		JLabel iconLaboreaRegCand = new JLabel("");
 		iconLaboreaRegCand.setHorizontalAlignment(SwingConstants.CENTER);
 		iconLaboreaRegCand.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
-		iconLaboreaRegCand.setBounds(12, 13, 150, 84);
+		iconLaboreaRegCand.setBounds(12, 13, 150, 75);
 		pnlRegistroCandidato.add(iconLaboreaRegCand);
 
 		JLabel lblRegCand = new JLabel(
@@ -999,13 +1004,13 @@ public class LoginUsuarios extends JDialog {
 		});
 		iconRegresarRegEmp.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/flechaRegresar.png")));
 		iconRegresarRegEmp.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegresarRegEmp.setBounds(701, 13, 98, 76);
+		iconRegresarRegEmp.setBounds(701, 13, 100, 75);
 		pnlRegistroEmpresas.add(iconRegresarRegEmp);
 
 		JLabel iconLaboreaRegEmp = new JLabel("");
 		iconLaboreaRegEmp.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/Laborea.png")));
 		iconLaboreaRegEmp.setHorizontalAlignment(SwingConstants.CENTER);
-		iconLaboreaRegEmp.setBounds(12, 13, 150, 84);
+		iconLaboreaRegEmp.setBounds(12, 13, 150, 75);
 		pnlRegistroEmpresas.add(iconLaboreaRegEmp);
 
 		JPanel btnRegEmpresa = new JPanel() {
@@ -1038,7 +1043,7 @@ public class LoginUsuarios extends JDialog {
 					String direccion = txtDireccion.getText();
 					String rnc = txtRNC.getText();
 					String tipoEmpresa = cmbTipoEmpresa.getSelectedItem().toString();
-					String sector = txtSector.getText();
+					String sector = cmbSectorEmp.getSelectedItem().toString();
 
 					nuevaEmpresa = new Empresa(codigoEmpresa, nombre, passwd, telefono, correo, provincia, municipio,
 							direccion, true, rnc, tipoEmpresa, sector);
@@ -1064,18 +1069,12 @@ public class LoginUsuarios extends JDialog {
 		btnRegEmpresa.setLayout(null);
 
 		JLabel lblRegEmpresa = new JLabel("Registrar");
+		lblRegEmpresa.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/iconAddCompany.png")));
 		lblRegEmpresa.setBackground(Color.WHITE);
 		lblRegEmpresa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegEmpresa.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 16));
-		lblRegEmpresa.setBounds(65, 13, 85, 37);
+		lblRegEmpresa.setBounds(12, 13, 138, 37);
 		btnRegEmpresa.add(lblRegEmpresa);
-
-		JLabel iconRegEmpresa = new JLabel("");
-		iconRegEmpresa.setBackground(Color.WHITE);
-		iconRegEmpresa.setIcon(new ImageIcon(LoginUsuarios.class.getResource("/img/iconAddCompany.png")));
-		iconRegEmpresa.setHorizontalAlignment(SwingConstants.CENTER);
-		iconRegEmpresa.setBounds(24, 13, 43, 37);
-		btnRegEmpresa.add(iconRegEmpresa);
 
 		JLabel lblRNC = new JLabel("RNC:");
 		lblRNC.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -1129,12 +1128,13 @@ public class LoginUsuarios extends JDialog {
 		lblSector.setBounds(180, 332, 174, 34);
 		pnlRegistroEmpresas.add(lblSector);
 
-		txtSector = new JTextField();
-		txtSector.setHorizontalAlignment(SwingConstants.LEFT);
-		txtSector.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtSector.setBounds(180, 369, 174, 34);
-		pnlRegistroEmpresas.add(txtSector);
-		txtSector.setColumns(10);
+		cmbSectorEmp = new JComboBox();
+		cmbSectorEmp.setBackground(Color.WHITE);
+		cmbSectorEmp.setModel(new DefaultComboBoxModel(
+				new String[] { "<< Seleccione >>", "P\u00FAblico", "Privado", "Semi-P\u00FAblico" }));
+		cmbSectorEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		cmbSectorEmp.setBounds(180, 379, 174, 34);
+		pnlRegistroEmpresas.add(cmbSectorEmp);
 	}
 
 	private boolean confirmarPasswd(String passwd, String passwdC) {
@@ -1202,7 +1202,7 @@ public class LoginUsuarios extends JDialog {
 		boolean valido = true;
 
 		if (txtRNC.getText().trim().isEmpty() || cmbTipoEmpresa.getSelectedIndex() == 0
-				|| txtSector.getText().trim().isEmpty()) {
+				|| cmbSectorEmp.getSelectedIndex() == 0) {
 			valido = false;
 		}
 
@@ -1251,6 +1251,6 @@ public class LoginUsuarios extends JDialog {
 	private void limpiarRegEmpresa() {
 		txtRNC.setText("");
 		cmbTipoEmpresa.setSelectedIndex(0);
-		txtSector.setText("");
+		cmbSectorEmp.setSelectedIndex(0);
 	}
 }
