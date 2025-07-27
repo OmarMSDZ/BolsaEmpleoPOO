@@ -82,16 +82,13 @@ public class EditarInfoPersonalCandidato extends JDialog {
 			EditarInfoPersonalCandidato dialog = new EditarInfoPersonalCandidato(0);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-			dialog.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
-						bolsaWrite.writeObject(Bolsa.getInstancia());
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			});
+			 
+//			dialog.addWindowListener(new WindowAdapter() {
+//				@Override
+//				public void windowClosing(WindowEvent e) {
+//					Bolsa.guardarEstado();
+//				}
+//			}); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -502,9 +499,9 @@ public class EditarInfoPersonalCandidato extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						if (persActual != null) {
 							// Editar info personal
-							if (jtpEditarInformacion.getSelectedIndex() == 0) {
+							if (tipo == 0) {
 								if (validar(0)) {
-
+									
 									persActual.setNombre(txtNombre.getText());
 									persActual.setApellidos(txtApellido.getText());
 									persActual.setCedula(txtCedula.getText());
@@ -531,7 +528,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 								}
 							}
 							// editar info profesional
-							else if (jtpEditarInformacion.getSelectedIndex() == 1) {
+							else if (tipo == 1) {
 								if (validar(1)) {
 									if (persActual instanceof Universitario) {
 										((Universitario) persActual)

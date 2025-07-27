@@ -91,16 +91,13 @@ public class VisualizarPerfilCandidato extends JDialog {
 			VisualizarPerfilCandidato dialog = new VisualizarPerfilCandidato();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-			dialog.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
-						bolsaWrite.writeObject(Bolsa.getInstancia());
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			});
+			 
+//			dialog.addWindowListener(new WindowAdapter() {
+//				@Override
+//				public void windowClosing(WindowEvent e) {
+//					Bolsa.guardarEstado();
+//				}
+//			}); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -580,11 +577,10 @@ public class VisualizarPerfilCandidato extends JDialog {
 			btnRegresar.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (persActiva != null) {
-						MenuCandidatos menuCan = new MenuCandidatos();
-						menuCan.setVisible(true);
+				 
+			 
 						dispose();
-					}
+					 
 				}
 			});
 			btnRegresar.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/flechaRegresar.png")));
@@ -620,11 +616,10 @@ public class VisualizarPerfilCandidato extends JDialog {
 				cancelButton.setFocusable(false);
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (persActiva != null) {
-							MenuCandidatos menuCan = new MenuCandidatos();
-							menuCan.setVisible(true);
+				 
+ 
 							dispose();
-						}
+						 
 					}
 				});
 				cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));

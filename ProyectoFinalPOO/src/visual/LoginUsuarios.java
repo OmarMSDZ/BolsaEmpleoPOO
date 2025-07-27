@@ -18,9 +18,11 @@ import logica.Universitario;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Window;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -101,41 +103,38 @@ public class LoginUsuarios extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			LoginUsuarios dialog = new LoginUsuarios();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-			dialog.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(
-							new FileOutputStream("BdLaborea.dat"))) {
-						bolsaWrite.writeObject(Bolsa.getInstancia());
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+ 
+//	public static void main(String[] args) {
+//		try {
+//			LoginUsuarios dialog = new LoginUsuarios();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		 
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	} 
 
 	/**
 	 * Create the dialog.
 	 */
-	public LoginUsuarios() {
+	public LoginUsuarios(Window parent) {
+	 super((Frame) parent,"", true);  
+
 		setResizable(false);
+	 
 		setTitle("Laborea - \u00A1Inicia sesi\u00F3n o Registrate!");
 		setBounds(100, 100, 800, 750);
-
-		// **** SUPERUSUARIO, ELIMINAR DESPUES ****
-		// Universitario superusu = new Universitario("SUP-1", "Omar", "Morales", "M",
-		// "1234", new Date(), "abc", "8091231234", "super@gmail.com", "Santiago", "Su
-		// casa", "Todos", true, true, "Tiempo Completo", "Presencial", false, null,
-		// "Ing. en Sistemas");
-		// Bolsa.getInstancia().insertarPersona(superusu);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+ 
+//		addWindowListener(new WindowAdapter() {
+//			@Override
+//			public void windowClosing(WindowEvent e) {
+//				Bolsa.guardarEstado();
+//			}
+//		}); 
+		
 		setLocationRelativeTo(null);
 
 		getContentPane().setLayout(new BorderLayout());
@@ -265,18 +264,20 @@ public class LoginUsuarios extends JDialog {
 							JOptionPane.INFORMATION_MESSAGE);
 					if (usuarioLogin instanceof Persona) {
 						Bolsa.setUsuarioActivo(usuarioLogin);
-						MenuCandidatos menuCand = new MenuCandidatos();
+						MenuCandidatos menuCand = new MenuCandidatos(LoginUsuarios.this);
 						menuCand.setVisible(true);
+						menuCand.setModal(true);
+						
 						limpiarInicioSesion();
 
-						dispose();
+						 dispose();
 
 					} else if (usuarioLogin instanceof Empresa) {
 						Bolsa.setUsuarioActivo(usuarioLogin);
-						MenuEmpresas menuEmpr = new MenuEmpresas();
+						MenuEmpresas menuEmpr = new MenuEmpresas(LoginUsuarios.this);
 						menuEmpr.setVisible(true);
 						limpiarInicioSesion();
-						dispose();
+						 dispose();
 					}
 					limpiarInicioSesion();
 				} else {

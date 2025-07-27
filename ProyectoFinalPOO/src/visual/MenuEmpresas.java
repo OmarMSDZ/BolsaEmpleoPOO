@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -57,9 +58,12 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
+import java.awt.Window;
+
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JRadioButton;
@@ -67,7 +71,7 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MenuEmpresas extends JFrame {
+public class MenuEmpresas extends JDialog {
 
 	private JPanel contentPane;
 	private JLabel iconUsuario;
@@ -78,7 +82,7 @@ public class MenuEmpresas extends JFrame {
 	private JLabel lblModalidadOferta;
 	private JLabel lblMostrarLicencia;
 	private JLabel lblMovilizarseOferta;
-	private JTabbedPane jtpDescripcionSolicitud;
+	private JTabbedPane jtpDescripcionOferta;
 	private JLabel lblMostrarHorario;
 
 	// Solicitud seleccionada
@@ -112,10 +116,12 @@ public class MenuEmpresas extends JFrame {
 	private JComboBox cmbNivelEstudio;
 	private JSpinner spnAnniosExp;
 	private JSpinner spnCantVacantes;
+	private JButton btnRecargarInfoEmpresa;
 
 	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -138,13 +144,13 @@ public class MenuEmpresas extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public MenuEmpresas() {
-
+	public MenuEmpresas(Window parent) {
+		super(parent, "", ModalityType.APPLICATION_MODAL);
 		setResizable(false);
 
 		Empresa actual = (Empresa) Bolsa.getUsuarioActivo();
@@ -162,14 +168,25 @@ public class MenuEmpresas extends JFrame {
 			setTitle("Laborea - Pruebas del menú de empresas");
 		}
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		addWindowListener(new WindowAdapter() {
+//		    @Override
+//		    public void windowClosing(WindowEvent e) {
+//		        try {
+//		            Bolsa.guardarEstado();
+//		            System.out.println("Datos guardados al cerrar menu empresas" );
+//		        } catch (Exception ex) {
+//		            ex.printStackTrace();
+//		        }
+//		    }
+//		});
 		setBounds(100, 100, 1100, 687);
 
 		getToolkit().getScreenSize();
 		setSize(1920, 1075);
 		setLocationRelativeTo(null);
 
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -211,7 +228,7 @@ public class MenuEmpresas extends JFrame {
 			}
 		});
 		iconUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-		iconUsuario.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/user.png")));
+		iconUsuario.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/iconBuilding.png")));
 		iconUsuario.setBounds(1792, 27, 102, 74);
 		contentPane.add(iconUsuario);
 
@@ -314,6 +331,7 @@ public class MenuEmpresas extends JFrame {
 		lblMisOfertas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				cargarOferta();
 				jtpMenus.setSelectedIndex(1);// ir a mis solicitudes
 			}
 		});
@@ -377,7 +395,7 @@ public class MenuEmpresas extends JFrame {
 		JLabel lblHorarioDeseado = new JLabel("Horario propuesto:");
 		lblHorarioDeseado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHorarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblHorarioDeseado.setBounds(672, 464, 395, 51);
+		lblHorarioDeseado.setBounds(672, 460, 395, 51);
 		pnlOfertas.add(lblHorarioDeseado);
 
 		JLabel lblTipoEmpleo = new JLabel("Tipo de empleo:");
@@ -399,12 +417,12 @@ public class MenuEmpresas extends JFrame {
 
 		JLabel lbldisponeDeLicencia = new JLabel("¿Requiere licencia de conducir?");
 		lbldisponeDeLicencia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lbldisponeDeLicencia.setBounds(672, 565, 395, 51);
+		lbldisponeDeLicencia.setBounds(672, 559, 395, 51);
 		pnlOfertas.add(lbldisponeDeLicencia);
 
 		JLabel lblDisponibilidadDeMovilidad = new JLabel("Requiere movilidad:");
 		lblDisponibilidadDeMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblDisponibilidadDeMovilidad.setBounds(1181, 464, 395, 51);
+		lblDisponibilidadDeMovilidad.setBounds(1181, 460, 395, 51);
 		pnlOfertas.add(lblDisponibilidadDeMovilidad);
 
 		JSeparator sptSubrayadoCrearOferta = new JSeparator();
@@ -433,7 +451,7 @@ public class MenuEmpresas extends JFrame {
 				"Nocturno", "Matutino y Vespertino", "Vespertino y Nocturno", "Todos" }));
 		cbxHorarioOferta.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxHorarioOferta.setBackground(Color.WHITE);
-		cbxHorarioOferta.setBounds(672, 513, 395, 39);
+		cbxHorarioOferta.setBounds(672, 509, 395, 39);
 		pnlOfertas.add(cbxHorarioOferta);
 
 		spnSalarioDeseado = new JSpinner();
@@ -454,7 +472,7 @@ public class MenuEmpresas extends JFrame {
 		});
 		rdbtnLicenciaSi.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnLicenciaSi.setBackground(Color.WHITE);
-		rdbtnLicenciaSi.setBounds(672, 623, 109, 51);
+		rdbtnLicenciaSi.setBounds(672, 608, 109, 37);
 		pnlOfertas.add(rdbtnLicenciaSi);
 
 		rdbtnLicenciaNo = new JRadioButton("No");
@@ -467,7 +485,7 @@ public class MenuEmpresas extends JFrame {
 		});
 		rdbtnLicenciaNo.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnLicenciaNo.setBackground(Color.WHITE);
-		rdbtnLicenciaNo.setBounds(797, 625, 109, 51);
+		rdbtnLicenciaNo.setBounds(797, 610, 109, 35);
 		pnlOfertas.add(rdbtnLicenciaNo);
 
 		rdbtnMovilidadSi = new JRadioButton("Sí, requiere movilizarse");
@@ -480,7 +498,7 @@ public class MenuEmpresas extends JFrame {
 		});
 		rdbtnMovilidadSi.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnMovilidadSi.setBackground(Color.WHITE);
-		rdbtnMovilidadSi.setBounds(1181, 507, 395, 51);
+		rdbtnMovilidadSi.setBounds(1181, 503, 200, 51);
 		pnlOfertas.add(rdbtnMovilidadSi);
 
 		rdbtnMovilidadNo = new JRadioButton("No aplica");
@@ -493,10 +511,10 @@ public class MenuEmpresas extends JFrame {
 		});
 		rdbtnMovilidadNo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		rdbtnMovilidadNo.setBackground(Color.WHITE);
-		rdbtnMovilidadNo.setBounds(1181, 543, 395, 51);
+		rdbtnMovilidadNo.setBounds(1390, 503, 186, 51);
 		pnlOfertas.add(rdbtnMovilidadNo);
 
-		JLabel lblDatosGeneralesEmpresa = new JLabel("Datos generales:");
+		JLabel lblDatosGeneralesEmpresa = new JLabel("Datos generales");
 		lblDatosGeneralesEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDatosGeneralesEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblDatosGeneralesEmpresa.setBounds(10, 97, 260, 51);
@@ -545,7 +563,7 @@ public class MenuEmpresas extends JFrame {
 
 		JLabel lblDatosOferta = new JLabel("Datos oferta");
 		lblDatosOferta.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-		lblDatosOferta.setBounds(693, 97, 260, 51);
+		lblDatosOferta.setBounds(672, 97, 260, 51);
 		pnlOfertas.add(lblDatosOferta);
 
 		JSeparator sptSubrayadoDatosOferta = new JSeparator();
@@ -557,42 +575,42 @@ public class MenuEmpresas extends JFrame {
 		lblMostrarNomb.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarNomb.setForeground(Color.DARK_GRAY);
 		lblMostrarNomb.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblMostrarNomb.setBounds(247, 168, 468, 51);
+		lblMostrarNomb.setBounds(247, 168, 413, 51);
 		pnlOfertas.add(lblMostrarNomb);
 
 		lblMostrarRc = new JLabel("RNC");
 		lblMostrarRc.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarRc.setForeground(Color.DARK_GRAY);
 		lblMostrarRc.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblMostrarRc.setBounds(247, 230, 468, 51);
+		lblMostrarRc.setBounds(247, 230, 401, 51);
 		pnlOfertas.add(lblMostrarRc);
 
 		lblMostrarTelefono = new JLabel("Teléfono:");
 		lblMostrarTelefono.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarTelefono.setForeground(Color.DARK_GRAY);
 		lblMostrarTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblMostrarTelefono.setBounds(247, 292, 468, 51);
+		lblMostrarTelefono.setBounds(247, 292, 401, 51);
 		pnlOfertas.add(lblMostrarTelefono);
 
 		lblMostrarCorreoEmp = new JLabel("Correo");
 		lblMostrarCorreoEmp.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarCorreoEmp.setForeground(Color.DARK_GRAY);
 		lblMostrarCorreoEmp.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblMostrarCorreoEmp.setBounds(247, 358, 468, 51);
+		lblMostrarCorreoEmp.setBounds(247, 358, 401, 51);
 		pnlOfertas.add(lblMostrarCorreoEmp);
 
 		lblMostrarNumOfertas = new JLabel("Número de ofertas");
 		lblMostrarNumOfertas.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarNumOfertas.setForeground(Color.DARK_GRAY);
 		lblMostrarNumOfertas.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblMostrarNumOfertas.setBounds(247, 429, 468, 51);
+		lblMostrarNumOfertas.setBounds(247, 429, 401, 51);
 		pnlOfertas.add(lblMostrarNumOfertas);
 
 		lblMostrarEstado = new JLabel("Estado");
 		lblMostrarEstado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarEstado.setForeground(Color.DARK_GRAY);
 		lblMostrarEstado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblMostrarEstado.setBounds(247, 501, 468, 51);
+		lblMostrarEstado.setBounds(247, 501, 401, 51);
 		pnlOfertas.add(lblMostrarEstado);
 
 		// cargar datos de persona al iniciar esta pantalla
@@ -657,7 +675,7 @@ public class MenuEmpresas extends JFrame {
 		lblObtenidoAutomticamente.setHorizontalAlignment(SwingConstants.CENTER);
 		lblObtenidoAutomticamente.setForeground(Color.GRAY);
 		lblObtenidoAutomticamente.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		lblObtenidoAutomticamente.setBounds(312, 97, 232, 51);
+		lblObtenidoAutomticamente.setBounds(282, 106, 232, 39);
 		pnlOfertas.add(lblObtenidoAutomticamente);
 
 		JSeparator stpBarraVerticalCentral = new JSeparator();
@@ -713,30 +731,32 @@ public class MenuEmpresas extends JFrame {
 		JLabel lblCantVacantes = new JLabel("Cantidad de vacantes:");
 		lblCantVacantes.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblCantVacantes.setHorizontalAlignment(SwingConstants.LEFT);
-		lblCantVacantes.setBounds(1181, 593, 395, 39);
+		lblCantVacantes.setBounds(1181, 565, 395, 39);
 		pnlOfertas.add(lblCantVacantes);
 
 		spnCantVacantes = new JSpinner();
+		spnCantVacantes.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		spnCantVacantes.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		spnCantVacantes.setBounds(1181, 634, 395, 39);
+		spnCantVacantes.setBounds(1181, 606, 395, 39);
 		pnlOfertas.add(spnCantVacantes);
 
 		JLabel lblNivelEducacion = new JLabel("Nivel de eduación:");
 		lblNivelEducacion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblNivelEducacion.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNivelEducacion.setBounds(672, 682, 395, 39);
+		lblNivelEducacion.setBounds(672, 667, 395, 39);
 		pnlOfertas.add(lblNivelEducacion);
 
 		JLabel lblAnniosExp = new JLabel("Años de experiencia:");
 		lblAnniosExp.setVisible(false);
 		lblAnniosExp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblAnniosExp.setBounds(1181, 682, 395, 39);
+		lblAnniosExp.setBounds(1181, 667, 395, 39);
 		pnlOfertas.add(lblAnniosExp);
 
 		spnAnniosExp = new JSpinner();
+		spnAnniosExp.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		spnAnniosExp.setVisible(false);
 		spnAnniosExp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		spnAnniosExp.setBounds(1181, 720, 395, 39);
+		spnAnniosExp.setBounds(1181, 705, 395, 39);
 		pnlOfertas.add(spnAnniosExp);
 
 		cmbNivelEstudio = new JComboBox();
@@ -755,18 +775,30 @@ public class MenuEmpresas extends JFrame {
 		cmbNivelEstudio.setModel(new DefaultComboBoxModel(
 				new String[] { "<< Seleccione >>", "Universitario / Grado", "Técnico superior", "Obrero" }));
 		cmbNivelEstudio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		cmbNivelEstudio.setBounds(672, 720, 395, 39);
+		cmbNivelEstudio.setBounds(672, 705, 395, 39);
 		pnlOfertas.add(cmbNivelEstudio);
+		
+		btnRecargarInfoEmpresa = new JButton("Recargar");
+		btnRecargarInfoEmpresa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarDatosEmpresa();
+			}
+		});
+		btnRecargarInfoEmpresa.setBackground(Color.WHITE);
+		btnRecargarInfoEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btnRecargarInfoEmpresa.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/refresh.png")));
+		btnRecargarInfoEmpresa.setBounds(550, 116, 109, 23);
+		pnlOfertas.add(btnRecargarInfoEmpresa);
 
-		JPanel pnlMisSolicitudes = new JPanel();
-		pnlMisSolicitudes.setBackground(Color.WHITE);
-		jtpMenus.addTab("New tab", null, pnlMisSolicitudes, null);
-		pnlMisSolicitudes.setLayout(null);
+		JPanel pnlVerOfertas = new JPanel();
+		pnlVerOfertas.setBackground(Color.WHITE);
+		jtpMenus.addTab("New tab", null, pnlVerOfertas, null);
+		pnlVerOfertas.setLayout(null);
 
 		JScrollPane spnlOfertas = new JScrollPane();
 		spnlOfertas.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		spnlOfertas.setBounds(10, 11, 339, 895);
-		pnlMisSolicitudes.add(spnlOfertas);
+		pnlVerOfertas.add(spnlOfertas);
 
 		pnlMisOfertas = new JPanel();
 		pnlMisOfertas.setBackground(Color.WHITE);
@@ -779,17 +811,17 @@ public class MenuEmpresas extends JFrame {
 		pnlDescOferta.setBorder(new LineBorder(new Color(0, 0, 0)));
 		pnlDescOferta.setBackground(Color.WHITE);
 		pnlDescOferta.setBounds(359, 11, 1263, 895);
-		pnlMisSolicitudes.add(pnlDescOferta);
+		pnlVerOfertas.add(pnlDescOferta);
 		pnlDescOferta.setLayout(null);
 
-		jtpDescripcionSolicitud = new JTabbedPane(JTabbedPane.TOP);
-		jtpDescripcionSolicitud.setBorder(null);
-		jtpDescripcionSolicitud.setBounds(0, -32, 1276, 927);
-		pnlDescOferta.add(jtpDescripcionSolicitud);
+		jtpDescripcionOferta = new JTabbedPane(JTabbedPane.TOP);
+		jtpDescripcionOferta.setBorder(null);
+		jtpDescripcionOferta.setBounds(0, -32, 1276, 927);
+		pnlDescOferta.add(jtpDescripcionOferta);
 
 		JPanel pnlMensajeOferta = new JPanel();
 		pnlMensajeOferta.setBackground(Color.WHITE);
-		jtpDescripcionSolicitud.addTab("New tab", null, pnlMensajeOferta, null);
+		jtpDescripcionOferta.addTab("New tab", null, pnlMensajeOferta, null);
 		pnlMensajeOferta.setLayout(null);
 
 		JLabel lblMostrarMensaje = new JLabel("Seleccione una oferta para ver todos sus datos");
@@ -801,7 +833,7 @@ public class MenuEmpresas extends JFrame {
 
 		JPanel pnlVistaOferta = new JPanel();
 		pnlVistaOferta.setBackground(Color.WHITE);
-		jtpDescripcionSolicitud.addTab("New tab", null, pnlVistaOferta, null);
+		jtpDescripcionOferta.addTab("New tab", null, pnlVistaOferta, null);
 		pnlVistaOferta.setLayout(null);
 
 		lblTituloOferta = new JLabel("Oferta # - RNC de la empresa");
@@ -894,7 +926,7 @@ public class MenuEmpresas extends JFrame {
 		btnCerrarVistaOferta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				jtpDescripcionSolicitud.setSelectedIndex(0);
+				jtpDescripcionOferta.setSelectedIndex(0);
 				// solicitudSelected = null;
 			}
 		});
@@ -932,25 +964,25 @@ public class MenuEmpresas extends JFrame {
 		lblFechaOferta.setBounds(230, 572, 388, 47);
 		pnlVistaOferta.add(lblFechaOferta);
 
-		JButton btnNotificacion = new JButton("Notificaci\u00F3n");
-		btnNotificacion.setBackground(Color.WHITE);
-		btnNotificacion.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNotificacion.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNotificacion.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/bell.png")));
-		btnNotificacion.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		btnNotificacion.setBounds(856, 807, 182, 73);
-		pnlVistaOferta.add(btnNotificacion);
+		JButton btnVisualizarMatches = new JButton("Visualizar matches");
+		btnVisualizarMatches.setBackground(Color.WHITE);
+		btnVisualizarMatches.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnVisualizarMatches.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnVisualizarMatches.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/table.png")));
+		btnVisualizarMatches.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		btnVisualizarMatches.setBounds(681, 807, 182, 73);
+		pnlVistaOferta.add(btnVisualizarMatches);
 
 		JButton btnCancelarOferta = new JButton("Cancelar oferta");
 		btnCancelarOferta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Cancelar oferta
-				int opccion = JOptionPane.showConfirmDialog(null, "¿Desea cancelar esta solicitud?", "Cancelar",
+				int opccion = JOptionPane.showConfirmDialog(null, "¿Desea cancelar esta oferta?", "Cancelar",
 						JOptionPane.WARNING_MESSAGE);
 				if (opccion == JOptionPane.OK_OPTION) {
 					Bolsa.getInstancia().eliminarOferta(ofertaSeleccionada);
 					cargarVistaPreviaOferta(ofertaSeleccionada);
-					jtpDescripcionSolicitud.setSelectedIndex(0);
+					jtpDescripcionOferta.setSelectedIndex(0);
 				}
 			}
 		});
@@ -975,14 +1007,6 @@ public class MenuEmpresas extends JFrame {
 		lblMostrarEstadoOferta.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarEstadoOferta.setBounds(230, 810, 448, 47);
 		pnlVistaOferta.add(lblMostrarEstadoOferta);
-
-		JLabel lblActivarSoloSi = new JLabel(
-				"<html>Activar btn de notificacion solo si se hace el macheo y <br>se envia la notificacion a esta solicitud, desactivar el de cancelar <br>hasta que no acepte o niegue</html>");
-		lblActivarSoloSi.setForeground(new Color(255, 0, 0));
-		lblActivarSoloSi.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		lblActivarSoloSi.setBackground(Color.WHITE);
-		lblActivarSoloSi.setBounds(856, 644, 182, 142);
-		pnlVistaOferta.add(lblActivarSoloSi);
 
 		JLabel lblAreaEstudio = new JLabel("\u00C1rea:");
 		lblAreaEstudio.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/quality.png")));
@@ -1060,6 +1084,15 @@ public class MenuEmpresas extends JFrame {
 		lblMostrarAnniosExp.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarAnniosExp.setBounds(849, 304, 388, 47);
 		pnlVistaOferta.add(lblMostrarAnniosExp);
+		
+		JButton btnModificarOferta = new JButton("Modificar oferta");
+		btnModificarOferta.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/update.png")));
+		btnModificarOferta.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnModificarOferta.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnModificarOferta.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		btnModificarOferta.setBackground(Color.WHITE);
+		btnModificarOferta.setBounds(873, 807, 182, 73);
+		pnlVistaOferta.add(btnModificarOferta);
 	}
 
 	private void cargarDatosEmpresa() {
@@ -1092,6 +1125,7 @@ public class MenuEmpresas extends JFrame {
 		rdbtnMovilidadSi.setSelected(false);
 		rdbtnMovilidadNo.setSelected(false);
 		rdbtnLicenciaSi.setSelected(false);
+		rdbtnLicenciaNo.setSelected(false);
 		spnSalarioDeseado.setValue(0);
 		spnCantVacantes.setValue(0);
 		cmbNivelEstudio.setSelectedIndex(0);
@@ -1131,7 +1165,7 @@ public class MenuEmpresas extends JFrame {
 					public void mouseClicked(java.awt.event.MouseEvent e) {
 						ofertaSeleccionada = elementosOfer.getOferta();
 						cargarVistaPreviaOferta(ofertaSeleccionada);
-						jtpDescripcionSolicitud.setSelectedIndex(1);
+						jtpDescripcionOferta.setSelectedIndex(1);
 					}
 				});
 

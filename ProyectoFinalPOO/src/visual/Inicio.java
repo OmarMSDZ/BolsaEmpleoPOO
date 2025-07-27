@@ -48,7 +48,9 @@ public class Inicio extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
+				//iniciar matching automatico al iniciar la app 
+				Bolsa.getInstancia().iniciarMatchingAutomatico();
+				
 				FileInputStream bolsaIn;
 				FileOutputStream bolsaOut;
 				ObjectInputStream bolsaRead;
@@ -90,18 +92,17 @@ public class Inicio extends JFrame {
 
 				try {
 					Inicio frame = new Inicio();
-					frame.setVisible(true);
+					//centralizar guardado en archivos
 					frame.addWindowListener(new WindowAdapter() {
 						@Override
 						public void windowClosing(WindowEvent e) {
-							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(
-									new FileOutputStream("BdLaborea.dat"))) {
-								bolsaWrite.writeObject(Bolsa.getInstancia());
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+							Bolsa.guardarEstado();
+							//cerrar el hilo de match
+							Bolsa.getInstancia().detenerMatchingAutomatico();
+//							System.out.println("Inicio cerro");
 						}
 					});
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -175,10 +176,10 @@ public class Inicio extends JFrame {
 		btnInicioSesion.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LoginUsuarios pantIniciarSesion = new LoginUsuarios();
+				LoginUsuarios pantIniciarSesion = new LoginUsuarios(Inicio.this);
 				pantIniciarSesion.setModal(true);
 				pantIniciarSesion.setVisible(true);
-				dispose();
+				
 			}
 		});
 		btnInicioSesion.setOpaque(false);

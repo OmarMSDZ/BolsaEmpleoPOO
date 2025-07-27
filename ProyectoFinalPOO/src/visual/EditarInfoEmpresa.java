@@ -7,8 +7,17 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import logica.Bolsa;
+import logica.Empresa;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -31,6 +40,10 @@ public class EditarInfoEmpresa extends JDialog {
 	private JTextField txtTelefono;
 	private JTextField txtRnc;
 	private JTabbedPane jtpEditarInformacion;
+	private JComboBox cbxProvincia;
+	private static Empresa empActual;
+	private JComboBox cbxTipoEmp;
+	private JComboBox cbxSectorEmp;
 
 	/**
 	 * Launch the application.
@@ -40,6 +53,13 @@ public class EditarInfoEmpresa extends JDialog {
 			EditarInfoEmpresa dialog = new EditarInfoEmpresa(0);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
+		 
+//			dialog.addWindowListener(new WindowAdapter() {
+//				@Override
+//				public void windowClosing(WindowEvent e) {
+//					Bolsa.guardarEstado();
+//				}
+//			}); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,8 +68,9 @@ public class EditarInfoEmpresa extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public EditarInfoEmpresa(int pantallaEditar) {
+	public EditarInfoEmpresa(int tipo) {
 		setTitle("Laborea - Editar informaci\u00F3n empresarial");
+
 		setBounds(100, 100, 527, 587);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -75,13 +96,47 @@ public class EditarInfoEmpresa extends JDialog {
 					btnModificar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 					btnModificar.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							if (pantallaEditar == 0) {
-								
-							} else if (pantallaEditar == 1) {
+							if (Bolsa.getUsuarioActivo() != null) {
 
-							} else {
-								JOptionPane.showConfirmDialog(null, "La acción no pudo ser realizada.", "Advertencia",
-										JOptionPane.WARNING_MESSAGE);
+								Empresa aux = (Empresa) Bolsa.getUsuarioActivo();
+
+								if (tipo == 0) {
+									if (validar(0)) {
+										aux.setNombre(txtNombre.getText());
+										aux.setTelefono(txtTelefono.getText());
+										aux.setCorreoElectronico(txtCorreo.getText());
+										aux.setProvincia(cbxProvincia.getSelectedItem().toString());
+										aux.setMunicipio(txtDireccion.getText());
+										aux.setDireccion(txtDireccion.getText());
+										Bolsa.getInstancia().modificarUsuario(aux);
+										JOptionPane.showMessageDialog(null,
+												"¡Información general modificada con éxito!", "Información",
+												JOptionPane.INFORMATION_MESSAGE);
+										dispose();// cerrar ventana
+									} else {
+										JOptionPane.showMessageDialog(null, "¡Complete correctamente los campos!",
+												"Alerta", JOptionPane.WARNING_MESSAGE);
+									}
+
+								} else if (tipo == 1) {
+									if (validar(1)) {
+										aux.setRnc(txtRnc.getText());
+										aux.setTipoEmpresa(cbxTipoEmp.getSelectedItem().toString());
+										aux.setSectorEmpresarial(cbxSectorEmp.getSelectedItem().toString());
+										Bolsa.getInstancia().modificarUsuario(aux);
+										JOptionPane.showMessageDialog(null,
+												"¡Información empresarial modificada con éxito!", "Información",
+												JOptionPane.INFORMATION_MESSAGE);
+										dispose();// cerrar ventana
+									} else {
+										JOptionPane.showMessageDialog(null, "¡Complete correctamente los campos!",
+												"Alerta", JOptionPane.WARNING_MESSAGE);
+									}
+								} else {
+									JOptionPane.showConfirmDialog(null, "La acción no pudo ser realizada.",
+											"Advertencia", JOptionPane.WARNING_MESSAGE);
+								}
+
 							}
 						}
 					});
@@ -200,18 +255,18 @@ public class EditarInfoEmpresa extends JDialog {
 			panelDatosGenerales.add(txtTelefono);
 			txtTelefono.setColumns(10);
 
-			JComboBox cmbProvincia = new JComboBox();
-			cmbProvincia.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>", "Azua", "Bahoruco",
+			cbxProvincia = new JComboBox();
+			cbxProvincia.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>", "Azua", "Bahoruco",
 					"Barahona", "Dajab\u00F3n", "Distrito Nacional", "Duarte", "El\u00EDas Pi\u00F1a", "El Seibo",
 					"Espaillat", "Hato Mayor", "Hermanas Mirabal", "Independencia", "La Altagracia", "La Romana",
 					"La Vega", "Mar\u00EDa Trinidad S\u00E1nchez", "Monse\u00F1or Nouel", "Monte Cristi", "Monte Plata",
 					"Pedernales", "Peravia", "Puerto Plata", "Saman\u00E1", "San Crist\u00F3bal",
 					"San Jos\u00E9 de Ocoa", "San Juan", "San Pedro de Macor\u00EDs", "S\u00E1nchez Ram\u00EDrez",
 					"Santiago", "Santiago Rodr\u00EDguez", "Santo Domingo", "Valverde" }));
-			cmbProvincia.setBackground(Color.WHITE);
-			cmbProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-			cmbProvincia.setBounds(22, 284, 479, 30);
-			panelDatosGenerales.add(cmbProvincia);
+			cbxProvincia.setBackground(Color.WHITE);
+			cbxProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+			cbxProvincia.setBounds(22, 284, 479, 30);
+			panelDatosGenerales.add(cbxProvincia);
 
 			JSeparator sptSubrayado = new JSeparator();
 			sptSubrayado.setForeground(Color.BLACK);
@@ -269,38 +324,78 @@ public class EditarInfoEmpresa extends JDialog {
 			pnlDatosEmpresa.add(txtRnc);
 			txtRnc.setColumns(10);
 
-			JComboBox cmbSectorEmp = new JComboBox();
-			cmbSectorEmp.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "P\u00FAblico", "Privado", "Semi-P\u00FAblico"}));
-			cmbSectorEmp.setBackground(Color.WHITE);
-			cmbSectorEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-			cmbSectorEmp.setBounds(22, 367, 482, 30);
-			pnlDatosEmpresa.add(cmbSectorEmp);
+			cbxSectorEmp = new JComboBox();
+			cbxSectorEmp.setModel(new DefaultComboBoxModel(
+					new String[] { "<< Seleccione >>", "P\u00FAblico", "Privado", "Semi-P\u00FAblico" }));
+			cbxSectorEmp.setBackground(Color.WHITE);
+			cbxSectorEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+			cbxSectorEmp.setBounds(22, 367, 482, 30);
+			pnlDatosEmpresa.add(cbxSectorEmp);
 
-			JComboBox cmbTipoEmp = new JComboBox();
-			cmbTipoEmp.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Agroindustrial", "Agropecuaria", "Alimenticia", "Artesanal", "Automotriz", "Aviaci\u00F3n", "Biotecnol\u00F3gica", "Cinematogr\u00E1fica", "Comercial", "Comunicaciones", "Constructora", "Consultora", "Cosm\u00E9tica", "De Energ\u00EDas Renovables", "De Exportaci\u00F3n e Importaci\u00F3n", "De Log\u00EDstica", "De Marketing y Publicidad", "De Medios de Comunicaci\u00F3n", "De Miner\u00EDa", "De Moda y Textil", "De Reciclaje", "De Seguridad", "De Servicios Financieros", "De Software", "De Telecomunicaciones", "De Transporte", "De Turismo", "De Videojuegos", "Editorial", "Educativa", "Electrodom\u00E9sticos", "Electr\u00F3nica", "Energ\u00E9tica", "Farmac\u00E9utica", "Financiera", "Gastron\u00F3mica", "Hospitalaria", "Inmobiliaria", "Instituci\u00F3n Bancaria", "Instituci\u00F3n de Seguros", "Metal\u00FArgica", "Naviera", "Petrolera", "Qu\u00EDmica", "Retail", "Salud y Bienestar", "Sider\u00FArgica", "Tecnol\u00F3gica", "Textil"}));
-			cmbTipoEmp.setBackground(Color.WHITE);
-			cmbTipoEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-			cmbTipoEmp.setBounds(22, 261, 482, 30);
-			pnlDatosEmpresa.add(cmbTipoEmp);
-			
-			JLabel lblMensaje = new JLabel("* No editable *");
-			lblMensaje.setForeground(Color.DARK_GRAY);
-			lblMensaje.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-			lblMensaje.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblMensaje.setBounds(289, 140, 215, 30);
-			pnlDatosEmpresa.add(lblMensaje);
+			cbxTipoEmp = new JComboBox();
+			cbxTipoEmp.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>", "Agroindustrial",
+					"Agropecuaria", "Alimenticia", "Artesanal", "Automotriz", "Aviaci\u00F3n", "Biotecnol\u00F3gica",
+					"Cinematogr\u00E1fica", "Comercial", "Comunicaciones", "Constructora", "Consultora",
+					"Cosm\u00E9tica", "De Energ\u00EDas Renovables", "De Exportaci\u00F3n e Importaci\u00F3n",
+					"De Log\u00EDstica", "De Marketing y Publicidad", "De Medios de Comunicaci\u00F3n",
+					"De Miner\u00EDa", "De Moda y Textil", "De Reciclaje", "De Seguridad", "De Servicios Financieros",
+					"De Software", "De Telecomunicaciones", "De Transporte", "De Turismo", "De Videojuegos",
+					"Editorial", "Educativa", "Electrodom\u00E9sticos", "Electr\u00F3nica", "Energ\u00E9tica",
+					"Farmac\u00E9utica", "Financiera", "Gastron\u00F3mica", "Hospitalaria", "Inmobiliaria",
+					"Instituci\u00F3n Bancaria", "Instituci\u00F3n de Seguros", "Metal\u00FArgica", "Naviera",
+					"Petrolera", "Qu\u00EDmica", "Retail", "Salud y Bienestar", "Sider\u00FArgica", "Tecnol\u00F3gica",
+					"Textil" }));
+			cbxTipoEmp.setBackground(Color.WHITE);
+			cbxTipoEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+			cbxTipoEmp.setBounds(22, 261, 482, 30);
+			pnlDatosEmpresa.add(cbxTipoEmp);
 		}
 		// Mostrar pantalla según lo que se desee editar
-		if (pantallaEditar == 0) {
+		if (tipo == 0) {
 			cargarDatosEmpresa(0);
 			jtpEditarInformacion.setSelectedIndex(0);
-		} else if (pantallaEditar == 1) {
+		} else if (tipo == 1) {
 			cargarDatosEmpresa(1);
 			jtpEditarInformacion.setSelectedIndex(1);
 		}
 	}
 
-	private void cargarDatosEmpresa(int pantalla) {
+	private void cargarDatosEmpresa(int tipo) {
+		if (Bolsa.getUsuarioActivo() instanceof Empresa && Bolsa.getUsuarioActivo() != null) {
+			Empresa aux = (Empresa) Bolsa.getUsuarioActivo();
+			if (tipo == 0) {
 
+				txtNombre.setText(aux.getNombre());
+				txtTelefono.setText(aux.getTelefono());
+				txtCorreo.setText(aux.getCorreoElectronico());
+				cbxProvincia.setSelectedItem(aux.getProvincia());
+				txtMunicipio.setText(aux.getMunicipio());
+				txtDireccion.setText(aux.getDireccion());
+
+			} else if (tipo == 1) {
+
+				txtRnc.setText(aux.getRnc());
+				cbxTipoEmp.setSelectedItem(aux.getTipoEmpresa());
+				cbxSectorEmp.setSelectedItem(aux.getSectorEmpresarial());
+
+			}
+		}
+	}
+
+	private boolean validar(int tipo) {
+		boolean valido = false;
+		if (tipo == 0) {
+			if (!txtNombre.getText().equals("") && !txtTelefono.getText().equals("") && !txtCorreo.getText().equals("")
+					&& cbxProvincia.getSelectedIndex() > 0 && !txtMunicipio.getText().equals("")
+					&& !txtDireccion.getText().equals("")) {
+				valido = true;
+			}
+		} else if (tipo == 1) {
+			if (!txtRnc.getText().equals("") && cbxTipoEmp.getSelectedIndex() > 0
+					&& cbxSectorEmp.getSelectedIndex() > 0) {
+				valido = true;
+			}
+		}
+		return valido;
 	}
 }

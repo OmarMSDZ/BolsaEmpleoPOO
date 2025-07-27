@@ -57,9 +57,12 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
+import java.awt.Window;
+
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JRadioButton;
@@ -67,7 +70,7 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MenuCandidatos extends JFrame {
+public class MenuCandidatos extends JDialog {
 
 	private JPanel contentPane;
 	private Dimension dim;
@@ -113,29 +116,23 @@ public class MenuCandidatos extends JFrame {
 	 * Launch the application.
 	 */
 	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuCandidatos frame = new MenuCandidatos();
-					frame.setVisible(true);
-				 
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
+	 * public static void main(String[] args) { EventQueue.invokeLater(new
+	 * Runnable() { public void run() { try { MenuCandidatos frame = new
+	 * MenuCandidatos(); frame.setVisible(true);
+	 * 
+	 * } catch (Exception e) { e.printStackTrace(); } } }); }
+	 */
 
 	/**
 	 * Create the frame.
 	 */
-	public MenuCandidatos() {
-		  
+	public MenuCandidatos(Window parent) {
+		
+		super(parent, "", ModalityType.APPLICATION_MODAL);
 		setResizable(false);
 
-		Persona actual = (Persona) Bolsa.getUsuarioActivo();
 
+		Persona actual = (Persona) Bolsa.getUsuarioActivo();
 		if (actual != null) {
 			persActual = actual;
 			setTitle("Laborea - ¡Bienvenido " + actual.getNombre() + " " + actual.getApellidos() + "!");
@@ -144,26 +141,24 @@ public class MenuCandidatos extends JFrame {
 			persActual = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
 					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
 					"Ingeniería en Sistemas Computacionales");
-	        Bolsa.getInstancia().insertarUsuario(persActual);
-	        Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
-	        setTitle("Laborea - Pruebas menú candidatos");
-	    }
-	    
-	  
- 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		  addWindowListener(new WindowAdapter() {
-		        @Override
-		        public void windowClosing(WindowEvent e) {
-		            try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
-		                bolsaWrite.writeObject(Bolsa.getInstancia());
-		                System.out.println("Datos guardados desde MenuCandidatos");
-		            } catch (IOException e1) {
-		                e1.printStackTrace();
-		            }
-		        }
-		    });
-		  
+			Bolsa.getInstancia().insertarUsuario(persActual);
+			Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
+			setTitle("Laborea - Pruebas menú candidatos");
+		}
+
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		addWindowListener(new WindowAdapter() {
+//		    @Override
+//		    public void windowClosing(WindowEvent e) {
+//		        try {
+//		            Bolsa.guardarEstado();
+//		            System.out.println("Datos guardados al cerrar menu candidatos");
+//		        } catch (Exception ex) {
+//		            ex.printStackTrace();
+//		        }
+//		    }
+//		});
+
 		setBounds(100, 100, 1100, 687);
 
 		// Poner ventana en centro de pantalla y tamaño máximo
@@ -171,7 +166,7 @@ public class MenuCandidatos extends JFrame {
 		setSize(1920, 1075);
 		setLocationRelativeTo(null);
 
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
 
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -208,7 +203,7 @@ public class MenuCandidatos extends JFrame {
 				if (persActual != null) {
 
 					VisualizarPerfilCandidato vpc = new VisualizarPerfilCandidato();
-					dispose();
+ 
 					vpc.setModal(true);
 					vpc.setVisible(true);
 
@@ -498,7 +493,7 @@ public class MenuCandidatos extends JFrame {
 
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setForeground(Color.BLACK);
-		separator_3.setBounds(10, 145, 534, 8);
+		separator_3.setBounds(10, 145, 650, 8);
 		pnlSolicitudes.add(separator_3);
 
 		JLabel lblNombreCompleto = new JLabel("Nombre completo:");
@@ -544,7 +539,7 @@ public class MenuCandidatos extends JFrame {
 
 		JSeparator separator_4 = new JSeparator();
 		separator_4.setForeground(Color.BLACK);
-		separator_4.setBounds(782, 145, 534, 8);
+		separator_4.setBounds(658, 145, 658, 8);
 		pnlSolicitudes.add(separator_4);
 
 		lblInfNombreCompleto = new JLabel("Nombre Completo");
@@ -618,15 +613,15 @@ public class MenuCandidatos extends JFrame {
 						Solicitud soli = new Solicitud(codigoGenerado, persActual, dispHorario, dispMovilidad, licencia,
 								tipoEmpleo, modalidad, area, salarioEsperado, new Date(), "ACTIVA");
 						Bolsa.getInstancia().insertarSolicitud(soli);
-						JOptionPane.showMessageDialog(null, "�Solicitud procesada con �xito!", "Informaci�n",
+						JOptionPane.showMessageDialog(null, "¡Solicitud procesada con éxito!", "Informaci�n",
 								JOptionPane.INFORMATION_MESSAGE);
 						clear();
 					} else {
-						JOptionPane.showMessageDialog(null, "�Complete los campos correctamente!", "Alerta",
+						JOptionPane.showMessageDialog(null, "¡Complete los campos correctamente!", "Alerta",
 								JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "�No hay persona activa en esta vista!", "Alerta",
+					JOptionPane.showMessageDialog(null, "¡No hay usuario activo en esta vista!", "Alerta",
 							JOptionPane.WARNING_MESSAGE);
 
 				}
@@ -649,7 +644,7 @@ public class MenuCandidatos extends JFrame {
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setForeground(Color.BLACK);
-		separator_1.setBounds(658, 145, 23, 395);
+		separator_1.setBounds(692, 145, 23, 764);
 		pnlSolicitudes.add(separator_1);
 
 		JLabel lblArea = new JLabel("\u00C1rea");

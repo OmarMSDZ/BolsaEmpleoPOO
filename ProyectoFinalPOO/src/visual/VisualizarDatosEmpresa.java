@@ -23,11 +23,26 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class VisualizarDatosEmpresa extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private static Empresa empresaActiva;
+	private JLabel lblMostrarCodigo;
+	private JLabel lblMostrarNombre;
+	private JLabel lblMostrarCorreo;
+	private JLabel lblMostrarTelefono;
+	private JLabel lblMostrarDireccion;
+	private JLabel lblMostrarProvincia;
+	private JLabel lblMostrarMunicipio;
+	private JLabel lblMostrarRnc;
+	private JLabel lblMostrarTipoEmp;
+	private JLabel lblMostrarSector;
 
 	/**
 	 * Launch the application.
@@ -37,6 +52,17 @@ public class VisualizarDatosEmpresa extends JDialog {
 			VisualizarDatosEmpresa dialog = new VisualizarDatosEmpresa();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
+			/*
+			dialog.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
+						bolsaWrite.writeObject(Bolsa.getInstancia());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,9 +109,11 @@ public class VisualizarDatosEmpresa extends JDialog {
 			buttonPane.setLayout(null);
 			{
 				JButton btnRecargar = new JButton("Recargar");
+				btnRecargar.setIcon(new ImageIcon(VisualizarDatosEmpresa.class.getResource("/img/refresh.png")));
 				btnRecargar.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
+						cargarInformacionEmpresa();
 					}
 				});
 				btnRecargar.setBackground(Color.WHITE);
@@ -97,6 +125,7 @@ public class VisualizarDatosEmpresa extends JDialog {
 			}
 			{
 				JButton btnCerrar = new JButton("Cerrar");
+				btnCerrar.setIcon(new ImageIcon(VisualizarDatosEmpresa.class.getResource("/img/cancelar16px.png")));
 				btnCerrar.setBackground(Color.WHITE);
 				btnCerrar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -224,7 +253,7 @@ public class VisualizarDatosEmpresa extends JDialog {
 		separator.setBounds(0, 43, 800, 20);
 		pnlDatosUsuario.add(separator);
 
-		JButton btnEditarGeneral = new JButton("editar");
+		JButton btnEditarGeneral = new JButton("Editar");
 		btnEditarGeneral.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -288,43 +317,43 @@ public class VisualizarDatosEmpresa extends JDialog {
 		lblCodigo.setBounds(22, 62, 168, 32);
 		pnlDatosUsuario.add(lblCodigo);
 
-		JLabel lblMostrarCodigo = new JLabel("C\u00F3digo");
+		lblMostrarCodigo = new JLabel("C\u00F3digo");
 		lblMostrarCodigo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarCodigo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarCodigo.setBounds(22, 94, 168, 32);
 		pnlDatosUsuario.add(lblMostrarCodigo);
 
-		JLabel lblMostrarTelefono = new JLabel("Tel\u00E9fono");
+		lblMostrarTelefono = new JLabel("Tel\u00E9fono");
 		lblMostrarTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarTelefono.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarTelefono.setBounds(223, 94, 168, 32);
 		pnlDatosUsuario.add(lblMostrarTelefono);
 
-		JLabel lblMostrarDireccion = new JLabel("Direcci\u00F3n");
+		lblMostrarDireccion = new JLabel("Direcci\u00F3n");
 		lblMostrarDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarDireccion.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarDireccion.setBounds(424, 94, 168, 32);
 		pnlDatosUsuario.add(lblMostrarDireccion);
 
-		JLabel lblMostrarNombre = new JLabel("Nombre");
+		lblMostrarNombre = new JLabel("Nombre");
 		lblMostrarNombre.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarNombre.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarNombre.setBounds(22, 189, 168, 32);
 		pnlDatosUsuario.add(lblMostrarNombre);
 
-		JLabel lblMostrarCorreo = new JLabel("Correo");
+		lblMostrarCorreo = new JLabel("Correo");
 		lblMostrarCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarCorreo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarCorreo.setBounds(223, 189, 168, 32);
 		pnlDatosUsuario.add(lblMostrarCorreo);
 
-		JLabel lblMostrarProvincia = new JLabel("Provincia");
+		lblMostrarProvincia = new JLabel("Provincia");
 		lblMostrarProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarProvincia.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarProvincia.setBounds(424, 189, 168, 32);
 		pnlDatosUsuario.add(lblMostrarProvincia);
 
-		JLabel lblMostrarMunicipio = new JLabel("Municipio");
+		lblMostrarMunicipio = new JLabel("Municipio");
 		lblMostrarMunicipio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarMunicipio.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarMunicipio.setBounds(625, 189, 168, 32);
@@ -362,7 +391,7 @@ public class VisualizarDatosEmpresa extends JDialog {
 		btnEditarEmpresa.setBounds(688, 6, 100, 40);
 		pnlDatosEmpresariales.add(btnEditarEmpresa);
 
-		JLabel lblRnc = new JLabel("RCN:");
+		JLabel lblRnc = new JLabel("RNC:");
 		lblRnc.setForeground(Color.DARK_GRAY);
 		lblRnc.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblRnc.setHorizontalAlignment(SwingConstants.LEFT);
@@ -383,19 +412,19 @@ public class VisualizarDatosEmpresa extends JDialog {
 		lblSector.setBounds(507, 74, 168, 32);
 		pnlDatosEmpresariales.add(lblSector);
 
-		JLabel lblMostrarRnc = new JLabel("RNC");
+		lblMostrarRnc = new JLabel("RNC");
 		lblMostrarRnc.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarRnc.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarRnc.setBounds(23, 107, 168, 32);
 		pnlDatosEmpresariales.add(lblMostrarRnc);
 
-		JLabel lblMostrarTipoEmp = new JLabel("Tipo de empresa");
+		lblMostrarTipoEmp = new JLabel("Tipo de empresa");
 		lblMostrarTipoEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarTipoEmp.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarTipoEmp.setBounds(265, 107, 168, 32);
 		pnlDatosEmpresariales.add(lblMostrarTipoEmp);
 
-		JLabel lblMostrarSector = new JLabel("Sector");
+		lblMostrarSector = new JLabel("Sector");
 		lblMostrarSector.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarSector.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarSector.setBounds(507, 107, 168, 32);
@@ -406,11 +435,26 @@ public class VisualizarDatosEmpresa extends JDialog {
 		iconBuilding.setHorizontalAlignment(SwingConstants.CENTER);
 		iconBuilding.setBounds(366, 117, 100, 75);
 		pnlPrincipal.add(iconBuilding);
+		
+		// Cargar información empresarial
+		cargarInformacionEmpresa();
 	}
 
 	private void cargarInformacionEmpresa() {
-		// Datos generales
-
-		// Información empresarial
+		
+			if(Bolsa.getUsuarioActivo() instanceof Empresa && Bolsa.getUsuarioActivo()!=null) {
+			Empresa aux = (Empresa) Bolsa.getUsuarioActivo();
+			// Datos generales
+			lblMostrarCodigo.setText(aux.getCodigo());
+			lblMostrarNombre.setText(aux.getNombre());
+			lblMostrarTelefono.setText(aux.getTelefono());
+			lblMostrarProvincia.setText(aux.getProvincia());
+			lblMostrarMunicipio.setText(aux.getMunicipio());
+			lblMostrarDireccion.setText(aux.getDireccion());
+			// Información empresarial
+			lblMostrarRnc.setText(aux.getRnc());
+			lblMostrarTipoEmp.setText(aux.getTipoEmpresa());
+			lblMostrarSector.setText(aux.getSectorEmpresarial());
+			}
 	}
 }
