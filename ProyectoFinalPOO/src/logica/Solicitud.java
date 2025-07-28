@@ -13,7 +13,7 @@ public class Solicitud implements Serializable {
 	private Persona solicitante;
 	private String dispHorarios;
 	private boolean dispMovilidad;
-	private boolean licencia;
+//	private boolean licencia;
 	private String tipoEmpleo;
 	private String modalidad;
 	private String area;
@@ -22,7 +22,7 @@ public class Solicitud implements Serializable {
 	private Date fechaSolicitud;
 	private String estadoSolicitud;
 
-	public Solicitud(String codigo, Persona solicitante, String dispHorarios, boolean dispMovilidad, boolean licencia,
+	public Solicitud(String codigo, Persona solicitante, String dispHorarios, boolean dispMovilidad,
 			String tipoEmpleado, String modalidad, String area, float salarioDeseado, Date fechaSolicitud,
 			String estadoSolicitud) {
 		super();
@@ -30,7 +30,7 @@ public class Solicitud implements Serializable {
 		this.solicitante = solicitante;
 		this.dispHorarios = dispHorarios;
 		this.dispMovilidad = dispMovilidad;
-		this.licencia = licencia;
+//		this.licencia = licencia;
 		this.tipoEmpleo = tipoEmpleado;
 		this.modalidad = modalidad;
 		this.area = area;
@@ -71,13 +71,13 @@ public class Solicitud implements Serializable {
 		this.dispMovilidad = dispMovilidad;
 	}
 
-	public boolean isLicencia() {
-		return licencia;
-	}
-
-	public void setLicencia(boolean licencia) {
-		this.licencia = licencia;
-	}
+//	public boolean isLicencia() {
+//		return licencia;
+//	}
+//
+//	public void setLicencia(boolean licencia) {
+//		this.licencia = licencia;
+//	}
 
 	public String getTipoEmpleo() {
 		return tipoEmpleo;

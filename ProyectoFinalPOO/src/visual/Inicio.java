@@ -68,7 +68,7 @@ public class Inicio extends JFrame {
 						bolsaOut = new FileOutputStream("BdLaborea.dat");
 						bolsaWrite = new ObjectOutputStream(bolsaOut);
 						Persona aux = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
-								"Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418",
+								"Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", true,
 								false, "Ingeniería en Sistemas Computacionales");
 
 						Bolsa.getInstancia().insertarUsuario(aux);

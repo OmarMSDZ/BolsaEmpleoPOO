@@ -18,13 +18,14 @@ public class Bolsa implements Serializable {
 	private ArrayList<Solicitud> listaSolicitudes;
 	private ArrayList<MatchOferta> listaMatchOferta;
 	private ArrayList<Oferta> listaOfertas;
-	public static int genCodUsu = 0;
-	public static int genCodSoli = 0;
-	public static int genCodMatch = 0;
-	public static int genCodOfer = 0;
+	public int genCodUsu = 0;
+	public int genCodSoli = 0;
+	public int genCodMatch = 0;
+	public int genCodOfer = 0;
 	public static Bolsa bolsaLaboral = null;
 	public static Usuario usuarioActivo = null;
-	//threads, con el modificador transient no se serializan ni se guardan en archivo
+	// threads, con el modificador transient no se serializan ni se guardan en
+	// archivo
 	private transient Thread hiloMatching;
 	private transient MatchRunnable matchRunnable;
 
@@ -87,36 +88,36 @@ public class Bolsa implements Serializable {
 		this.listaOfertas = listaOfertas;
 	}
 
-	public static int getGenCodUsu() {
+	public int getGenCodUsu() {
 		return genCodUsu;
 	}
 
-	public static void setGenCodUsu(int genCodUsu) {
-		Bolsa.genCodUsu = genCodUsu;
+	public void setGenCodUsu(int genCodUsu) {
+		this.genCodUsu = genCodUsu;
 	}
 
-	public static int getGenCodSoli() {
+	public int getGenCodSoli() {
 		return genCodSoli;
 	}
 
-	public static void setGenCodSoli(int genCodSoli) {
-		Bolsa.genCodSoli = genCodSoli;
+	public void setGenCodSoli(int genCodSoli) {
+		this.genCodSoli = genCodSoli;
 	}
 
-	public static int getGenCodMatch() {
+	public int getGenCodMatch() {
 		return genCodMatch;
 	}
 
-	public static void setGenCodMatch(int genCodMatch) {
-		Bolsa.genCodMatch = genCodMatch;
+	public void setGenCodMatch(int genCodMatch) {
+		this.genCodMatch = genCodMatch;
 	}
 
-	public static int getGenCodOfer() {
+	public int getGenCodOfer() {
 		return genCodOfer;
 	}
 
-	public static void setGenCodOfer(int genCodOfer) {
-		Bolsa.genCodOfer = genCodOfer;
+	public void setGenCodOfer(int genCodOfer) {
+		this.genCodOfer = genCodOfer;
 	}
 
 	public static Bolsa getBolsaLaboral() {
@@ -295,7 +296,7 @@ public class Bolsa implements Serializable {
 		return "S-" + genCodSoli;
 	}
 
-	public static String generarCodigoMatch() {
+	public String generarCodigoMatch() {
 		genCodMatch++;
 		return "MTCH-" + genCodMatch;
 	}
@@ -325,38 +326,54 @@ public class Bolsa implements Serializable {
 
 	// Algoritmo de matching
 	public ArrayList<MatchOferta> realizarMatching(ArrayList<Oferta> ofertas, ArrayList<Solicitud> solicitudes) {
-		ArrayList<MatchOferta> MatchesOfertas = new ArrayList<MatchOferta>();
+		ArrayList<MatchOferta> MatchesOfertas = new ArrayList<>();
+//	    System.out.println("Cantidad de ofertas: " + ofertas.size());
+//	    System.out.println("Cantidad de solicitudes: " + solicitudes.size());
+
+		for (int i = 0; i < solicitudes.size(); i++) {
+			System.out.println(
+					"Solicitud[" + i + "]: " + solicitudes.get(i).getCodigo() + " - " + solicitudes.get(i).hashCode());
+		}
+
 		for (Oferta oferta : ofertas) {
 			for (Solicitud solicitud : solicitudes) {
-				// no puede estar cancelada ni pausada la solicitud, la persona debe estar
-				// desempleada
-				if (!(solicitud.getEstadoSolicitud().equalsIgnoreCase("PAUSADA")
-						|| solicitud.getEstadoSolicitud().equalsIgnoreCase("CANCELADA"))
-						&& !solicitud.getSolicitante().isEstado()) {
 
-					int totalCriterios = 8;
+				// Validación básica
+				if (oferta == null || solicitud == null || solicitud.getSolicitante() == null)
+					continue;
+
+				String estadoSol = solicitud.getEstadoSolicitud();
+				boolean solicitanteEmpleado = solicitud.getSolicitante().isEstadoEmpleado();
+
+//	            System.out.println("Estado solicitud: " + estadoSol + ", Solicitante empleado? " + solicitanteEmpleado);
+				System.out.println(
+						"Total de matches actuales en la bolsa: " + Bolsa.getInstancia().getListaMatchOferta().size());
+
+				if (!(estadoSol.trim().equalsIgnoreCase("PAUSADA") || estadoSol.trim().equalsIgnoreCase("CANCELADA"))
+						&& !solicitanteEmpleado) {
 
 					int criteriosCumplidos = 0;
+					int totalCriterios = 8; // ajustado porque el campo de carrera solo se aplica a universitarios
 
 					if (oferta.getModalidad().equalsIgnoreCase(solicitud.getModalidad()))
 						criteriosCumplidos++;
 					if (oferta.getTipo().equalsIgnoreCase(solicitud.getTipoEmpleo()))
 						criteriosCumplidos++;
 
-					// Para los 3 tipos de niveles de estudios
-					if (oferta.getNivelEducacion().equals("Universitario")
-							&& solicitud.getSolicitante() instanceof Universitario)
+					if (oferta.getNivelEducacion().equalsIgnoreCase("Universitario")
+							&& solicitud.getSolicitante() instanceof Universitario) {
 						criteriosCumplidos++;
-					if (oferta.getNivelEducacion().equals("Tecnico Superior")
-							&& solicitud.getSolicitante() instanceof TecnicoSuperior)
+						if (oferta.getArea().equalsIgnoreCase(solicitud.getArea()))
+							criteriosCumplidos++;
+					} else if (oferta.getNivelEducacion().equalsIgnoreCase("Tecnico Superior")
+							&& solicitud.getSolicitante() instanceof TecnicoSuperior) {
 						criteriosCumplidos++;
-					if (oferta.getNivelEducacion().equals("Obrero") && solicitud.getSolicitante() instanceof Obrero)
+					} else if (oferta.getNivelEducacion().equalsIgnoreCase("Obrero")
+							&& solicitud.getSolicitante() instanceof Obrero) {
 						criteriosCumplidos++;
+					}
 
-					// Solo obtener la carrera de los universitarios
-					if (oferta.getArea().equalsIgnoreCase(solicitud.getArea()))
-						criteriosCumplidos++;
-					if (oferta.isRequiereLicencia() == solicitud.isLicencia())
+					if (oferta.isRequiereLicencia() == solicitud.getSolicitante().isLicenciaConducir())
 						criteriosCumplidos++;
 					if (oferta.isRequiereMovilidad() == solicitud.isDispMovilidad())
 						criteriosCumplidos++;
@@ -366,34 +383,32 @@ public class Bolsa implements Serializable {
 						criteriosCumplidos++;
 
 					double porcentaje = (criteriosCumplidos * 100.0) / totalCriterios;
+//	                System.out.println("Evaluando oferta " + oferta.getCodigo() + " con solicitud " +
+//	                    solicitud.getCodigo() + " - porcentaje: " + porcentaje);
 
-					// Si tiene un porcentaje por encima de 60, recomendar para el puesto y crear el
-					// enlace con la clase de matching
-					if (porcentaje >= 60.0) {
-						boolean yaAceptadoPorCandidato = false;
-
-						// Verificar si ya existe un match con el mismo solicitante y oferta, y el
-						// candidato ya aceptó
-						for (MatchOferta existente : Bolsa.getInstancia().getListaMatchOferta()) {
-							if (existente.getOfertaMatcheo().equals(oferta)
-									&& existente.getSolicitudMatcheo().equals(solicitud)
-									&& existente.isAceptacionCandidato()) {
-								yaAceptadoPorCandidato = true;
-								break;
-							}
+					// Evitar duplicados de match oferta/solicitud
+					boolean yaExisteMatch = false;
+					for (MatchOferta existente : Bolsa.getInstancia().getListaMatchOferta()) {
+						if (existente.getOfertaMatcheo() != null && existente.getSolicitudMatcheo() != null
+								&& existente.getOfertaMatcheo().equals(oferta)
+								&& existente.getSolicitudMatcheo().equals(solicitud)) {
+							yaExisteMatch = true;
+							break;
 						}
+					}
 
-						// Solo agregar si no ha sido aceptado por el candidato antes
-						if (!yaAceptadoPorCandidato) {
-							String codigo = generarCodigoMatch();
-							MatchOferta match = new MatchOferta(codigo, new Date(), oferta, solicitud, false, false);
-							MatchesOfertas.add(match);
-						}
-
+					if (porcentaje >= 50.0 && !yaExisteMatch) {
+						String codigo = generarCodigoMatch();
+						MatchOferta match = new MatchOferta(codigo, new Date(), oferta, solicitud, false, false);
+						MatchesOfertas.add(match);
+						// solo para prueba
+						System.out.println(" Match creado: " + match.getCodigo() + "  Oferta: " + oferta.getCodigo()
+								+ " | Solicitud: " + solicitud.getCodigo());
 					}
 				}
 			}
 		}
+
 		return MatchesOfertas;
 	}
 
@@ -402,29 +417,61 @@ public class Bolsa implements Serializable {
 		if (listaOfertas.size() > 0 && listaSolicitudes.size() > 0) {
 			ArrayList<MatchOferta> nuevosMatch = realizarMatching(listaOfertas, listaSolicitudes);
 			for (MatchOferta match : nuevosMatch) {
-			    if (!listaMatchOferta.contains(match)) {
-			        listaMatchOferta.add(match);
-			    }
+				if (!listaMatchOferta.contains(match)) {
+					listaMatchOferta.add(match);
+				}
 			}
 		}
 	}
 
-	//iniciar y detener hilos que ejecutan el matching automatico, solo se ejecutara un hilo de esto para toda la app
+	// iniciar y detener hilos que ejecutan el matching automatico, solo se
+	// ejecutara un hilo de esto para toda la app
 	public void iniciarMatchingAutomatico() {
-	    if (hiloMatching == null || !hiloMatching.isAlive()) {
-	        matchRunnable = new MatchRunnable(); //logica del hilo
-	        hiloMatching = new Thread(matchRunnable); //este es el hilo a ejecutar
-	        hiloMatching.start();
-	    }
+		if (hiloMatching == null || !hiloMatching.isAlive()) {
+			matchRunnable = new MatchRunnable(); // logica del hilo
+			hiloMatching = new Thread(matchRunnable); // este es el hilo a ejecutar
+			hiloMatching.start();
+		}
 	}
+
 	public void detenerMatchingAutomatico() {
-	    if (matchRunnable != null) {
-	        matchRunnable.detener();
-	    }
-	    if (hiloMatching != null && hiloMatching.isAlive()) {
-	        hiloMatching.interrupt();
-	    }
+		if (matchRunnable != null) {
+			matchRunnable.detener();
+		}
+		if (hiloMatching != null && hiloMatching.isAlive()) {
+			hiloMatching.interrupt();
+		}
 	}
+
+	// contar matches oferta y solicitud (fines visuales)
+	public int contarMatchesOferta(Oferta oferta) {
+		int cantidad = 0;
+		if (!listaMatchOferta.isEmpty()) {
+			for (MatchOferta matchOferta : listaMatchOferta) {
+				if (matchOferta.getOfertaMatcheo().equals(oferta)) {
+					cantidad++;
+				}
+			}
+
+		}
+
+		return cantidad;
+	}
+
+	public int contarMatchesSolicitud(Solicitud solicitud) {
+		int cantidad = 0;
+		if (!listaMatchOferta.isEmpty() && solicitud != null && solicitud.getCodigo() != null) {
+			for (MatchOferta matchOferta : listaMatchOferta) {
+				Solicitud solMatcheada = matchOferta.getSolicitudMatcheo();
+				if (solMatcheada != null && solMatcheada.getCodigo() != null
+						&& solMatcheada.getCodigo().equals(solicitud.getCodigo())) {
+					cantidad++;
+				}
+			}
+		}
+		return cantidad;
+	}
+
 	// contratar persona, esto cierra las solicitudes del empleado y cambia su
 	// estado
 	public void contratarPersona(Persona pers) {

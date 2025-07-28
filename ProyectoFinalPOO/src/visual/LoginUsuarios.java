@@ -99,6 +99,8 @@ public class LoginUsuarios extends JDialog {
 	private JComboBox cmbTipoEmpresa;
 	private JComboBox cmbProvincia;
 	private JComboBox cmbSectorEmp;
+	private JRadioButton btnLicenciaSi;
+	private JRadioButton btnLicenciaNo;
 
 	/**
 	 * Launch the application.
@@ -254,8 +256,8 @@ public class LoginUsuarios extends JDialog {
 				String passwd = new String(passwdChars);
 				Usuario usuarioLogin = Bolsa.getInstancia().validarLoginUsuarios(email, passwd);
 
-				if (email.equalsIgnoreCase("correoadmin@gmail.com") && passwd.equalsIgnoreCase("1234")) {
-					MenuAdmins nuevoMenuAdmin = new MenuAdmins();
+				if (email.equalsIgnoreCase("ADMIN") && passwd.equalsIgnoreCase("1111")) {
+					MenuAdmins nuevoMenuAdmin = new MenuAdmins(LoginUsuarios.this);
 					nuevoMenuAdmin.setModal(true);
 					nuevoMenuAdmin.setVisible(true);
 					dispose();
@@ -270,7 +272,7 @@ public class LoginUsuarios extends JDialog {
 						
 						limpiarInicioSesion();
 
-						 dispose();
+						dispose();
 
 					} else if (usuarioLogin instanceof Empresa) {
 						Bolsa.setUsuarioActivo(usuarioLogin);
@@ -712,28 +714,33 @@ public class LoginUsuarios extends JDialog {
 					String direccion = txtDireccion.getText();
 					String apellidos = txtApellido.getText();
 					String cedula = txtCedula.getText();
-					String sexo;
-
+					String sexo = "";
+					boolean licencia = false;
 					if (rdbtnSexoM.isSelected()) {
 						sexo = rdbtnSexoM.getText();
-					} else {
+					} else if(rdbtnSexoF.isSelected()) {
 						sexo = rdbtnSexoF.getText();
 					}
-
+					if(btnLicenciaSi.isSelected()) {
+						licencia = true;
+					} else {
+						licencia = false;
+					}
+					
 					Date fechaNacimiento = (Date) spnFechaNac.getValue();
 
 					if (validarEdad(fechaNacimiento)) {
 						if (rdbtnUniversitario.isSelected()) {
 							String carrera = cmbCarreras.getSelectedItem().toString();
 							nuevoUsuario = new Universitario(codigoUsuario, nombre, passwd, telefono, correo, provincia,
-									municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula, false,
+									municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula, licencia, false,
 									carrera);
 						} else if (rdbtnTecnico.isSelected()) {
 							String tecnicoS = txtTecnico.getText();
 							int anniosExp = (int) spnAniosExp.getValue();
 							nuevoUsuario = new TecnicoSuperior(codigoUsuario, nombre, passwd, telefono, correo,
 									provincia, municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula,
-									false, tecnicoS, anniosExp);
+									licencia,false, tecnicoS, anniosExp);
 						} else {
 							boolean conduccion = chckbxConduccion.isSelected();
 							boolean electricidad = chckbxElectricidad.isSelected();
@@ -744,7 +751,7 @@ public class LoginUsuarios extends JDialog {
 							boolean seguridad = chckbxSeguridad.isSelected();
 							boolean ventas = chckbxVentas.isSelected();
 							nuevoUsuario = new Obrero(codigoUsuario, nombre, passwd, telefono, correo, provincia,
-									municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula, false, ventas,
+									municipio, direccion, true, apellidos, sexo, fechaNacimiento, cedula, licencia,false, ventas,
 									mecanica, ofimatica, seguridad, electricidad, mantenimiento, conduccion, limpieza);
 						}
 						Bolsa.getInstancia().insertarUsuario(nuevoUsuario);
@@ -990,6 +997,39 @@ public class LoginUsuarios extends JDialog {
 		chckbxLimpieza.setBackground(Color.WHITE);
 		chckbxLimpieza.setBounds(553, 44, 135, 25);
 		pnlFormObrero.add(chckbxLimpieza);
+		
+		JLabel lbldisponeDeLicencia = new JLabel("\u00BFDispone de licencia?");
+		lbldisponeDeLicencia.setHorizontalAlignment(SwingConstants.LEFT);
+		lbldisponeDeLicencia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		lbldisponeDeLicencia.setBounds(512, 284, 200, 35);
+		pnlRegistroCandidato.add(lbldisponeDeLicencia);
+		
+		btnLicenciaSi = new JRadioButton("Si");
+		btnLicenciaSi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnLicenciaSi.setSelected(true);
+				btnLicenciaNo.setSelected(false);
+				
+			}
+		});
+		btnLicenciaSi.setHorizontalAlignment(SwingConstants.CENTER);
+		btnLicenciaSi.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnLicenciaSi.setBackground(Color.WHITE);
+		btnLicenciaSi.setBounds(512, 322, 48, 35);
+		pnlRegistroCandidato.add(btnLicenciaSi);
+		
+		btnLicenciaNo = new JRadioButton("No");
+		btnLicenciaNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnLicenciaSi.setSelected(false);
+				btnLicenciaNo.setSelected(true);
+			}
+		});
+		btnLicenciaNo.setHorizontalAlignment(SwingConstants.CENTER);
+		btnLicenciaNo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnLicenciaNo.setBackground(Color.WHITE);
+		btnLicenciaNo.setBounds(576, 322, 48, 35);
+		pnlRegistroCandidato.add(btnLicenciaNo);
 
 		JPanel pnlRegistroEmpresas = new JPanel();
 		pnlRegistroEmpresas.setBackground(Color.WHITE);

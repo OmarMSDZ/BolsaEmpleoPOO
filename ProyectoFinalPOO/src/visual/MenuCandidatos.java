@@ -40,6 +40,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -90,8 +91,6 @@ public class MenuCandidatos extends JDialog {
 	private static Persona persActual = null;
 
 	private JTabbedPane jtpMenus;
-	private JRadioButton rdbtnLicenciaNo;
-	private JRadioButton rdbtnLicenciaSi;
 	private JRadioButton rdbtnMovilidadNo;
 	private JRadioButton rdbtnMovilidadSi;
 	private JComboBox cbxAreaSolicitud;
@@ -111,6 +110,9 @@ public class MenuCandidatos extends JDialog {
 	private JLabel lblAreaSolicitud;
 	private JLabel lblFechaSolicitud;
 	private JLabel lblEstadoSolicitud;
+	private JButton btnNotificacion;
+	private JButton btnCancelarSolicitud;
+	private JLabel lblMostrarNombreDePerfil;
 
 	/**
 	 * Launch the application.
@@ -139,7 +141,7 @@ public class MenuCandidatos extends JDialog {
 		} else {
 			// Para pruebas
 			persActual = new Universitario("U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com", "Santiago",
-					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", false,
+					"Santiago", "Su casa", true, "Morales Diaz", "M", new Date(), "40215233418", true, false,
 					"Ingeniería en Sistemas Computacionales");
 			Bolsa.getInstancia().insertarUsuario(persActual);
 			Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
@@ -147,17 +149,35 @@ public class MenuCandidatos extends JDialog {
 		}
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//		addWindowListener(new WindowAdapter() {
-//		    @Override
-//		    public void windowClosing(WindowEvent e) {
-//		        try {
-//		            Bolsa.guardarEstado();
-//		            System.out.println("Datos guardados al cerrar menu candidatos");
-//		        } catch (Exception ex) {
-//		            ex.printStackTrace();
-//		        }
-//		    }
-//		});
+		
+		//hilo de notificaciones, con proposito visual para mostrar la cantidad de matches que obtuvo cada solicitud
+		Thread hiloNotificaciones = new Thread(() -> {
+		    while (true) {
+		        try {
+		        	if(solicitudSelected!=null) {	
+		            conteoNotificaciones(solicitudSelected);
+		            }
+		        	Thread.sleep(2000); //2 seg
+		        } catch (InterruptedException e) {
+		        	Thread.currentThread().interrupt(); 
+		        }
+		    }
+		});
+		hiloNotificaciones.start();
+		//detener hilos 
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					// detener hilo al cerrar
+					hiloNotificaciones.interrupt();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
+		
 
 		setBounds(100, 100, 1100, 687);
 
@@ -189,11 +209,11 @@ public class MenuCandidatos extends JDialog {
 		panel.setBounds(1885, 64, 19, 971);
 		contentPane.add(panel);
 
-		JLabel lblMostrarNombreDe = new JLabel("Nombre");
-		lblMostrarNombreDe.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblMostrarNombreDe.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblMostrarNombreDe.setBounds(1442, 27, 340, 74);
-		contentPane.add(lblMostrarNombreDe);
+		lblMostrarNombreDePerfil = new JLabel("Nombre");
+		lblMostrarNombreDePerfil.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblMostrarNombreDePerfil.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		lblMostrarNombreDePerfil.setBounds(1442, 27, 340, 74);
+		contentPane.add(lblMostrarNombreDePerfil);
 
 		label = new JLabel("");
 		label.addMouseListener(new MouseAdapter() {
@@ -220,10 +240,7 @@ public class MenuCandidatos extends JDialog {
 		panel_1.setBounds(250, 64, 1644, 59);
 		contentPane.add(panel_1);
 
-		// mostrar nombre completo persona en la esquina de la pantalla
-		if (persActual != null) {
-			lblMostrarNombreDe.setText(persActual.getNombre() + " " + persActual.getApellidos());
-		}
+		 
 
 		label_1 = new JLabel("");
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -391,11 +408,6 @@ public class MenuCandidatos extends JDialog {
 		lblSalarioDeseado.setBounds(1242, 255, 260, 51);
 		pnlSolicitudes.add(lblSalarioDeseado);
 
-		JLabel lbldisponeDeLicencia = new JLabel("\u00BFDispone de licencia de conducir?");
-		lbldisponeDeLicencia.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lbldisponeDeLicencia.setBounds(782, 430, 395, 51);
-		pnlSolicitudes.add(lbldisponeDeLicencia);
-
 		JLabel lblDisponibilidadDeMovilidad = new JLabel("Disponibilidad de movilidad");
 		lblDisponibilidadDeMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 23));
 		lblDisponibilidadDeMovilidad.setBounds(1242, 338, 313, 51);
@@ -436,31 +448,6 @@ public class MenuCandidatos extends JDialog {
 		spnSalarioDeseado.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		spnSalarioDeseado.setBounds(1242, 302, 313, 39);
 		pnlSolicitudes.add(spnSalarioDeseado);
-
-		rdbtnLicenciaSi = new JRadioButton("Si");
-		rdbtnLicenciaSi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnLicenciaSi.setSelected(true);
-				rdbtnLicenciaNo.setSelected(false);
-
-			}
-		});
-		rdbtnLicenciaSi.setFont(new Font("Segoe UI", Font.PLAIN, 17));
-		rdbtnLicenciaSi.setBackground(Color.WHITE);
-		rdbtnLicenciaSi.setBounds(782, 488, 109, 23);
-		pnlSolicitudes.add(rdbtnLicenciaSi);
-
-		rdbtnLicenciaNo = new JRadioButton("No");
-		rdbtnLicenciaNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnLicenciaSi.setSelected(false);
-				rdbtnLicenciaNo.setSelected(true);
-			}
-		});
-		rdbtnLicenciaNo.setFont(new Font("Segoe UI", Font.PLAIN, 17));
-		rdbtnLicenciaNo.setBackground(Color.WHITE);
-		rdbtnLicenciaNo.setBounds(944, 488, 109, 23);
-		pnlSolicitudes.add(rdbtnLicenciaNo);
 
 		rdbtnMovilidadSi = new JRadioButton("Puedo movilizarme/viajar");
 		rdbtnMovilidadSi.addActionListener(new ActionListener() {
@@ -523,13 +510,13 @@ public class MenuCandidatos extends JDialog {
 		JLabel lblnumsoli = new JLabel("N\u00FAmero solicitudes:");
 		lblnumsoli.setHorizontalAlignment(SwingConstants.LEFT);
 		lblnumsoli.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblnumsoli.setBounds(10, 429, 260, 51);
+		lblnumsoli.setBounds(10, 421, 260, 51);
 		pnlSolicitudes.add(lblnumsoli);
 
 		JLabel lblEstado = new JLabel("Estado:");
 		lblEstado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEstado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblEstado.setBounds(10, 501, 260, 51);
+		lblEstado.setBounds(10, 493, 260, 51);
 		pnlSolicitudes.add(lblEstado);
 
 		JLabel lblDatosSolicitud = new JLabel("Datos Solicitud");
@@ -546,42 +533,42 @@ public class MenuCandidatos extends JDialog {
 		lblInfNombreCompleto.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfNombreCompleto.setForeground(Color.DARK_GRAY);
 		lblInfNombreCompleto.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblInfNombreCompleto.setBounds(247, 168, 468, 51);
+		lblInfNombreCompleto.setBounds(247, 168, 431, 51);
 		pnlSolicitudes.add(lblInfNombreCompleto);
 
 		lblInfCedula = new JLabel("Cedula");
 		lblInfCedula.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfCedula.setForeground(Color.DARK_GRAY);
 		lblInfCedula.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblInfCedula.setBounds(247, 230, 468, 51);
+		lblInfCedula.setBounds(247, 230, 431, 51);
 		pnlSolicitudes.add(lblInfCedula);
 
 		lblInfSexo = new JLabel("Sexo");
 		lblInfSexo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfSexo.setForeground(Color.DARK_GRAY);
 		lblInfSexo.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblInfSexo.setBounds(247, 292, 468, 51);
+		lblInfSexo.setBounds(247, 292, 431, 51);
 		pnlSolicitudes.add(lblInfSexo);
 
 		lblInfFechaNacimiento = new JLabel("Fecha Nacimiento");
 		lblInfFechaNacimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfFechaNacimiento.setForeground(Color.DARK_GRAY);
 		lblInfFechaNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblInfFechaNacimiento.setBounds(247, 358, 468, 51);
+		lblInfFechaNacimiento.setBounds(247, 358, 431, 51);
 		pnlSolicitudes.add(lblInfFechaNacimiento);
 
 		lblInfNumeroSolicitudes = new JLabel("N\u00FAmero Solicitudes");
 		lblInfNumeroSolicitudes.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfNumeroSolicitudes.setForeground(Color.DARK_GRAY);
 		lblInfNumeroSolicitudes.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblInfNumeroSolicitudes.setBounds(247, 429, 468, 51);
+		lblInfNumeroSolicitudes.setBounds(247, 421, 431, 51);
 		pnlSolicitudes.add(lblInfNumeroSolicitudes);
 
 		lblInfEstado = new JLabel("Estado");
 		lblInfEstado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfEstado.setForeground(Color.DARK_GRAY);
 		lblInfEstado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblInfEstado.setBounds(247, 501, 468, 51);
+		lblInfEstado.setBounds(247, 493, 431, 51);
 		pnlSolicitudes.add(lblInfEstado);
 
 		// cargar datos de persona al iniciar esta pantalla
@@ -604,13 +591,10 @@ public class MenuCandidatos extends JDialog {
 							dispMovilidad = true;
 						}
 
-						boolean licencia = false;
-						if (rdbtnLicenciaSi.isSelected()) {
-							licencia = true;
-						}
+ 
 						float salarioEsperado = (Float) spnSalarioDeseado.getValue();
 
-						Solicitud soli = new Solicitud(codigoGenerado, persActual, dispHorario, dispMovilidad, licencia,
+						Solicitud soli = new Solicitud(codigoGenerado, persActual, dispHorario, dispMovilidad,
 								tipoEmpleo, modalidad, area, salarioEsperado, new Date(), "ACTIVA");
 						Bolsa.getInstancia().insertarSolicitud(soli);
 						JOptionPane.showMessageDialog(null, "¡Solicitud procesada con éxito!", "Informaci�n",
@@ -834,16 +818,17 @@ public class MenuCandidatos extends JDialog {
 		lblFechaSolicitud.setBounds(230, 572, 480, 47);
 		pnlVistaSolicitud.add(lblFechaSolicitud);
 
-		JButton btnNewButton = new JButton("Notificaci\u00F3n");
-		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNewButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNewButton.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/bell.png")));
-		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		btnNewButton.setBounds(856, 807, 182, 73);
-		pnlVistaSolicitud.add(btnNewButton);
+		btnNotificacion = new JButton();
+ 
+		btnNotificacion.setBackground(Color.WHITE);
+		btnNotificacion.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnNotificacion.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnNotificacion.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/bell.png")));
+		btnNotificacion.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		btnNotificacion.setBounds(856, 807, 182, 73);
+		pnlVistaSolicitud.add(btnNotificacion);
 
-		JButton btnCancelarSolicitud = new JButton("Cancelar Solicitud");
+		btnCancelarSolicitud = new JButton("Cancelar Solicitud");
 		btnCancelarSolicitud.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// cancelar solicitud
@@ -897,10 +882,25 @@ public class MenuCandidatos extends JDialog {
 		lblAreaSolicitud.setBounds(230, 145, 480, 47);
 		pnlVistaSolicitud.add(lblAreaSolicitud);
 	}
+	//Contar notificaciones de cada solicitud (A usar con un thread)
+	private void conteoNotificaciones(Solicitud soli) {
+		int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(soli);
 
+		SwingUtilities.invokeLater(() -> {
+			if (cantidad > 0) {
+				btnNotificacion.setEnabled(true);
+				btnCancelarSolicitud.setEnabled(false);
+				btnNotificacion.setText("Notificaciones (" + cantidad + ")");
+			} else {
+				btnNotificacion.setEnabled(false);
+				btnCancelarSolicitud.setEnabled(true);
+				btnNotificacion.setText("Notificaciones");
+			}
+		});
+	}
 	private void cargarDatosPersona() {
 		if (persActual != null) {
-
+			lblMostrarNombreDePerfil.setText(persActual.getNombre() + " " + persActual.getApellidos());
 			lblInfNombreCompleto.setText(persActual.getNombre() + " " + persActual.getApellidos());
 
 			lblInfCedula.setText(persActual.getCedula());
@@ -914,7 +914,6 @@ public class MenuCandidatos extends JDialog {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			String formattedDate = dateFormat.format(fechaSolicitud);
 			lblInfFechaNacimiento.setText(formattedDate);
-
 			lblInfNumeroSolicitudes.setText(String.valueOf(persActual.getMisSolicitudes().size()));
 
 			if (persActual.isEstadoEmpleado()) {
@@ -934,7 +933,7 @@ public class MenuCandidatos extends JDialog {
 		cbxAreaSolicitud.setSelectedIndex(0);
 		rdbtnMovilidadSi.setSelected(false);
 		rdbtnMovilidadNo.setSelected(false);
-		rdbtnLicenciaSi.setSelected(false);
+ 
 		spnSalarioDeseado.setValue(0);
 		cargarDatosPersona();
 		cargarSolicitudes();
@@ -947,7 +946,7 @@ public class MenuCandidatos extends JDialog {
 		if (cbxHorarioSolicitud.getSelectedIndex() == 0 || cbxTipoEmpleo.getSelectedIndex() == 0
 				|| cbxModalidad.getSelectedIndex() == 0
 				|| (!rdbtnMovilidadNo.isSelected() && !rdbtnMovilidadSi.isSelected())
-				|| (!rdbtnLicenciaSi.isSelected() && !rdbtnLicenciaNo.isSelected())
+				 
 				|| (float) spnSalarioDeseado.getValue() == 0) {
 			valido = false;
 		}
@@ -969,6 +968,12 @@ public class MenuCandidatos extends JDialog {
 						solicitudSelected = eleSol.getSolicitud();
 						cargarVistaPreviaSolicitud(solicitudSelected); // cargar datos de solicitud en vista previa
 						jtpDescripcionSolicitud.setSelectedIndex(1);
+						
+						//conteo notificaciones
+						conteoNotificaciones(solicitudSelected);
+						int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(solicitudSelected);
+						System.out.println("Matches encontrados: " + cantidad);
+						
 					}
 				});
 
@@ -992,7 +997,7 @@ public class MenuCandidatos extends JDialog {
 			lblTipoEmpleoSolicitud.setText(soli.getTipoEmpleo());
 			lblModalidadSolicitud.setText(soli.getModalidad());
 			lblHorariosSolicitud.setText(soli.getDispHorarios());
-			if (soli.isLicencia()) {
+			if (soli.getSolicitante().isLicenciaConducir()) {
 				lblLicConducirSolicitud.setText("Posee licencia de conducir");
 			} else {
 				lblLicConducirSolicitud.setText("No posee licencia de conducir");

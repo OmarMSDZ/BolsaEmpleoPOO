@@ -73,6 +73,8 @@ public class EditarInfoPersonalCandidato extends JDialog {
 	private JRadioButton rdbtnSexoF;
 	private JRadioButton rdbtnSexoM;
 	private JSpinner spnFechaNacimiento;
+	private JRadioButton rdbtnLicenciaSi;
+	private JRadioButton rdbtnLicenciaNo;
 
 	/**
 	 * Launch the application.
@@ -105,16 +107,16 @@ public class EditarInfoPersonalCandidato extends JDialog {
 		        persActual = actual;
 		    } else {
 		    	//para pruebas
-		        persActual = new Universitario(
-		            "U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
-		            "Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M",
-		            new Date(), "40215233418", false,
-		            "Ingeniería en Sistemas Computacionales"
-		        );
-
-		        Bolsa.getInstancia().insertarUsuario(persActual);
-		        Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
-		        persActual = (Persona) Bolsa.getUsuarioActivo();
+//		        persActual = new Universitario(
+//		            "U-1", "Omar Jadis", "1234", "8091231234", "omarM@gmail.com",
+//		            "Santiago", "Santiago", "Su casa", true, "Morales Diaz", "M",
+//		            new Date(), "40215233418", false,
+//		            "Ingeniería en Sistemas Computacionales"
+//		        );
+//
+//		        Bolsa.getInstancia().insertarUsuario(persActual);
+//		        Bolsa.setUsuarioActivo(persActual); // insertar y establecer como activo para pruebas
+//		        persActual = (Persona) Bolsa.getUsuarioActivo();
 		    }
 		 
 		setTitle("Laborea - Editar informaci\u00F3n personal/profesional");
@@ -280,10 +282,10 @@ public class EditarInfoPersonalCandidato extends JDialog {
 
 				JLabel lblSexo = new JLabel("Sexo");
 				lblSexo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-				lblSexo.setBounds(10, 187, 101, 32);
+				lblSexo.setBounds(10, 187, 51, 32);
 				pnlInfoPersonal.add(lblSexo);
 
-				rdbtnSexoM = new JRadioButton("Masculino");
+				rdbtnSexoM = new JRadioButton("M");
 				rdbtnSexoM.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (rdbtnSexoM.isSelected()) {
@@ -293,10 +295,10 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				});
 				rdbtnSexoM.setBackground(Color.WHITE);
 				rdbtnSexoM.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-				rdbtnSexoM.setBounds(67, 193, 109, 23);
+				rdbtnSexoM.setBounds(67, 193, 53, 23);
 				pnlInfoPersonal.add(rdbtnSexoM);
 
-				rdbtnSexoF = new JRadioButton("Femenino");
+				rdbtnSexoF = new JRadioButton("F");
 				rdbtnSexoF.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if (rdbtnSexoF.isSelected()) {
@@ -306,8 +308,28 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				});
 				rdbtnSexoF.setBackground(Color.WHITE);
 				rdbtnSexoF.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-				rdbtnSexoF.setBounds(179, 193, 109, 23);
+				rdbtnSexoF.setBounds(116, 193, 53, 23);
 				pnlInfoPersonal.add(rdbtnSexoF);
+				{
+					JLabel lblLicencia = new JLabel("Licencia");
+					lblLicencia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+					lblLicencia.setBounds(253, 187, 74, 32);
+					pnlInfoPersonal.add(lblLicencia);
+				}
+				{
+					rdbtnLicenciaSi = new JRadioButton("Si");
+					rdbtnLicenciaSi.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+					rdbtnLicenciaSi.setBackground(Color.WHITE);
+					rdbtnLicenciaSi.setBounds(326, 193, 53, 23);
+					pnlInfoPersonal.add(rdbtnLicenciaSi);
+				}
+				{
+					rdbtnLicenciaNo = new JRadioButton("No");
+					rdbtnLicenciaNo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+					rdbtnLicenciaNo.setBackground(Color.WHITE);
+					rdbtnLicenciaNo.setBounds(375, 193, 53, 23);
+					pnlInfoPersonal.add(rdbtnLicenciaNo);
+				}
 			}
 			{
 				JPanel pnlInfoProfesional = new JPanel();
@@ -510,6 +532,12 @@ public class EditarInfoPersonalCandidato extends JDialog {
 									} else if (rdbtnSexoF.isSelected()) {
 										persActual.setSexo("F");
 									}
+									if(rdbtnLicenciaSi.isSelected()) {
+										persActual.setLicenciaConducir(true);
+									} else if(rdbtnLicenciaNo.isSelected()) {
+										persActual.setLicenciaConducir(false);
+									}
+									
 									persActual.setFechaNacimiento((Date) spnFechaNacimiento.getValue());
 									persActual.setTelefono(txtTelefono.getText());
 									persActual.setProvincia(cbxProvincia.getSelectedItem().toString());
