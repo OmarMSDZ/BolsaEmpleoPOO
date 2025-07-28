@@ -10,7 +10,7 @@ public class MatchRunnable implements Runnable {
 		while (activo) {
 			try {
 				Bolsa.getInstancia().match(); //ejecutar metodo match
-				System.out.println("Matching realizado automáticamente.");
+//				System.out.println("Matching realizado automáticamente.");
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				System.out.println("MatchingThread interrumpido.");

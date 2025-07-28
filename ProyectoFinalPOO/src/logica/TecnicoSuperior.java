@@ -15,9 +15,9 @@ public class TecnicoSuperior extends Persona implements Serializable {
 
 	public TecnicoSuperior(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
-			Date fechaNacimiento, String cedula, boolean estadoEmpleado, String tecnico, int aniosExperiencia) {
+			Date fechaNacimiento, String cedula, boolean licenciaConducir, boolean estadoEmpleado, String tecnico, int aniosExperiencia) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
-				sexo, fechaNacimiento, cedula, estadoEmpleado);
+				sexo, fechaNacimiento, cedula, licenciaConducir, estadoEmpleado);
 		this.tecnico = tecnico;
 		this.aniosExperiencia = aniosExperiencia;
 	}

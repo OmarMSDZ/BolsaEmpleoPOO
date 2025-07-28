@@ -14,17 +14,19 @@ public class Persona extends Usuario implements Serializable {
 	protected String sexo;
 	protected Date fechaNacimiento;
 	protected String cedula;
+	protected boolean licenciaConducir;
 	protected boolean estadoEmpleado;
 	protected ArrayList<Solicitud> misSolicitudes;
 
 	public Persona(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
-			Date fechaNacimiento, String cedula, boolean estadoEmpleado) {
+			Date fechaNacimiento, String cedula, boolean licenciaConducir,boolean estadoEmpleado) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado);
 		this.apellidos = apellidos;
 		this.sexo = sexo;
 		this.fechaNacimiento = fechaNacimiento;
 		this.cedula = cedula;
+		this.licenciaConducir=licenciaConducir;
 		this.estadoEmpleado = estadoEmpleado;
 		misSolicitudes = new ArrayList<Solicitud>();
 	}
@@ -61,6 +63,14 @@ public class Persona extends Usuario implements Serializable {
 		this.cedula = cedula;
 	}
 
+	public boolean isLicenciaConducir() {
+		return licenciaConducir;
+	}
+
+	public void setLicenciaConducir(boolean licenciaConducir) {
+		this.licenciaConducir= licenciaConducir;
+	}
+	
 	public boolean isEstadoEmpleado() {
 		return estadoEmpleado;
 	}

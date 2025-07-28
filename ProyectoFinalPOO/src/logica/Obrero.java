@@ -20,11 +20,11 @@ public class Obrero extends Persona implements Serializable {
 	private boolean limpieza;
 	public Obrero(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
-			Date fechaNacimiento, String cedula, boolean estadoEmpleado, boolean ventas, boolean mecanica,
+			Date fechaNacimiento, String cedula, boolean licenciaConducir, boolean estadoEmpleado, boolean ventas, boolean mecanica,
 			boolean ofimatica, boolean seguridad, boolean electricidad, boolean mantenimiento, boolean conduccion,
 			boolean limpieza) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
-				sexo, fechaNacimiento, cedula, estadoEmpleado);
+				sexo, fechaNacimiento, cedula, licenciaConducir, estadoEmpleado);
 		this.ventas = ventas;
 		this.mecanica = mecanica;
 		this.ofimatica = ofimatica;

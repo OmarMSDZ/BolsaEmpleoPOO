@@ -14,9 +14,9 @@ public class Universitario extends Persona implements Serializable{
 
 	public Universitario(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
-			Date fechaNacimiento, String cedula, boolean estadoEmpleado, String carrera) {
+			Date fechaNacimiento, String cedula,boolean licenciaConducir, boolean estadoEmpleado, String carrera) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado, apellidos,
-				sexo, fechaNacimiento, cedula, estadoEmpleado);
+				sexo, fechaNacimiento, cedula, licenciaConducir, estadoEmpleado);
 		this.carrera = carrera;
 	}
 
