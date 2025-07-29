@@ -110,7 +110,6 @@ public class MenuCandidatos extends JDialog {
 	private JLabel lblAreaSolicitud;
 	private JLabel lblFechaSolicitud;
 	private JLabel lblEstadoSolicitud;
-	private JButton btnNotificacion;
 	private JButton btnCancelarSolicitud;
 	private JLabel lblMostrarNombreDePerfil;
 
@@ -150,32 +149,32 @@ public class MenuCandidatos extends JDialog {
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		//hilo de notificaciones, con proposito visual para mostrar la cantidad de matches que obtuvo cada solicitud
-		Thread hiloNotificaciones = new Thread(() -> {
-		    while (true) {
-		        try {
-		        	if(solicitudSelected!=null) {	
-		            conteoNotificaciones(solicitudSelected);
-		            }
-		        	Thread.sleep(2000); //2 seg
-		        } catch (InterruptedException e) {
-		        	Thread.currentThread().interrupt(); 
-		        }
-		    }
-		});
-		hiloNotificaciones.start();
-		//detener hilos 
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				try {
-					// detener hilo al cerrar
-					hiloNotificaciones.interrupt();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
+//		//hilo de notificaciones, con proposito visual para mostrar la cantidad de matches que obtuvo cada solicitud
+//		Thread hiloNotificaciones = new Thread(() -> {
+//		    while (true) {
+//		        try {
+//		        	if(solicitudSelected!=null) {	
+//		            conteoNotificaciones(solicitudSelected);
+//		            }
+//		        	Thread.sleep(2000); //2 seg
+//		        } catch (InterruptedException e) {
+//		        	Thread.currentThread().interrupt(); 
+//		        }
+//		    }
+//		});
+//		hiloNotificaciones.start();
+//		//detener hilos 
+//		addWindowListener(new WindowAdapter() {
+//			@Override
+//			public void windowClosing(WindowEvent e) {
+//				try {
+//					// detener hilo al cerrar
+//					hiloNotificaciones.interrupt();
+//				} catch (Exception e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//		});
 
 		
 
@@ -818,16 +817,6 @@ public class MenuCandidatos extends JDialog {
 		lblFechaSolicitud.setBounds(230, 572, 480, 47);
 		pnlVistaSolicitud.add(lblFechaSolicitud);
 
-		btnNotificacion = new JButton();
- 
-		btnNotificacion.setBackground(Color.WHITE);
-		btnNotificacion.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnNotificacion.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnNotificacion.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/bell.png")));
-		btnNotificacion.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		btnNotificacion.setBounds(856, 807, 182, 73);
-		pnlVistaSolicitud.add(btnNotificacion);
-
 		btnCancelarSolicitud = new JButton("Cancelar Solicitud");
 		btnCancelarSolicitud.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -862,14 +851,6 @@ public class MenuCandidatos extends JDialog {
 		lblEstadoSolicitud.setBounds(230, 810, 448, 47);
 		pnlVistaSolicitud.add(lblEstadoSolicitud);
 
-		JLabel lblActivarSoloSi = new JLabel(
-				"<html>Activar btn de notificacion solo si se hace el macheo y <br>se envia la notificacion a esta solicitud, desactivar el de cancelar <br>hasta que no acepte o niegue</html>");
-		lblActivarSoloSi.setForeground(new Color(255, 0, 0));
-		lblActivarSoloSi.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		lblActivarSoloSi.setBackground(Color.WHITE);
-		lblActivarSoloSi.setBounds(652, 704, 219, 142);
-		pnlVistaSolicitud.add(lblActivarSoloSi);
-
 		JLabel lblArea_1 = new JLabel("\u00C1rea:");
 		lblArea_1.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/quality.png")));
 		lblArea_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -883,21 +864,21 @@ public class MenuCandidatos extends JDialog {
 		pnlVistaSolicitud.add(lblAreaSolicitud);
 	}
 	//Contar notificaciones de cada solicitud (A usar con un thread)
-	private void conteoNotificaciones(Solicitud soli) {
-		int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(soli);
-
-		SwingUtilities.invokeLater(() -> {
-			if (cantidad > 0) {
-				btnNotificacion.setEnabled(true);
-				btnCancelarSolicitud.setEnabled(false);
-				btnNotificacion.setText("Notificaciones (" + cantidad + ")");
-			} else {
-				btnNotificacion.setEnabled(false);
-				btnCancelarSolicitud.setEnabled(true);
-				btnNotificacion.setText("Notificaciones");
-			}
-		});
-	}
+//	private void conteoNotificaciones(Solicitud soli) {
+//		int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(soli);
+//
+//		SwingUtilities.invokeLater(() -> {
+//			if (cantidad > 0) {
+//				btnNotificacion.setEnabled(true);
+//				btnCancelarSolicitud.setEnabled(false);
+//				btnNotificacion.setText("Notificaciones (" + cantidad + ")");
+//			} else {
+//				btnNotificacion.setEnabled(false);
+//				btnCancelarSolicitud.setEnabled(true);
+//				btnNotificacion.setText("Notificaciones");
+//			}
+//		});
+//	}
 	private void cargarDatosPersona() {
 		if (persActual != null) {
 			lblMostrarNombreDePerfil.setText(persActual.getNombre() + " " + persActual.getApellidos());
@@ -969,8 +950,8 @@ public class MenuCandidatos extends JDialog {
 						cargarVistaPreviaSolicitud(solicitudSelected); // cargar datos de solicitud en vista previa
 						jtpDescripcionSolicitud.setSelectedIndex(1);
 						
-						//conteo notificaciones
-						conteoNotificaciones(solicitudSelected);
+					 
+//						conteoNotificaciones(solicitudSelected);
 						int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(solicitudSelected);
 						System.out.println("Matches encontrados: " + cantidad);
 						
