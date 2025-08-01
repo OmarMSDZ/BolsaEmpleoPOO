@@ -14,6 +14,7 @@ import logica.Persona;
 import logica.Solicitud;
 import logica.Universitario;
 import logica.Usuario;
+import server.Servidor;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,10 +28,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +89,11 @@ public class MenuAdmins extends JDialog {
 	private JTabbedPane jtpMenus;
 	private JLabel lblMostrarNombreDePerfil;
 
+	static Socket sfd = null;
+	static DataInputStream EntradaSocket;
+	static DataOutputStream SalidaSocket;
+	private Servidor servidor;
+
 	/**
 	 * Launch the application.
 	 */
@@ -103,32 +115,28 @@ public class MenuAdmins extends JDialog {
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-//		//hilo de notificaciones, con proposito visual para mostrar la cantidad de matches que obtuvo cada solicitud
-//		Thread hiloNotificaciones = new Thread(() -> {
-//		    while (true) {
-//		        try {
-//		        	if(solicitudSelected!=null) {	
-//		            conteoNotificaciones(solicitudSelected);
-//		            }
-//		        	Thread.sleep(2000); //2 seg
-//		        } catch (InterruptedException e) {
-//		        	Thread.currentThread().interrupt(); 
-//		        }
-//		    }
-//		});
-//		hiloNotificaciones.start();
-//		//detener hilos 
-//		addWindowListener(new WindowAdapter() {
-//			@Override
-//			public void windowClosing(WindowEvent e) {
-//				try {
-//					// detener hilo al cerrar
-//					hiloNotificaciones.interrupt();
-//				} catch (Exception e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//		});
+		// manejo del matching al ingresar a la pantalla
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// hacer match al abrir
+				Bolsa.getInstancia().iniciarMatchingAutomatico();
+//				//iniciar servidor para archivos de respaldo
+				// Antes de mostrar la ventana:
+				servidor = new Servidor();
+				servidor.start(); // Esto arranca el servidor en segundo plano
+
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Bolsa.getInstancia().detenerMatchingAutomatico();
+				if (servidor != null) {
+					servidor.detenerServidor();
+				}
+			}
+
+		});
 
 		setBounds(100, 100, 1100, 687);
 
@@ -161,7 +169,7 @@ public class MenuAdmins extends JDialog {
 		lblMostrarNombreDePerfil = new JLabel("Administrador");
 		lblMostrarNombreDePerfil.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMostrarNombreDePerfil.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		lblMostrarNombreDePerfil.setBounds(1442, 27, 340, 74);
+		lblMostrarNombreDePerfil.setBounds(1443, 13, 340, 74);
 		contentPane.add(lblMostrarNombreDePerfil);
 
 		label = new JLabel("");
@@ -172,8 +180,8 @@ public class MenuAdmins extends JDialog {
 			}
 		});
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/user.png")));
-		label.setBounds(1792, 27, 102, 74);
+		label.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/admin-panel.png")));
+		label.setBounds(1792, 13, 102, 74);
 		contentPane.add(label);
 
 		JPanel panel_1 = new JPanel();
@@ -276,8 +284,40 @@ public class MenuAdmins extends JDialog {
 		lblInformes.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		lblInformes.setBounds(22, 11, 236, 58);
 		pnlBtnSolicitudes.add(lblInformes);
-		
+
 		JPanel pnlBtnRespaldo = new JPanel() {
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+				// Color de fondo
+				g2.setColor(getBackground());
+
+				// Dibuja un rectangulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
+			}
+		};
+		pnlBtnRespaldo.setLayout(null);
+		pnlBtnRespaldo.setOpaque(false);
+		pnlBtnRespaldo.setBackground(new Color(100, 110, 130));
+		pnlBtnRespaldo.setBounds(0, 379, 268, 80);
+		pnlOpciones.add(pnlBtnRespaldo);
+
+		JLabel lblRespaldo = new JLabel("Respaldo");
+		lblRespaldo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				jtpMenus.setSelectedIndex(3);
+			}
+		});
+		lblRespaldo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRespaldo.setForeground(Color.WHITE);
+		lblRespaldo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		lblRespaldo.setBounds(22, 11, 236, 58);
+		pnlBtnRespaldo.add(lblRespaldo);
+
+		JPanel pnlBtnMatcheo = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
@@ -290,24 +330,24 @@ public class MenuAdmins extends JDialog {
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
-		pnlBtnRespaldo.setLayout(null);
-		pnlBtnRespaldo.setOpaque(false);
-		pnlBtnRespaldo.setBackground(new Color(100, 110, 130));
-		pnlBtnRespaldo.setBounds(0, 276, 268, 80);
-		pnlOpciones.add(pnlBtnRespaldo);
-		
-		JLabel lblRespaldo = new JLabel("Respaldo");
-		lblRespaldo.addMouseListener(new MouseAdapter() {
+		pnlBtnMatcheo.setLayout(null);
+		pnlBtnMatcheo.setOpaque(false);
+		pnlBtnMatcheo.setBackground(new Color(100, 110, 130));
+		pnlBtnMatcheo.setBounds(0, 273, 268, 80);
+		pnlOpciones.add(pnlBtnMatcheo);
+
+		JLabel lblMatcheo = new JLabel("Matcheo");
+		lblMatcheo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				jtpMenus.setSelectedIndex(2);
 			}
 		});
-		lblRespaldo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRespaldo.setForeground(Color.WHITE);
-		lblRespaldo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblRespaldo.setBounds(22, 11, 236, 58);
-		pnlBtnRespaldo.add(lblRespaldo);
+		lblMatcheo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMatcheo.setForeground(Color.WHITE);
+		lblMatcheo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		lblMatcheo.setBounds(22, 11, 236, 58);
+		pnlBtnMatcheo.add(lblMatcheo);
 
 		JPanel pnlSalir = new JPanel() {
 			@Override
@@ -368,31 +408,119 @@ public class MenuAdmins extends JDialog {
 		pnlInformes.setBackground(Color.WHITE);
 		jtpMenus.addTab("New tab", null, pnlInformes, null);
 		pnlInformes.setLayout(null);
-		
+
 		JLabel lblInformes_1 = new JLabel("Informes");
 		lblInformes_1.setFont(new Font("Segoe UI", Font.PLAIN, 25));
 		lblInformes_1.setBounds(10, 11, 260, 51);
 		pnlInformes.add(lblInformes_1);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.BLACK);
 		separator.setBounds(10, 54, 1609, 8);
 		pnlInformes.add(separator);
-		
+
+		JPanel pnlMatc = new JPanel();
+		pnlMatc.setBackground(Color.WHITE);
+		jtpMenus.addTab("New tab", null, pnlMatc, null);
+		pnlMatc.setLayout(null);
+
+		JSeparator separator_3 = new JSeparator();
+		separator_3.setForeground(Color.BLACK);
+		separator_3.setBounds(10, 54, 1609, 8);
+		pnlMatc.add(separator_3);
+
+		JLabel lblMatching = new JLabel("Matching");
+		lblMatching.setFont(new Font("Segoe UI", Font.PLAIN, 25));
+		lblMatching.setBounds(10, 11, 260, 51);
+		pnlMatc.add(lblMatching);
+
+		JButton btnRefrescarMatch = new JButton("Refrescar matching");
+		btnRefrescarMatch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// refrescar match
+				Bolsa.getInstancia().iniciarMatchingAutomatico();
+			}
+		});
+		btnRefrescarMatch.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnRefrescarMatch.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnRefrescarMatch.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/match64.png")));
+		btnRefrescarMatch.setBackground(Color.WHITE);
+		btnRefrescarMatch.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnRefrescarMatch.setBounds(23, 94, 755, 152);
+		pnlMatc.add(btnRefrescarMatch);
+
+		JButton btnVisualizarMatchesgeneral = new JButton("Visualizar Matches (General)");
+		btnVisualizarMatchesgeneral.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				InformeMatches im = new InformeMatches();
+				im.setModal(true);
+				im.setVisible(true);
+			}
+		});
+		btnVisualizarMatchesgeneral.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/table64.png")));
+		btnVisualizarMatchesgeneral.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnVisualizarMatchesgeneral.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnVisualizarMatchesgeneral.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnVisualizarMatchesgeneral.setBackground(Color.WHITE);
+		btnVisualizarMatchesgeneral.setBounds(840, 94, 755, 152);
+		pnlMatc.add(btnVisualizarMatchesgeneral);
+
 		JPanel pnlRespaldo = new JPanel();
 		pnlRespaldo.setBackground(Color.WHITE);
 		jtpMenus.addTab("New tab", null, pnlRespaldo, null);
 		pnlRespaldo.setLayout(null);
-		
+
 		JLabel lblRespaldo_1 = new JLabel("Respaldo");
 		lblRespaldo_1.setFont(new Font("Segoe UI", Font.PLAIN, 25));
 		lblRespaldo_1.setBounds(10, 11, 260, 51);
 		pnlRespaldo.add(lblRespaldo_1);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(Color.BLACK);
 		separator_1.setBounds(10, 54, 1609, 8);
 		pnlRespaldo.add(separator_1);
+
+		JLabel lblRespaldomsg = new JLabel("Utilice este botón para realizar un respaldo de la información");
+		lblRespaldomsg.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRespaldomsg.setFont(new Font("Segoe UI", Font.PLAIN, 25));
+		lblRespaldomsg.setBounds(10, 87, 1609, 51);
+		pnlRespaldo.add(lblRespaldomsg);
+
+		JButton btnRespaldo = new JButton("Realizar respaldo de datos");
+		btnRespaldo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sfd = new Socket("127.0.0.1", 7000);
+					DataInputStream aux = new DataInputStream(new FileInputStream(new File("BdLaborea.dat")));
+					SalidaSocket = new DataOutputStream((sfd.getOutputStream()));
+					int unByte;
+					try {
+						while ((unByte = aux.read()) != -1) {
+							SalidaSocket.write(unByte);
+							SalidaSocket.flush();
+						}
+
+						JOptionPane.showMessageDialog(null, "Respaldo realizado correctamente");
+					} catch (IOException ioe) {
+						System.out.println("Error: " + ioe);
+
+					}
+				} catch (UnknownHostException uhe) {
+					JOptionPane.showMessageDialog(null, "No se puede acceder al servidor.");
+				} catch (IOException ioe) {
+					JOptionPane.showMessageDialog(null, "Error de comunicación: " + ioe.getMessage());
+					ioe.printStackTrace(); // para ver detalles en consola
+				}
+			}
+
+		});
+		btnRespaldo.setBackground(Color.WHITE);
+		btnRespaldo.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnRespaldo.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnRespaldo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnRespaldo.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/database64.png")));
+		btnRespaldo.setBounds(575, 186, 476, 108);
+		pnlRespaldo.add(btnRespaldo);
 
 	}
 }

@@ -619,7 +619,7 @@ public class LoginUsuarios extends JDialog {
 		txtCedula = new JTextField();
 		txtCedula.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		txtCedula.setColumns(10);
-		txtCedula.setBounds(280, 232, 200, 35);
+		txtCedula.setBounds(280, 227, 200, 35);
 		pnlRegistroCandidato.add(txtCedula);
 
 		spnFechaNac = new JSpinner();

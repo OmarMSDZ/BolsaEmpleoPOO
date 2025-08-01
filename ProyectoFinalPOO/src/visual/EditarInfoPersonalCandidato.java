@@ -84,13 +84,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 			EditarInfoPersonalCandidato dialog = new EditarInfoPersonalCandidato(0);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-			 
-//			dialog.addWindowListener(new WindowAdapter() {
-//				@Override
-//				public void windowClosing(WindowEvent e) {
-//					Bolsa.guardarEstado();
-//				}
-//			}); 
+ 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

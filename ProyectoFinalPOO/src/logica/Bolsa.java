@@ -330,10 +330,10 @@ public class Bolsa implements Serializable {
 //	    System.out.println("Cantidad de ofertas: " + ofertas.size());
 //	    System.out.println("Cantidad de solicitudes: " + solicitudes.size());
 
-		for (int i = 0; i < solicitudes.size(); i++) {
-			System.out.println(
-					"Solicitud[" + i + "]: " + solicitudes.get(i).getCodigo() + " - " + solicitudes.get(i).hashCode());
-		}
+//		for (int i = 0; i < solicitudes.size(); i++) {
+//			System.out.println(
+//					"Solicitud[" + i + "]: " + solicitudes.get(i).getCodigo() + " - " + solicitudes.get(i).hashCode());
+//		}
 
 		for (Oferta oferta : ofertas) {
 			for (Solicitud solicitud : solicitudes) {
@@ -353,40 +353,54 @@ public class Bolsa implements Serializable {
 						&& !solicitanteEmpleado) {
 
 					int criteriosCumplidos = 0;
-					int totalCriterios = 8; // ajustado porque el campo de carrera solo se aplica a universitarios
+					int totalCriterios = 8; 
 
-					if (oferta.getModalidad().equalsIgnoreCase(solicitud.getModalidad()))
-						criteriosCumplidos++;
-					if (oferta.getTipo().equalsIgnoreCase(solicitud.getTipoEmpleo()))
-						criteriosCumplidos++;
+					if (oferta.getModalidad().trim().equalsIgnoreCase(solicitud.getModalidad().trim()))  
+					    criteriosCumplidos++;
+				 
+					if (oferta.getTipo().trim().equalsIgnoreCase(solicitud.getTipoEmpleo().trim())) 
+					    criteriosCumplidos++;
+					 
+				 
+					if (oferta.getArea().trim().equalsIgnoreCase(solicitud.getArea().trim())) 
+					    criteriosCumplidos++;
+				 
 
-					if (oferta.getNivelEducacion().equalsIgnoreCase("Universitario")
-							&& solicitud.getSolicitante() instanceof Universitario) {
-						criteriosCumplidos++;
-						if (oferta.getArea().equalsIgnoreCase(solicitud.getArea()))
-							criteriosCumplidos++;
-					} else if (oferta.getNivelEducacion().equalsIgnoreCase("Tecnico Superior")
-							&& solicitud.getSolicitante() instanceof TecnicoSuperior) {
-						criteriosCumplidos++;
+					if (oferta.getNivelEducacion().equalsIgnoreCase("Universitario / Grado")
+					        && solicitud.getSolicitante() instanceof Universitario) {
+					    criteriosCumplidos++;
+					    
+					} else if (oferta.getNivelEducacion().equalsIgnoreCase("Técnico superior")
+					        && solicitud.getSolicitante() instanceof TecnicoSuperior) {
+					    criteriosCumplidos++;
+					   
 					} else if (oferta.getNivelEducacion().equalsIgnoreCase("Obrero")
-							&& solicitud.getSolicitante() instanceof Obrero) {
-						criteriosCumplidos++;
-					}
+					        && solicitud.getSolicitante() instanceof Obrero) {
+					    criteriosCumplidos++;
+					   
+					} 
 
-					if (oferta.isRequiereLicencia() == solicitud.getSolicitante().isLicenciaConducir())
-						criteriosCumplidos++;
-					if (oferta.isRequiereMovilidad() == solicitud.isDispMovilidad())
-						criteriosCumplidos++;
-					if (oferta.getHorario().equalsIgnoreCase(solicitud.getDispHorarios()))
-						criteriosCumplidos++;
-					if (solicitud.getSalarioDeseado() <= oferta.getSalarioEstimado())
-						criteriosCumplidos++;
+					if (oferta.isRequiereLicencia() == solicitud.getSolicitante().isLicenciaConducir()) 
+					    criteriosCumplidos++;
+					 
+
+					if (oferta.isRequiereMovilidad() == solicitud.isDispMovilidad()) 
+					    criteriosCumplidos++;
+					 
+
+					if (oferta.getHorario().equalsIgnoreCase(solicitud.getDispHorarios()))  
+					    criteriosCumplidos++;
+					 
+
+					if (solicitud.getSalarioDeseado() <= oferta.getSalarioEstimado())  
+					    criteriosCumplidos++;
+					 
 
 					double porcentaje = (criteriosCumplidos * 100.0) / totalCriterios;
-//	                System.out.println("Evaluando oferta " + oferta.getCodigo() + " con solicitud " +
-//	                    solicitud.getCodigo() + " - porcentaje: " + porcentaje);
+               System.out.println("Evaluando oferta " + oferta.getCodigo() + " con solicitud " +
+	                    solicitud.getCodigo() + " - porcentaje: " + porcentaje);
 
-					// Evitar duplicados de match oferta/solicitud
+					// Evitar duplicados de match oferta/solicitud (MOVER A OTRO METODO)
 					boolean yaExisteMatch = false;
 					for (MatchOferta existente : Bolsa.getInstancia().getListaMatchOferta()) {
 						if (existente.getOfertaMatcheo() != null && existente.getSolicitudMatcheo() != null
@@ -397,9 +411,9 @@ public class Bolsa implements Serializable {
 						}
 					}
 
-					if (porcentaje >= 50.0 && !yaExisteMatch) {
+					if (porcentaje >= 70.0 && !yaExisteMatch) {
 						String codigo = generarCodigoMatch();
-						MatchOferta match = new MatchOferta(codigo, new Date(), oferta, solicitud, false, false);
+						MatchOferta match = new MatchOferta(codigo, new Date(), oferta, solicitud, false);
 						MatchesOfertas.add(match);
 						// solo para prueba
 						System.out.println(" Match creado: " + match.getCodigo() + "  Oferta: " + oferta.getCodigo()
@@ -457,7 +471,7 @@ public class Bolsa implements Serializable {
 
 		return cantidad;
 	}
-
+	//QUITAR
 	public int contarMatchesSolicitud(Solicitud solicitud) {
 		int cantidad = 0;
 		if (!listaMatchOferta.isEmpty() && solicitud != null && solicitud.getCodigo() != null) {
@@ -476,7 +490,7 @@ public class Bolsa implements Serializable {
 	// estado
 	public void contratarPersona(Persona pers) {
 		pers.setEstado(true);
-
+		
 		// Pausar todas las solicitudes abiertas de esa persona
 		for (Solicitud sol : pers.getMisSolicitudes()) {
 			sol.setEstadoSolicitud("PAUSADA");
