@@ -53,13 +53,7 @@ public class EditarInfoEmpresa extends JDialog {
 			EditarInfoEmpresa dialog = new EditarInfoEmpresa(0);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-		 
-//			dialog.addWindowListener(new WindowAdapter() {
-//				@Override
-//				public void windowClosing(WindowEvent e) {
-//					Bolsa.guardarEstado();
-//				}
-//			}); 
+ 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

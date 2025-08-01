@@ -70,6 +70,7 @@ import javax.swing.JRadioButton;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
 
 public class MenuEmpresas extends JDialog {
 
@@ -117,34 +118,28 @@ public class MenuEmpresas extends JDialog {
 	private JSpinner spnAnniosExp;
 	private JSpinner spnCantVacantes;
 	private JButton btnRecargarInfoEmpresa;
+	private JButton btnVisualizarMatches;
+	private JLabel lblMostrarPuestoTrab;
+	private JLabel lblMostrarCantVacant;
+	private JLabel lblMostrarNivelEduc;
+	private JLabel lblMostrarAnniosExp;
+	private JTextArea txtAMostrarDescripcionOferta;
 
 	/**
 	 * Launch the application.
 	 */
 	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuEmpresas frame = new MenuEmpresas();
-					frame.setVisible(true);
-					frame.addWindowListener(new WindowAdapter() {
-						@Override
-						public void windowClosing(WindowEvent e) {
-							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(
-									new FileOutputStream("BdLaborea.dat"))) {
-								bolsaWrite.writeObject(Bolsa.getInstancia());
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
-					});
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
+	 * public static void main(String[] args) { EventQueue.invokeLater(new
+	 * Runnable() { public void run() { try { MenuEmpresas frame = new
+	 * MenuEmpresas(); frame.setVisible(true); frame.addWindowListener(new
+	 * WindowAdapter() {
+	 * 
+	 * @Override public void windowClosing(WindowEvent e) { try (ObjectOutputStream
+	 * bolsaWrite = new ObjectOutputStream( new FileOutputStream("BdLaborea.dat")))
+	 * { bolsaWrite.writeObject(Bolsa.getInstancia()); } catch (IOException e1) {
+	 * e1.printStackTrace(); } } }); } catch (Exception e) { e.printStackTrace(); }
+	 * } }); }
+	 */
 
 	/**
 	 * Create the frame.
@@ -432,7 +427,7 @@ public class MenuEmpresas extends JDialog {
 
 		cbxTipoEmpleo = new JComboBox();
 		cbxTipoEmpleo.setModel(new DefaultComboBoxModel(
-				new String[] { "<< Seleccione >>", "Tiempo completo", "Tiempo Parcial", "Temporal", "Freelance" }));
+				new String[] { "<< Seleccione >>", "Tiempo completo", "Tiempo parcial", "Temporal", "Freelance" }));
 		cbxTipoEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxTipoEmpleo.setBackground(Color.WHITE);
 		cbxTipoEmpleo.setBounds(672, 301, 395, 39);
@@ -645,8 +640,8 @@ public class MenuEmpresas extends JDialog {
 						Date fechaOferta = new Date();
 						int cantVacantes = (int) spnCantVacantes.getValue();
 
-						Oferta nuevaOferta = new Oferta(codigoGenerado, puestoTrabajo, descripcion, tipoEmpleo,
-								modalidad, horarioPropuesto, nivelEduc, areaEstudios, anniosExp, salarioEstimado,
+						Oferta nuevaOferta = new Oferta(codigoGenerado, puestoTrabajo, descripcion, modalidad,
+								tipoEmpleo, horarioPropuesto, nivelEduc, areaEstudios, anniosExp, salarioEstimado,
 								reqLicencia, reqMovilidad, fechaOferta, cantVacantes, true, empresaActual);
 
 						Bolsa.getInstancia().insertarOferta(nuevaOferta);
@@ -684,7 +679,7 @@ public class MenuEmpresas extends JDialog {
 		stpBarraVerticalCentral.setBounds(658, 145, 16, 760);
 		pnlOfertas.add(stpBarraVerticalCentral);
 
-		JLabel lblAreaEstudios = new JLabel("Área de estudios:");
+		JLabel lblAreaEstudios = new JLabel("Área:");
 		lblAreaEstudios.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAreaEstudios.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblAreaEstudios.setBounds(672, 358, 395, 51);
@@ -692,13 +687,12 @@ public class MenuEmpresas extends JDialog {
 
 		cmbAreaEstudios = new JComboBox();
 		cmbAreaEstudios.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>",
-				"Tecnolog\u00EDa / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
-				"Administraci\u00F3n / Oficina", "Recursos Humanos", "Finanzas / Contabilidad",
-				"Log\u00EDstica y Distribuci\u00F3n", "Ingenier\u00EDa", "Salud / Medicina",
-				"Educaci\u00F3n / Capacitaci\u00F3n", "Atenci\u00F3n al Cliente / Call Center",
-				"Dise\u00F1o Gr\u00E1fico / UX/UI", "Legal / Jur\u00EDdico", "Producci\u00F3n / Manufactura",
-				"Turismo y Hoteler\u00EDa", "Construcci\u00F3n / Arquitectura", "Investigaci\u00F3n y Desarrollo",
-				"Servicios Generales / Mantenimiento", "Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
+				"Tecnología / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
+				"Administración / Oficina", "Recursos Humanos", "Finanzas / Contabilidad", "Logística y Distribución",
+				"Ingeniería", "Salud / Medicina", "Educación / Capacitación", "Atención al Cliente / Call Center",
+				"Diseño Gráfico / UX/UI", "Legal / Jurídico", "Producción / Manufactura", "Turismo y Hotelería",
+				"Construcción / Arquitectura", "Investigación y Desarrollo", "Servicios Generales / Mantenimiento",
+				"Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
 		cmbAreaEstudios.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cmbAreaEstudios.setBackground(Color.WHITE);
 		cmbAreaEstudios.setBounds(672, 405, 395, 39);
@@ -777,7 +771,7 @@ public class MenuEmpresas extends JDialog {
 		cmbNivelEstudio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		cmbNivelEstudio.setBounds(672, 705, 395, 39);
 		pnlOfertas.add(cmbNivelEstudio);
-		
+
 		btnRecargarInfoEmpresa = new JButton("Recargar");
 		btnRecargarInfoEmpresa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -796,8 +790,7 @@ public class MenuEmpresas extends JDialog {
 		pnlVerOfertas.setLayout(null);
 
 		JScrollPane spnlOfertas = new JScrollPane();
-		spnlOfertas.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		spnlOfertas.setBounds(10, 11, 339, 895);
+		spnlOfertas.setBounds(10, 11, 339, 877);
 		pnlVerOfertas.add(spnlOfertas);
 
 		pnlMisOfertas = new JPanel();
@@ -836,7 +829,7 @@ public class MenuEmpresas extends JDialog {
 		jtpDescripcionOferta.addTab("New tab", null, pnlVistaOferta, null);
 		pnlVistaOferta.setLayout(null);
 
-		lblTituloOferta = new JLabel("Oferta # - RNC de la empresa");
+		lblTituloOferta = new JLabel("Oferta # - codigo");
 		lblTituloOferta.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 26));
 		lblTituloOferta.setBounds(10, 11, 1047, 61);
 		pnlVistaOferta.add(lblTituloOferta);
@@ -900,20 +893,20 @@ public class MenuEmpresas extends JDialog {
 		JLabel lblTipoEmpOferta = new JLabel("Tipo empleo:");
 		lblTipoEmpOferta.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/briefcase.png")));
 		lblTipoEmpOferta.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblTipoEmpOferta.setBounds(10, 259, 182, 47);
+		lblTipoEmpOferta.setBounds(10, 249, 182, 47);
 		pnlVistaOferta.add(lblTipoEmpOferta);
 
 		JLabel lblModalidad = new JLabel("Modalidad:");
 		lblModalidad.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/building.png")));
 		lblModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblModalidad.setBounds(10, 314, 129, 47);
+		lblModalidad.setBounds(10, 304, 129, 47);
 		pnlVistaOferta.add(lblModalidad);
 
 		JLabel lblHorario = new JLabel("Horario:");
 		lblHorario.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHorario.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/clock.png")));
 		lblHorario.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblHorario.setBounds(10, 378, 129, 47);
+		lblHorario.setBounds(10, 368, 129, 47);
 		pnlVistaOferta.add(lblHorario);
 
 		lblMostrarHorario = new JLabel("Horario propuesto");
@@ -939,7 +932,7 @@ public class MenuEmpresas extends JDialog {
 		lblEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmpresa.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/money.png")));
 		lblEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblEmpresa.setBounds(10, 104, 129, 47);
+		lblEmpresa.setBounds(10, 94, 129, 47);
 		pnlVistaOferta.add(lblEmpresa);
 
 		lblEmpresaOferta = new JLabel("Empresa que oferta");
@@ -964,7 +957,17 @@ public class MenuEmpresas extends JDialog {
 		lblFechaOferta.setBounds(230, 572, 388, 47);
 		pnlVistaOferta.add(lblFechaOferta);
 
-		JButton btnVisualizarMatches = new JButton("Visualizar matches");
+		btnVisualizarMatches = new JButton("Visualizar matches (0)");
+		btnVisualizarMatches.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ofertaSeleccionada != null) {
+					VisualizarMatchOferta vm = new VisualizarMatchOferta(ofertaSeleccionada);
+					System.out.println("codigo oferta: " + ofertaSeleccionada.getCodigo());
+					vm.setModal(true);
+					vm.setVisible(true);
+				}
+			}
+		});
 		btnVisualizarMatches.setBackground(Color.WHITE);
 		btnVisualizarMatches.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnVisualizarMatches.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -977,12 +980,18 @@ public class MenuEmpresas extends JDialog {
 		btnCancelarOferta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Cancelar oferta
-				int opccion = JOptionPane.showConfirmDialog(null, "¿Desea cancelar esta oferta?", "Cancelar",
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Desea cancelar esta oferta?", "Cancelar",
 						JOptionPane.WARNING_MESSAGE);
-				if (opccion == JOptionPane.OK_OPTION) {
-					Bolsa.getInstancia().eliminarOferta(ofertaSeleccionada);
-					cargarVistaPreviaOferta(ofertaSeleccionada);
-					jtpDescripcionOferta.setSelectedIndex(0);
+				if (opcion == JOptionPane.OK_OPTION) {
+					if (Bolsa.getInstancia().contarMatchesOferta(ofertaSeleccionada) > 0) {
+						JOptionPane.showMessageDialog(null,
+								"Alerta: Esta oferta no puede ser cancelada ya que se encontraron coincidencias para la misma",
+								"Alerta", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Bolsa.getInstancia().eliminarOferta(ofertaSeleccionada);
+						cargarVistaPreviaOferta(ofertaSeleccionada);
+						jtpDescripcionOferta.setSelectedIndex(0);
+					}
 				}
 			}
 		});
@@ -1027,7 +1036,7 @@ public class MenuEmpresas extends JDialog {
 		lblPuestoTrab.setBounds(630, 94, 199, 47);
 		pnlVistaOferta.add(lblPuestoTrab);
 
-		JLabel lblMostrarPuestoTrab = new JLabel("Puesto de trabajo");
+		lblMostrarPuestoTrab = new JLabel("Puesto de trabajo");
 		lblMostrarPuestoTrab.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarPuestoTrab.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarPuestoTrab.setBounds(849, 94, 388, 47);
@@ -1040,51 +1049,45 @@ public class MenuEmpresas extends JDialog {
 		lblDesc.setBounds(630, 145, 199, 47);
 		pnlVistaOferta.add(lblDesc);
 
-		JLabel lblMostrarDesc = new JLabel("Descripción del puesto de trabajo");
-		lblMostrarDesc.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblMostrarDesc.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarDesc.setBounds(849, 145, 388, 47);
-		pnlVistaOferta.add(lblMostrarDesc);
-
 		JLabel lblCantVacant = new JLabel("Cant. Vacant. Disp:");
 		lblCantVacant.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/iconPersonas_x16.png")));
 		lblCantVacant.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCantVacant.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblCantVacant.setBounds(630, 199, 199, 47);
+		lblCantVacant.setBounds(628, 278, 199, 47);
 		pnlVistaOferta.add(lblCantVacant);
 
-		JLabel lblMostrarCantVacant = new JLabel("Cantidad de vacantes disponibles");
+		lblMostrarCantVacant = new JLabel("Cantidad de vacantes disponibles");
 		lblMostrarCantVacant.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarCantVacant.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarCantVacant.setBounds(849, 199, 388, 47);
+		lblMostrarCantVacant.setBounds(847, 278, 388, 47);
 		pnlVistaOferta.add(lblMostrarCantVacant);
 
-		JLabel lblNivelEduc = new JLabel("Nivel Educ:");
+		JLabel lblNivelEduc = new JLabel("Nivel Educativo:");
 		lblNivelEduc.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/iconEstudios_x16.png")));
 		lblNivelEduc.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNivelEduc.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNivelEduc.setBounds(630, 249, 199, 47);
+		lblNivelEduc.setBounds(628, 326, 199, 47);
 		pnlVistaOferta.add(lblNivelEduc);
 
-		JLabel lblMostrarNivelEduc = new JLabel("Nivel educativo");
+		lblMostrarNivelEduc = new JLabel("Nivel educativo");
 		lblMostrarNivelEduc.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarNivelEduc.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarNivelEduc.setBounds(849, 249, 388, 47);
+		lblMostrarNivelEduc.setBounds(847, 326, 388, 47);
 		pnlVistaOferta.add(lblMostrarNivelEduc);
 
 		JLabel lblExpAnnios = new JLabel("Años de exp:");
 		lblExpAnnios.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/iconAnnios_x16.png")));
 		lblExpAnnios.setHorizontalAlignment(SwingConstants.LEFT);
 		lblExpAnnios.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblExpAnnios.setBounds(630, 304, 199, 47);
+		lblExpAnnios.setBounds(628, 381, 199, 47);
 		pnlVistaOferta.add(lblExpAnnios);
 
-		JLabel lblMostrarAnniosExp = new JLabel("Años de experiencia");
+		lblMostrarAnniosExp = new JLabel("Años de experiencia");
 		lblMostrarAnniosExp.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarAnniosExp.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarAnniosExp.setBounds(849, 304, 388, 47);
+		lblMostrarAnniosExp.setBounds(847, 381, 388, 47);
 		pnlVistaOferta.add(lblMostrarAnniosExp);
-		
+
 		JButton btnModificarOferta = new JButton("Modificar oferta");
 		btnModificarOferta.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/update.png")));
 		btnModificarOferta.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -1093,6 +1096,13 @@ public class MenuEmpresas extends JDialog {
 		btnModificarOferta.setBackground(Color.WHITE);
 		btnModificarOferta.setBounds(873, 807, 182, 73);
 		pnlVistaOferta.add(btnModificarOferta);
+
+		txtAMostrarDescripcionOferta = new JTextArea();
+		txtAMostrarDescripcionOferta.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		txtAMostrarDescripcionOferta.setBackground(Color.WHITE);
+		txtAMostrarDescripcionOferta.setLineWrap(true);
+		txtAMostrarDescripcionOferta.setBounds(849, 161, 316, 106);
+		pnlVistaOferta.add(txtAMostrarDescripcionOferta);
 	}
 
 	private void cargarDatosEmpresa() {
@@ -1164,6 +1174,8 @@ public class MenuEmpresas extends JDialog {
 					@Override
 					public void mouseClicked(java.awt.event.MouseEvent e) {
 						ofertaSeleccionada = elementosOfer.getOferta();
+						btnVisualizarMatches.setText("Visualizar matches ("
+								+ Bolsa.getInstancia().contarMatchesOferta(ofertaSeleccionada) + ")");
 						cargarVistaPreviaOferta(ofertaSeleccionada);
 						jtpDescripcionOferta.setSelectedIndex(1);
 					}
@@ -1202,9 +1214,19 @@ public class MenuEmpresas extends JDialog {
 			String formattedDate = dateFormat.format(fechaOferta);
 			lblFechaOferta.setText(formattedDate);
 			if (oferta.isEstadoOferta()) {
-				lblMostrarEstadoOferta.setText("Disponible");
+				lblMostrarEstadoOferta.setText("Activa");
 			} else {
 				lblMostrarEstadoOferta.setText("No disponible");
+			}
+
+			lblMostrarPuestoTrab.setText(oferta.getPuestoTrab());
+			txtAMostrarDescripcionOferta.setText(oferta.getDescripcion());
+			lblMostrarCantVacant.setText(String.valueOf(oferta.getCantVacantes()));
+			lblMostrarNivelEduc.setText(oferta.getNivelEducacion());
+			if (oferta.getAniosExp() > 0) {
+				lblMostrarAnniosExp.setText(String.valueOf(oferta.getAniosExp()));
+			} else {
+				lblMostrarAnniosExp.setText("N/A");
 			}
 		}
 	}
