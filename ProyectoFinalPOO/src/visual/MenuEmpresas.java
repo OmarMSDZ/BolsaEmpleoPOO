@@ -70,6 +70,7 @@ import javax.swing.JRadioButton;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
 
 public class MenuEmpresas extends JDialog {
 
@@ -117,34 +118,30 @@ public class MenuEmpresas extends JDialog {
 	private JSpinner spnAnniosExp;
 	private JSpinner spnCantVacantes;
 	private JButton btnRecargarInfoEmpresa;
+	private JButton btnVisualizarMatches;
+	private JLabel lblMostrarPuestoTrab;
+	private JLabel lblMostrarCantVacant;
+	private JLabel lblMostrarNivelEduc;
+	private JLabel lblMostrarAnniosExp;
+	private JTextArea txtAMostrarDescripcionOferta;
+	private JButton btnCancelarModificacion;
+	private JButton btnRegistrarOferta;
 
 	/**
 	 * Launch the application.
 	 */
 	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuEmpresas frame = new MenuEmpresas();
-					frame.setVisible(true);
-					frame.addWindowListener(new WindowAdapter() {
-						@Override
-						public void windowClosing(WindowEvent e) {
-							try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(
-									new FileOutputStream("BdLaborea.dat"))) {
-								bolsaWrite.writeObject(Bolsa.getInstancia());
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						}
-					});
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
+	 * public static void main(String[] args) { EventQueue.invokeLater(new
+	 * Runnable() { public void run() { try { MenuEmpresas frame = new
+	 * MenuEmpresas(); frame.setVisible(true); frame.addWindowListener(new
+	 * WindowAdapter() {
+	 * 
+	 * @Override public void windowClosing(WindowEvent e) { try (ObjectOutputStream
+	 * bolsaWrite = new ObjectOutputStream( new FileOutputStream("BdLaborea.dat")))
+	 * { bolsaWrite.writeObject(Bolsa.getInstancia()); } catch (IOException e1) {
+	 * e1.printStackTrace(); } } }); } catch (Exception e) { e.printStackTrace(); }
+	 * } }); }
+	 */
 
 	/**
 	 * Create the frame.
@@ -282,10 +279,17 @@ public class MenuEmpresas extends JDialog {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rect�ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
+		btnCrearOferta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				jtpMenus.setSelectedIndex(0);
+				ofertaSeleccionada = null;
+			}
+		});
 		btnCrearOferta.setOpaque(false);
 
 		btnCrearOferta.setBackground(new Color(100, 110, 130));
@@ -294,12 +298,6 @@ public class MenuEmpresas extends JDialog {
 		btnCrearOferta.setLayout(null);
 
 		JLabel lblBtnCrearOferta = new JLabel("Crear oferta");
-		lblBtnCrearOferta.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				jtpMenus.setSelectedIndex(0);
-			}
-		});
 		lblBtnCrearOferta.setForeground(Color.WHITE);
 		lblBtnCrearOferta.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		lblBtnCrearOferta.setHorizontalAlignment(SwingConstants.CENTER);
@@ -316,10 +314,24 @@ public class MenuEmpresas extends JDialog {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rect�ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
+		btnVisualizarOferta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (ofertaSeleccionada != null && jtpMenus.getSelectedIndex() == 0) {
+					JOptionPane.showMessageDialog(null,
+							"No es posible realizar esta acción mientras actualiza una oferta.", "Advertencia",
+							JOptionPane.WARNING_MESSAGE, null);
+				} else {
+					cargarOferta();
+					jtpMenus.setSelectedIndex(1);
+					jtpDescripcionOferta.setSelectedIndex(0);
+				}
+			}
+		});
 
 		btnVisualizarOferta.setOpaque(false);
 		btnVisualizarOferta.setBackground(new Color(100, 110, 130));
@@ -328,13 +340,6 @@ public class MenuEmpresas extends JDialog {
 		pnlOpciones.add(btnVisualizarOferta);
 
 		JLabel lblMisOfertas = new JLabel("Mis ofertas");
-		lblMisOfertas.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				cargarOferta();
-				jtpMenus.setSelectedIndex(1);// ir a mis solicitudes
-			}
-		});
 		lblMisOfertas.setForeground(Color.WHITE);
 		lblMisOfertas.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMisOfertas.setFont(new Font("Segoe UI", Font.PLAIN, 18));
@@ -432,7 +437,7 @@ public class MenuEmpresas extends JDialog {
 
 		cbxTipoEmpleo = new JComboBox();
 		cbxTipoEmpleo.setModel(new DefaultComboBoxModel(
-				new String[] { "<< Seleccione >>", "Tiempo completo", "Tiempo Parcial", "Temporal", "Freelance" }));
+				new String[] { "<< Seleccione >>", "Tiempo completo", "Tiempo parcial", "Temporal", "Freelance" }));
 		cbxTipoEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxTipoEmpleo.setBackground(Color.WHITE);
 		cbxTipoEmpleo.setBounds(672, 301, 395, 39);
@@ -616,54 +621,84 @@ public class MenuEmpresas extends JDialog {
 		// cargar datos de persona al iniciar esta pantalla
 		cargarDatosEmpresa();
 
-		JButton btnRegistrarOferta = new JButton("Registrar oferta");
+		btnRegistrarOferta = new JButton("Registrar oferta");
 		btnRegistrarOferta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (empresaActual != null) {
+
+					// Declaración de variables
+					String codigoOferta = "";
+					String puestoTrabajo = "";
+					String descripcion = "";
+					String tipoEmpleo = "";
+					String modalidad = "";
+					String horarioPropuesto = "";
+					String nivelEduc = "";
+					String areaEstudios = "";
+					int anniosExp = 0;
+					float salarioEstimado = 0.0f;
+					boolean reqLicencia = false;
+					boolean reqMovilidad = false;
+					Date fechaOferta = null;
+					int cantVacantes = 0;
+
+					// Validar campos
 					if (validosDatosOferta()) {
-
-						// Registrar oferta
-						String codigoGenerado = Bolsa.getInstancia().generarCodigoOferta();
-						String puestoTrabajo = txtPuestoTrabajo.getText();
-						String descripcion = txtDescripcion.getText();
-						String tipoEmpleo = cbxTipoEmpleo.getSelectedItem().toString();
-						String modalidad = cbxModalidad.getSelectedItem().toString();
-						String horarioPropuesto = cbxHorarioOferta.getSelectedItem().toString();
-						String nivelEduc = cmbNivelEstudio.getSelectedItem().toString();
-						String areaEstudios = cmbAreaEstudios.getSelectedItem().toString();
-						int anniosExp = (int) spnAnniosExp.getValue();
-						float salarioEstimado = (float) spnSalarioDeseado.getValue();
-						boolean reqLicencia = false;
-						if (rdbtnLicenciaSi.isSelected()) {
-							reqLicencia = true;
+						// Asignación común de valores desde los componentes
+						puestoTrabajo = txtPuestoTrabajo.getText();
+						descripcion = txtDescripcion.getText();
+						tipoEmpleo = cbxTipoEmpleo.getSelectedItem().toString();
+						modalidad = cbxModalidad.getSelectedItem().toString();
+						horarioPropuesto = cbxHorarioOferta.getSelectedItem().toString();
+						nivelEduc = cmbNivelEstudio.getSelectedItem().toString();
+						areaEstudios = cmbAreaEstudios.getSelectedItem().toString();
+						if (nivelEduc.equalsIgnoreCase("Técnico superior")) {
+							anniosExp = (int) spnAnniosExp.getValue();
+						} else {
+							anniosExp = 0;
 						}
-						boolean reqMovilidad = false;
-						if (rdbtnMovilidadSi.isSelected()) {
-							reqMovilidad = true;
+						salarioEstimado = (float) spnSalarioDeseado.getValue();
+						reqLicencia = rdbtnLicenciaSi.isSelected();
+						reqMovilidad = rdbtnMovilidadSi.isSelected();
+						cantVacantes = (int) spnCantVacantes.getValue();
+
+						if (ofertaSeleccionada == null) {
+							codigoOferta = Bolsa.getInstancia().generarCodigoOferta();
+							fechaOferta = new Date();
+
+							Oferta nuevaOferta = new Oferta(codigoOferta, puestoTrabajo, descripcion, modalidad,
+									tipoEmpleo, horarioPropuesto, nivelEduc, areaEstudios, anniosExp, salarioEstimado,
+									reqLicencia, reqMovilidad, fechaOferta, cantVacantes, true, empresaActual);
+
+							Bolsa.getInstancia().insertarOferta(nuevaOferta);
+							JOptionPane.showMessageDialog(null, "Oferta creada exitosamente.", "Información",
+									JOptionPane.INFORMATION_MESSAGE);
+							limpiarFormularioOfertas();
+						} else {
+							codigoOferta = ofertaSeleccionada.getCodigo();
+							fechaOferta = ofertaSeleccionada.getFechaOferta();
+
+							Oferta updatedOferta = new Oferta(codigoOferta, puestoTrabajo, descripcion, modalidad,
+									tipoEmpleo, horarioPropuesto, nivelEduc, areaEstudios, anniosExp, salarioEstimado,
+									reqLicencia, reqMovilidad, fechaOferta, cantVacantes, true, empresaActual);
+
+							Bolsa.getInstancia().modificarOferta(updatedOferta);
+							JOptionPane.showMessageDialog(null, "Los datos de la oferta se actualizaron exitosamente.",
+									"Información", JOptionPane.INFORMATION_MESSAGE);
+							limpiarFormularioOfertas();
+							btnRegistrarOferta.setText("Registrar oferta");
+							btnCancelarModificacion.setVisible(false);
+							ofertaSeleccionada = null;
 						}
-
-						Date fechaOferta = new Date();
-						int cantVacantes = (int) spnCantVacantes.getValue();
-
-						Oferta nuevaOferta = new Oferta(codigoGenerado, puestoTrabajo, descripcion, tipoEmpleo,
-								modalidad, horarioPropuesto, nivelEduc, areaEstudios, anniosExp, salarioEstimado,
-								reqLicencia, reqMovilidad, fechaOferta, cantVacantes, true, empresaActual);
-
-						Bolsa.getInstancia().insertarOferta(nuevaOferta);
-						JOptionPane.showMessageDialog(null, "Oferta creada exitosamente.", "Información",
-								JOptionPane.INFORMATION_MESSAGE, null);
-						limpiarFormularioOfertas();
 					} else {
 						JOptionPane.showMessageDialog(null, "Complete la información de todos los campos.",
-								"Advertencia", JOptionPane.WARNING_MESSAGE, null);
+								"Advertencia", JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "No hay ninguna empresa activa en este momento.", "Advertencia",
-							JOptionPane.WARNING_MESSAGE, null);
-
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
-
 		});
 		btnRegistrarOferta.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnRegistrarOferta.setBackground(Color.WHITE);
@@ -684,7 +719,7 @@ public class MenuEmpresas extends JDialog {
 		stpBarraVerticalCentral.setBounds(658, 145, 16, 760);
 		pnlOfertas.add(stpBarraVerticalCentral);
 
-		JLabel lblAreaEstudios = new JLabel("Área de estudios:");
+		JLabel lblAreaEstudios = new JLabel("Área:");
 		lblAreaEstudios.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAreaEstudios.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblAreaEstudios.setBounds(672, 358, 395, 51);
@@ -692,13 +727,12 @@ public class MenuEmpresas extends JDialog {
 
 		cmbAreaEstudios = new JComboBox();
 		cmbAreaEstudios.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>",
-				"Tecnolog\u00EDa / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
-				"Administraci\u00F3n / Oficina", "Recursos Humanos", "Finanzas / Contabilidad",
-				"Log\u00EDstica y Distribuci\u00F3n", "Ingenier\u00EDa", "Salud / Medicina",
-				"Educaci\u00F3n / Capacitaci\u00F3n", "Atenci\u00F3n al Cliente / Call Center",
-				"Dise\u00F1o Gr\u00E1fico / UX/UI", "Legal / Jur\u00EDdico", "Producci\u00F3n / Manufactura",
-				"Turismo y Hoteler\u00EDa", "Construcci\u00F3n / Arquitectura", "Investigaci\u00F3n y Desarrollo",
-				"Servicios Generales / Mantenimiento", "Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
+				"Tecnología / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
+				"Administración / Oficina", "Recursos Humanos", "Finanzas / Contabilidad", "Logística y Distribución",
+				"Ingeniería", "Salud / Medicina", "Educación / Capacitación", "Atención al Cliente / Call Center",
+				"Diseño Gráfico / UX/UI", "Legal / Jurídico", "Producción / Manufactura", "Turismo y Hotelería",
+				"Construcción / Arquitectura", "Investigación y Desarrollo", "Servicios Generales / Mantenimiento",
+				"Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
 		cmbAreaEstudios.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cmbAreaEstudios.setBackground(Color.WHITE);
 		cmbAreaEstudios.setBounds(672, 405, 395, 39);
@@ -777,7 +811,7 @@ public class MenuEmpresas extends JDialog {
 		cmbNivelEstudio.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		cmbNivelEstudio.setBounds(672, 705, 395, 39);
 		pnlOfertas.add(cmbNivelEstudio);
-		
+
 		btnRecargarInfoEmpresa = new JButton("Recargar");
 		btnRecargarInfoEmpresa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -785,10 +819,35 @@ public class MenuEmpresas extends JDialog {
 			}
 		});
 		btnRecargarInfoEmpresa.setBackground(Color.WHITE);
-		btnRecargarInfoEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btnRecargarInfoEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		btnRecargarInfoEmpresa.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/refresh.png")));
 		btnRecargarInfoEmpresa.setBounds(550, 116, 109, 23);
 		pnlOfertas.add(btnRecargarInfoEmpresa);
+
+		btnCancelarModificacion = new JButton("Cancelar modificación");
+		btnCancelarModificacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int cancelar = JOptionPane.showConfirmDialog(null,
+						"¿Seguro que desea cancelar la modificación? Cualquier información que no se haya guardado hasta el momento se perderá.",
+						"Advertencia", JOptionPane.YES_NO_OPTION);
+				if (cancelar == 0) {
+					ofertaSeleccionada = null;
+					limpiarFormularioOfertas();
+					btnCancelarModificacion.setVisible(false);
+					btnRegistrarOferta.setText("Registrar oferta");
+				} else {
+					JOptionPane.showMessageDialog(null, "Acción cancelada", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				}
+
+			}
+		});
+		btnCancelarModificacion.setVisible(false);
+		btnCancelarModificacion.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnCancelarModificacion.setBackground(Color.WHITE);
+		btnCancelarModificacion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnCancelarModificacion.setBounds(980, 839, 313, 66);
+		pnlOfertas.add(btnCancelarModificacion);
 
 		JPanel pnlVerOfertas = new JPanel();
 		pnlVerOfertas.setBackground(Color.WHITE);
@@ -796,8 +855,7 @@ public class MenuEmpresas extends JDialog {
 		pnlVerOfertas.setLayout(null);
 
 		JScrollPane spnlOfertas = new JScrollPane();
-		spnlOfertas.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		spnlOfertas.setBounds(10, 11, 339, 895);
+		spnlOfertas.setBounds(10, 11, 339, 877);
 		pnlVerOfertas.add(spnlOfertas);
 
 		pnlMisOfertas = new JPanel();
@@ -836,7 +894,7 @@ public class MenuEmpresas extends JDialog {
 		jtpDescripcionOferta.addTab("New tab", null, pnlVistaOferta, null);
 		pnlVistaOferta.setLayout(null);
 
-		lblTituloOferta = new JLabel("Oferta # - RNC de la empresa");
+		lblTituloOferta = new JLabel("Oferta # - codigo");
 		lblTituloOferta.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 26));
 		lblTituloOferta.setBounds(10, 11, 1047, 61);
 		pnlVistaOferta.add(lblTituloOferta);
@@ -900,20 +958,20 @@ public class MenuEmpresas extends JDialog {
 		JLabel lblTipoEmpOferta = new JLabel("Tipo empleo:");
 		lblTipoEmpOferta.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/briefcase.png")));
 		lblTipoEmpOferta.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblTipoEmpOferta.setBounds(10, 259, 182, 47);
+		lblTipoEmpOferta.setBounds(10, 249, 182, 47);
 		pnlVistaOferta.add(lblTipoEmpOferta);
 
 		JLabel lblModalidad = new JLabel("Modalidad:");
 		lblModalidad.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/building.png")));
 		lblModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblModalidad.setBounds(10, 314, 129, 47);
+		lblModalidad.setBounds(10, 304, 129, 47);
 		pnlVistaOferta.add(lblModalidad);
 
 		JLabel lblHorario = new JLabel("Horario:");
 		lblHorario.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHorario.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/clock.png")));
 		lblHorario.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblHorario.setBounds(10, 378, 129, 47);
+		lblHorario.setBounds(10, 368, 129, 47);
 		pnlVistaOferta.add(lblHorario);
 
 		lblMostrarHorario = new JLabel("Horario propuesto");
@@ -927,7 +985,7 @@ public class MenuEmpresas extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				jtpDescripcionOferta.setSelectedIndex(0);
-				// solicitudSelected = null;
+				ofertaSeleccionada = null;
 			}
 		});
 		btnCerrarVistaOferta.setHorizontalAlignment(SwingConstants.CENTER);
@@ -939,7 +997,7 @@ public class MenuEmpresas extends JDialog {
 		lblEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmpresa.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/money.png")));
 		lblEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblEmpresa.setBounds(10, 104, 129, 47);
+		lblEmpresa.setBounds(10, 94, 129, 47);
 		pnlVistaOferta.add(lblEmpresa);
 
 		lblEmpresaOferta = new JLabel("Empresa que oferta");
@@ -964,7 +1022,17 @@ public class MenuEmpresas extends JDialog {
 		lblFechaOferta.setBounds(230, 572, 388, 47);
 		pnlVistaOferta.add(lblFechaOferta);
 
-		JButton btnVisualizarMatches = new JButton("Visualizar matches");
+		btnVisualizarMatches = new JButton("Visualizar matches (0)");
+		btnVisualizarMatches.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ofertaSeleccionada != null) {
+					VisualizarMatchOferta vm = new VisualizarMatchOferta(ofertaSeleccionada);
+					System.out.println("codigo oferta: " + ofertaSeleccionada.getCodigo());
+					vm.setModal(true);
+					vm.setVisible(true);
+				}
+			}
+		});
 		btnVisualizarMatches.setBackground(Color.WHITE);
 		btnVisualizarMatches.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnVisualizarMatches.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -977,12 +1045,24 @@ public class MenuEmpresas extends JDialog {
 		btnCancelarOferta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Cancelar oferta
-				int opccion = JOptionPane.showConfirmDialog(null, "¿Desea cancelar esta oferta?", "Cancelar",
-						JOptionPane.WARNING_MESSAGE);
-				if (opccion == JOptionPane.OK_OPTION) {
-					Bolsa.getInstancia().eliminarOferta(ofertaSeleccionada);
-					cargarVistaPreviaOferta(ofertaSeleccionada);
-					jtpDescripcionOferta.setSelectedIndex(0);
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Desea cancelar esta oferta?", "Cancelar",
+						JOptionPane.YES_NO_OPTION);
+				if (opcion == 0) {
+					if (Bolsa.getInstancia().contarMatchesOferta(ofertaSeleccionada) > 0) {
+						JOptionPane.showMessageDialog(null,
+								"Esta oferta no puede ser cancelada ya que se encontraron coincidencias para la misma",
+								"Advertencia", JOptionPane.WARNING_MESSAGE);
+					} else {
+						Bolsa.getInstancia().eliminarOferta(ofertaSeleccionada);
+						JOptionPane.showMessageDialog(null, "La oferta se elimino, correctamente.", "Información",
+								JOptionPane.INFORMATION_MESSAGE, null);
+						jtpDescripcionOferta.setSelectedIndex(0);
+						cargarOferta();
+						ofertaSeleccionada = null;
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Acción cancelada.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
 				}
 			}
 		});
@@ -1027,7 +1107,7 @@ public class MenuEmpresas extends JDialog {
 		lblPuestoTrab.setBounds(630, 94, 199, 47);
 		pnlVistaOferta.add(lblPuestoTrab);
 
-		JLabel lblMostrarPuestoTrab = new JLabel("Puesto de trabajo");
+		lblMostrarPuestoTrab = new JLabel("Puesto de trabajo");
 		lblMostrarPuestoTrab.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarPuestoTrab.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarPuestoTrab.setBounds(849, 94, 388, 47);
@@ -1040,52 +1120,60 @@ public class MenuEmpresas extends JDialog {
 		lblDesc.setBounds(630, 145, 199, 47);
 		pnlVistaOferta.add(lblDesc);
 
-		JLabel lblMostrarDesc = new JLabel("Descripción del puesto de trabajo");
-		lblMostrarDesc.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblMostrarDesc.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarDesc.setBounds(849, 145, 388, 47);
-		pnlVistaOferta.add(lblMostrarDesc);
-
 		JLabel lblCantVacant = new JLabel("Cant. Vacant. Disp:");
 		lblCantVacant.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/iconPersonas_x16.png")));
 		lblCantVacant.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCantVacant.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblCantVacant.setBounds(630, 199, 199, 47);
+		lblCantVacant.setBounds(628, 278, 199, 47);
 		pnlVistaOferta.add(lblCantVacant);
 
-		JLabel lblMostrarCantVacant = new JLabel("Cantidad de vacantes disponibles");
+		lblMostrarCantVacant = new JLabel("Cantidad de vacantes disponibles");
 		lblMostrarCantVacant.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarCantVacant.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarCantVacant.setBounds(849, 199, 388, 47);
+		lblMostrarCantVacant.setBounds(847, 278, 388, 47);
 		pnlVistaOferta.add(lblMostrarCantVacant);
 
-		JLabel lblNivelEduc = new JLabel("Nivel Educ:");
+		JLabel lblNivelEduc = new JLabel("Nivel Educativo:");
 		lblNivelEduc.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/iconEstudios_x16.png")));
 		lblNivelEduc.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNivelEduc.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblNivelEduc.setBounds(630, 249, 199, 47);
+		lblNivelEduc.setBounds(628, 326, 199, 47);
 		pnlVistaOferta.add(lblNivelEduc);
 
-		JLabel lblMostrarNivelEduc = new JLabel("Nivel educativo");
+		lblMostrarNivelEduc = new JLabel("Nivel educativo");
 		lblMostrarNivelEduc.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarNivelEduc.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarNivelEduc.setBounds(849, 249, 388, 47);
+		lblMostrarNivelEduc.setBounds(847, 326, 388, 47);
 		pnlVistaOferta.add(lblMostrarNivelEduc);
 
 		JLabel lblExpAnnios = new JLabel("Años de exp:");
 		lblExpAnnios.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/iconAnnios_x16.png")));
 		lblExpAnnios.setHorizontalAlignment(SwingConstants.LEFT);
 		lblExpAnnios.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblExpAnnios.setBounds(630, 304, 199, 47);
+		lblExpAnnios.setBounds(628, 381, 199, 47);
 		pnlVistaOferta.add(lblExpAnnios);
 
-		JLabel lblMostrarAnniosExp = new JLabel("Años de experiencia");
+		lblMostrarAnniosExp = new JLabel("Años de experiencia");
 		lblMostrarAnniosExp.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblMostrarAnniosExp.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarAnniosExp.setBounds(849, 304, 388, 47);
+		lblMostrarAnniosExp.setBounds(847, 381, 388, 47);
 		pnlVistaOferta.add(lblMostrarAnniosExp);
-		
+
 		JButton btnModificarOferta = new JButton("Modificar oferta");
+		btnModificarOferta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ofertaSeleccionada != null) {
+					btnRegistrarOferta.setText("Modificar oferta");
+					btnCancelarModificacion.setVisible(true);
+					cargarDatosModificar();
+					jtpMenus.setSelectedIndex(0);
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Para proceder con esta acción, antes debe seleccionar una oferta.", "Advertencia",
+							JOptionPane.WARNING_MESSAGE, null);
+				}
+			}
+		});
 		btnModificarOferta.setIcon(new ImageIcon(MenuEmpresas.class.getResource("/img/update.png")));
 		btnModificarOferta.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnModificarOferta.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -1093,6 +1181,14 @@ public class MenuEmpresas extends JDialog {
 		btnModificarOferta.setBackground(Color.WHITE);
 		btnModificarOferta.setBounds(873, 807, 182, 73);
 		pnlVistaOferta.add(btnModificarOferta);
+
+		txtAMostrarDescripcionOferta = new JTextArea();
+		txtAMostrarDescripcionOferta.setText("Descripción del puesto");
+		txtAMostrarDescripcionOferta.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		txtAMostrarDescripcionOferta.setBackground(Color.WHITE);
+		txtAMostrarDescripcionOferta.setLineWrap(true);
+		txtAMostrarDescripcionOferta.setBounds(849, 161, 316, 106);
+		pnlVistaOferta.add(txtAMostrarDescripcionOferta);
 	}
 
 	private void cargarDatosEmpresa() {
@@ -1110,7 +1206,6 @@ public class MenuEmpresas extends JDialog {
 			} else {
 				lblMostrarEstado.setText("Inactiva");
 			}
-
 		}
 	}
 
@@ -1127,7 +1222,7 @@ public class MenuEmpresas extends JDialog {
 		rdbtnLicenciaSi.setSelected(false);
 		rdbtnLicenciaNo.setSelected(false);
 		spnSalarioDeseado.setValue(0);
-		spnCantVacantes.setValue(0);
+		spnCantVacantes.setValue(1);
 		cmbNivelEstudio.setSelectedIndex(0);
 		spnAnniosExp.setValue(0);
 		cargarDatosEmpresa();
@@ -1164,6 +1259,8 @@ public class MenuEmpresas extends JDialog {
 					@Override
 					public void mouseClicked(java.awt.event.MouseEvent e) {
 						ofertaSeleccionada = elementosOfer.getOferta();
+						btnVisualizarMatches.setText("Visualizar matches ("
+								+ Bolsa.getInstancia().contarMatchesOferta(ofertaSeleccionada) + ")");
 						cargarVistaPreviaOferta(ofertaSeleccionada);
 						jtpDescripcionOferta.setSelectedIndex(1);
 					}
@@ -1175,6 +1272,33 @@ public class MenuEmpresas extends JDialog {
 			pnlMisOfertas.revalidate();
 			pnlMisOfertas.repaint();
 		}
+	}
+
+	// Para modificar los datos de una oferta
+	private void cargarDatosModificar() {
+		txtPuestoTrabajo.setText(ofertaSeleccionada.getPuestoTrab());
+		cmbAreaEstudios.setSelectedItem(ofertaSeleccionada.getArea());
+		cbxHorarioOferta.setSelectedItem(ofertaSeleccionada.getHorario());
+		cbxTipoEmpleo.setSelectedItem(ofertaSeleccionada.getTipo());
+		cbxModalidad.setSelectedItem(ofertaSeleccionada.getModalidad());
+		txtDescripcion.setText(ofertaSeleccionada.getDescripcion());
+
+		if (ofertaSeleccionada.isRequiereMovilidad()) {
+			rdbtnMovilidadSi.setSelected(true);
+		} else {
+			rdbtnMovilidadNo.setSelected(true);
+		}
+
+		if (ofertaSeleccionada.isRequiereLicencia()) {
+			rdbtnLicenciaSi.setSelected(true);
+		} else {
+			rdbtnLicenciaNo.setSelected(true);
+		}
+
+		spnSalarioDeseado.setValue(ofertaSeleccionada.getSalarioEstimado());
+		spnCantVacantes.setValue(ofertaSeleccionada.getCantVacantes());
+		cmbNivelEstudio.setSelectedItem(ofertaSeleccionada.getNivelEducacion());
+		spnAnniosExp.setValue(ofertaSeleccionada.getAniosExp());
 	}
 
 	private void cargarVistaPreviaOferta(Oferta oferta) {
@@ -1202,9 +1326,19 @@ public class MenuEmpresas extends JDialog {
 			String formattedDate = dateFormat.format(fechaOferta);
 			lblFechaOferta.setText(formattedDate);
 			if (oferta.isEstadoOferta()) {
-				lblMostrarEstadoOferta.setText("Disponible");
+				lblMostrarEstadoOferta.setText("Activa");
 			} else {
 				lblMostrarEstadoOferta.setText("No disponible");
+			}
+
+			lblMostrarPuestoTrab.setText(oferta.getPuestoTrab());
+			txtAMostrarDescripcionOferta.setText(oferta.getDescripcion());
+			lblMostrarCantVacant.setText(String.valueOf(oferta.getCantVacantes()));
+			lblMostrarNivelEduc.setText(oferta.getNivelEducacion());
+			if (oferta.getAniosExp() > 0) {
+				lblMostrarAnniosExp.setText(String.valueOf(oferta.getAniosExp()));
+			} else {
+				lblMostrarAnniosExp.setText("N/A");
 			}
 		}
 	}

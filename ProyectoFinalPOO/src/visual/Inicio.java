@@ -48,9 +48,7 @@ public class Inicio extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				//iniciar matching automatico al iniciar la app 
-				Bolsa.getInstancia().iniciarMatchingAutomatico();
-				
+ 
 				FileInputStream bolsaIn;
 				FileOutputStream bolsaOut;
 				ObjectInputStream bolsaRead;
@@ -97,9 +95,7 @@ public class Inicio extends JFrame {
 						@Override
 						public void windowClosing(WindowEvent e) {
 							Bolsa.guardarEstado();
-							//cerrar el hilo de match
-							Bolsa.getInstancia().detenerMatchingAutomatico();
-//							System.out.println("Inicio cerro");
+ 
 						}
 					});
 					frame.setVisible(true);

@@ -19,7 +19,6 @@ public class ElementosOferta extends JPanel {
 	private JLabel lblTipo;
 	private JLabel lblFecha;
 	private JLabel lblArea;
-	private JLabel lblMatchesObtenidos;
 
 	public ElementosOferta(Oferta oferta) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -70,16 +69,9 @@ public class ElementosOferta extends JPanel {
 		lblFecha.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblFecha.setAlignmentX(LEFT_ALIGNMENT);
 		add(lblFecha);
-		
-		lblMatchesObtenidos = new JLabel("Matches obtenidos" + Bolsa.getInstancia().contarMatchesOferta(oferta));
-		lblMatchesObtenidos.setIcon(new ImageIcon(ElementosOferta.class.getResource("/img/match16.png")));
-		lblMatchesObtenidos.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMatchesObtenidos.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		lblMatchesObtenidos.setAlignmentX(0.0f);
-		add(lblMatchesObtenidos);
 
 		if (oferta.getCodigo() != null)
-			lblTitulo.setText("Oferta #" + oferta.getCodigo());
+			lblTitulo.setText(oferta.getPuestoTrab());
 		if (oferta.getArea() != null)
 			lblArea.setText(oferta.getArea());
 		if (oferta.getSalarioEstimado() > 0) {

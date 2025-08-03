@@ -52,17 +52,7 @@ public class VisualizarDatosEmpresa extends JDialog {
 			VisualizarDatosEmpresa dialog = new VisualizarDatosEmpresa();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-			/*
-			dialog.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					try (ObjectOutputStream bolsaWrite = new ObjectOutputStream(new FileOutputStream("BdLaborea.dat"))) {
-						bolsaWrite.writeObject(Bolsa.getInstancia());
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			});*/
+		 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

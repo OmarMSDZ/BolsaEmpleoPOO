@@ -128,10 +128,9 @@ public class MenuCandidatos extends JDialog {
 	 * Create the frame.
 	 */
 	public MenuCandidatos(Window parent) {
-		
+
 		super(parent, "", ModalityType.APPLICATION_MODAL);
 		setResizable(false);
-
 
 		Persona actual = (Persona) Bolsa.getUsuarioActivo();
 		if (actual != null) {
@@ -148,7 +147,7 @@ public class MenuCandidatos extends JDialog {
 		}
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 //		//hilo de notificaciones, con proposito visual para mostrar la cantidad de matches que obtuvo cada solicitud
 //		Thread hiloNotificaciones = new Thread(() -> {
 //		    while (true) {
@@ -176,16 +175,12 @@ public class MenuCandidatos extends JDialog {
 //			}
 //		});
 
-		
-
 		setBounds(100, 100, 1100, 687);
 
 		// Poner ventana en centro de pantalla y tamaño máximo
 		dim = getToolkit().getScreenSize(); // Obtener dimensiones de la pantalla de la pc
 		setSize(1920, 1075);
 		setLocationRelativeTo(null);
-
-		
 
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -222,7 +217,7 @@ public class MenuCandidatos extends JDialog {
 				if (persActual != null) {
 
 					VisualizarPerfilCandidato vpc = new VisualizarPerfilCandidato();
- 
+
 					vpc.setModal(true);
 					vpc.setVisible(true);
 
@@ -238,8 +233,6 @@ public class MenuCandidatos extends JDialog {
 		panel_1.setBackground(Color.WHITE);
 		panel_1.setBounds(250, 64, 1644, 59);
 		contentPane.add(panel_1);
-
-		 
 
 		label_1 = new JLabel("");
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -387,29 +380,34 @@ public class MenuCandidatos extends JDialog {
 		lblNewLabel_4.setBounds(10, 11, 260, 51);
 		pnlSolicitudes.add(lblNewLabel_4);
 
-		JLabel lblHorarioDeseado = new JLabel("Horario");
-		lblHorarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblHorarioDeseado.setBounds(782, 338, 260, 51);
+		JLabel lblHorarioDeseado = new JLabel("Horario:");
+		lblHorarioDeseado.setHorizontalAlignment(SwingConstants.LEFT);
+		lblHorarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblHorarioDeseado.setBounds(782, 384, 260, 51);
 		pnlSolicitudes.add(lblHorarioDeseado);
 
-		JLabel lblTipoDeEmpleo = new JLabel("Tipo de empleo");
-		lblTipoDeEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 23));
+		JLabel lblTipoDeEmpleo = new JLabel("Tipo de empleo:");
+		lblTipoDeEmpleo.setHorizontalAlignment(SwingConstants.LEFT);
+		lblTipoDeEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		lblTipoDeEmpleo.setBounds(782, 164, 260, 51);
 		pnlSolicitudes.add(lblTipoDeEmpleo);
 
-		JLabel lblModalidadDeseada = new JLabel("Modalidad");
-		lblModalidadDeseada.setFont(new Font("Segoe UI", Font.PLAIN, 23));
+		JLabel lblModalidadDeseada = new JLabel("Modalidad:");
+		lblModalidadDeseada.setHorizontalAlignment(SwingConstants.LEFT);
+		lblModalidadDeseada.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		lblModalidadDeseada.setBounds(1242, 168, 260, 51);
 		pnlSolicitudes.add(lblModalidadDeseada);
 
-		JLabel lblSalarioDeseado = new JLabel("Salario deseado");
-		lblSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblSalarioDeseado.setBounds(1242, 255, 260, 51);
+		JLabel lblSalarioDeseado = new JLabel("Salario deseado:");
+		lblSalarioDeseado.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblSalarioDeseado.setBounds(1242, 283, 260, 51);
 		pnlSolicitudes.add(lblSalarioDeseado);
 
-		JLabel lblDisponibilidadDeMovilidad = new JLabel("Disponibilidad de movilidad");
-		lblDisponibilidadDeMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblDisponibilidadDeMovilidad.setBounds(1242, 338, 313, 51);
+		JLabel lblDisponibilidadDeMovilidad = new JLabel("Disponibilidad de movilidad:");
+		lblDisponibilidadDeMovilidad.setHorizontalAlignment(SwingConstants.LEFT);
+		lblDisponibilidadDeMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblDisponibilidadDeMovilidad.setBounds(1242, 384, 313, 51);
 		pnlSolicitudes.add(lblDisponibilidadDeMovilidad);
 
 		JSeparator separator_2 = new JSeparator();
@@ -419,7 +417,7 @@ public class MenuCandidatos extends JDialog {
 
 		cbxTipoEmpleo = new JComboBox();
 		cbxTipoEmpleo.setModel(new DefaultComboBoxModel(
-				new String[] { "<Seleccione>", "Tiempo completo", "Tiempo Parcial", "Temporal", "Freelance" }));
+				new String[] { "<<Seleccione>>", "Tiempo completo", "Tiempo parcial", "Temporal", "Freelance" }));
 		cbxTipoEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxTipoEmpleo.setBackground(Color.WHITE);
 		cbxTipoEmpleo.setBounds(782, 210, 395, 39);
@@ -427,25 +425,25 @@ public class MenuCandidatos extends JDialog {
 
 		cbxModalidad = new JComboBox();
 		cbxModalidad
-				.setModel(new DefaultComboBoxModel(new String[] { "<Seleccione>", "Presencial", "Remoto", "Mixto" }));
+				.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Presencial", "Remoto", "Mixto"}));
 		cbxModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxModalidad.setBackground(Color.WHITE);
 		cbxModalidad.setBounds(1242, 214, 313, 39);
 		pnlSolicitudes.add(cbxModalidad);
 
 		cbxHorarioSolicitud = new JComboBox();
-		cbxHorarioSolicitud.setModel(new DefaultComboBoxModel(new String[] { "<Seleccione>", "Matutino", "Vespertino",
+		cbxHorarioSolicitud.setModel(new DefaultComboBoxModel(new String[] { "<<Seleccione>>", "Matutino", "Vespertino",
 				"Nocturno", "Matutino y Vespertino", "Vespertino y Nocturno", "Todos" }));
 		cbxHorarioSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxHorarioSolicitud.setBackground(Color.WHITE);
-		cbxHorarioSolicitud.setBounds(782, 387, 395, 39);
+		cbxHorarioSolicitud.setBounds(782, 433, 395, 39);
 		pnlSolicitudes.add(cbxHorarioSolicitud);
 
 		spnSalarioDeseado = new JSpinner();
 		spnSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		spnSalarioDeseado.setBackground(Color.WHITE);
 		spnSalarioDeseado.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		spnSalarioDeseado.setBounds(1242, 302, 313, 39);
+		spnSalarioDeseado.setBounds(1242, 332, 313, 39);
 		pnlSolicitudes.add(spnSalarioDeseado);
 
 		rdbtnMovilidadSi = new JRadioButton("Puedo movilizarme/viajar");
@@ -457,7 +455,7 @@ public class MenuCandidatos extends JDialog {
 		});
 		rdbtnMovilidadSi.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnMovilidadSi.setBackground(Color.WHITE);
-		rdbtnMovilidadSi.setBounds(1242, 387, 260, 23);
+		rdbtnMovilidadSi.setBounds(1242, 433, 260, 39);
 		pnlSolicitudes.add(rdbtnMovilidadSi);
 
 		rdbtnMovilidadNo = new JRadioButton("No puedo movilizarme/viajar");
@@ -469,7 +467,7 @@ public class MenuCandidatos extends JDialog {
 		});
 		rdbtnMovilidadNo.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnMovilidadNo.setBackground(Color.WHITE);
-		rdbtnMovilidadNo.setBounds(1242, 421, 260, 23);
+		rdbtnMovilidadNo.setBounds(1242, 476, 260, 39);
 		pnlSolicitudes.add(rdbtnMovilidadNo);
 
 		JLabel lblDatosSolicitante = new JLabel("Datos Solicitante");
@@ -525,7 +523,7 @@ public class MenuCandidatos extends JDialog {
 
 		JSeparator separator_4 = new JSeparator();
 		separator_4.setForeground(Color.BLACK);
-		separator_4.setBounds(658, 145, 658, 8);
+		separator_4.setBounds(658, 145, 961, 10);
 		pnlSolicitudes.add(separator_4);
 
 		lblInfNombreCompleto = new JLabel("Nombre Completo");
@@ -590,7 +588,6 @@ public class MenuCandidatos extends JDialog {
 							dispMovilidad = true;
 						}
 
- 
 						float salarioEsperado = (Float) spnSalarioDeseado.getValue();
 
 						Solicitud soli = new Solicitud(codigoGenerado, persActual, dispHorario, dispMovilidad,
@@ -630,23 +627,23 @@ public class MenuCandidatos extends JDialog {
 		separator_1.setBounds(692, 145, 23, 764);
 		pnlSolicitudes.add(separator_1);
 
-		JLabel lblArea = new JLabel("\u00C1rea");
-		lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblArea.setBounds(782, 255, 260, 51);
+		JLabel lblArea = new JLabel("Área:");
+		lblArea.setHorizontalAlignment(SwingConstants.LEFT);
+		lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblArea.setBounds(782, 283, 260, 51);
 		pnlSolicitudes.add(lblArea);
 
 		cbxAreaSolicitud = new JComboBox();
 		cbxAreaSolicitud.setModel(new DefaultComboBoxModel(new String[] { "<< Seleccione >>",
-				"Tecnolog\u00EDa / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
-				"Administraci\u00F3n / Oficina", "Recursos Humanos", "Finanzas / Contabilidad",
-				"Log\u00EDstica y Distribuci\u00F3n", "Ingenier\u00EDa", "Salud / Medicina",
-				"Educaci\u00F3n / Capacitaci\u00F3n", "Atenci\u00F3n al Cliente / Call Center",
-				"Dise\u00F1o Gr\u00E1fico / UX/UI", "Legal / Jur\u00EDdico", "Producci\u00F3n / Manufactura",
-				"Turismo y Hoteler\u00EDa", "Construcci\u00F3n / Arquitectura", "Investigaci\u00F3n y Desarrollo",
-				"Servicios Generales / Mantenimiento", "Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
+				"Tecnología / Desarrollo de Software", "Marketing y Publicidad", "Ventas y Comercio",
+				"Administración / Oficina", "Recursos Humanos", "Finanzas / Contabilidad", "Logística y Distribución",
+				"Ingeniería", "Salud / Medicina", "Educación / Capacitación", "Atención al Cliente / Call Center",
+				"Diseño Gráfico / UX/UI", "Legal / Jurídico", "Producción / Manufactura", "Turismo y Hotelería",
+				"Construcción / Arquitectura", "Investigación y Desarrollo", "Servicios Generales / Mantenimiento",
+				"Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
 		cbxAreaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxAreaSolicitud.setBackground(Color.WHITE);
-		cbxAreaSolicitud.setBounds(782, 304, 395, 39);
+		cbxAreaSolicitud.setBounds(782, 332, 395, 39);
 		pnlSolicitudes.add(cbxAreaSolicitud);
 
 		JPanel pnlMisSolicitudes = new JPanel();
@@ -863,22 +860,7 @@ public class MenuCandidatos extends JDialog {
 		lblAreaSolicitud.setBounds(230, 145, 480, 47);
 		pnlVistaSolicitud.add(lblAreaSolicitud);
 	}
-	//Contar notificaciones de cada solicitud (A usar con un thread)
-//	private void conteoNotificaciones(Solicitud soli) {
-//		int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(soli);
-//
-//		SwingUtilities.invokeLater(() -> {
-//			if (cantidad > 0) {
-//				btnNotificacion.setEnabled(true);
-//				btnCancelarSolicitud.setEnabled(false);
-//				btnNotificacion.setText("Notificaciones (" + cantidad + ")");
-//			} else {
-//				btnNotificacion.setEnabled(false);
-//				btnCancelarSolicitud.setEnabled(true);
-//				btnNotificacion.setText("Notificaciones");
-//			}
-//		});
-//	}
+
 	private void cargarDatosPersona() {
 		if (persActual != null) {
 			lblMostrarNombreDePerfil.setText(persActual.getNombre() + " " + persActual.getApellidos());
@@ -914,7 +896,6 @@ public class MenuCandidatos extends JDialog {
 		cbxAreaSolicitud.setSelectedIndex(0);
 		rdbtnMovilidadSi.setSelected(false);
 		rdbtnMovilidadNo.setSelected(false);
- 
 		spnSalarioDeseado.setValue(0);
 		cargarDatosPersona();
 		cargarSolicitudes();
@@ -927,7 +908,7 @@ public class MenuCandidatos extends JDialog {
 		if (cbxHorarioSolicitud.getSelectedIndex() == 0 || cbxTipoEmpleo.getSelectedIndex() == 0
 				|| cbxModalidad.getSelectedIndex() == 0
 				|| (!rdbtnMovilidadNo.isSelected() && !rdbtnMovilidadSi.isSelected())
-				 
+
 				|| (float) spnSalarioDeseado.getValue() == 0) {
 			valido = false;
 		}
@@ -949,12 +930,11 @@ public class MenuCandidatos extends JDialog {
 						solicitudSelected = eleSol.getSolicitud();
 						cargarVistaPreviaSolicitud(solicitudSelected); // cargar datos de solicitud en vista previa
 						jtpDescripcionSolicitud.setSelectedIndex(1);
-						
-					 
+
 //						conteoNotificaciones(solicitudSelected);
 						int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(solicitudSelected);
 						System.out.println("Matches encontrados: " + cantidad);
-						
+
 					}
 				});
 

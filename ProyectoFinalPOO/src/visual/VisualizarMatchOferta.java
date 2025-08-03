@@ -60,7 +60,6 @@ public class VisualizarMatchOferta extends JDialog {
 	private JLabel lblMostrarProvincia;
 	private JLabel lblMostrarMunicipio;
 	private JLabel lblMostrarEstado;
-	private JLabel lblMostrarDisponibilidad;
 	private JLabel lblMostrarNivelEducativo;
 	private JTabbedPane jtpNivelEducativo;
 	private JLabel lblMostrarTecnico;
@@ -100,6 +99,8 @@ public class VisualizarMatchOferta extends JDialog {
 	 * Create the dialog.
 	 */
 	public VisualizarMatchOferta(Oferta oferta) {
+		getContentPane().setBackground(Color.WHITE);
+		setBackground(Color.WHITE);
 		if (oferta != null) {
 			setTitle("Laborea - Mejores coincidencias para la oferta: " + oferta.getPuestoTrab());
 			ofertaActual = oferta;
@@ -107,18 +108,56 @@ public class VisualizarMatchOferta extends JDialog {
 			setTitle("Laborea - Prueba ");
 			ofertaActual = null;
 		}
-		setTitle("Laborea");
+		setTitle("Laborea - Visualizar informaci\u00F3n del matcheo");
 		setResizable(false);
-		setBounds(100, 100, 1003, 855);
+		setBounds(100, 100, 1020, 855);
 		setLocationRelativeTo(null);
-		getContentPane().setLayout(new BorderLayout());
+		getContentPane().setLayout(null);
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setBounds(0, 765, 1014, 55);
+			buttonPane.setBackground(Color.WHITE);
+			getContentPane().add(buttonPane);
+
+			btnVisualizarCandidato = new JButton("Visualizar candidato");
+			btnVisualizarCandidato.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/user2.png")));
+			btnVisualizarCandidato.setBounds(662, 13, 199, 31);
+			btnVisualizarCandidato.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (selected != null) {
+						cargarDatosCandSol(selected);
+					}
+					jtpVisualizar.setSelectedIndex(1);
+				}
+			});
+			buttonPane.setLayout(null);
+			btnVisualizarCandidato.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+			btnVisualizarCandidato.setBackground(Color.WHITE);
+			btnVisualizarCandidato.setActionCommand("OK");
+			buttonPane.add(btnVisualizarCandidato);
+			{
+				JButton btnCerrar = new JButton("Cerrar");
+				btnCerrar.setBounds(865, 13, 111, 31);
+				btnCerrar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
+				btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+				btnCerrar.setBackground(Color.WHITE);
+				btnCerrar.setActionCommand("Cancel");
+				buttonPane.add(btnCerrar);
+			}
+		}
+		contentPanel.setBounds(0, 0, 997, 820);
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 
 		jtpVisualizar = new JTabbedPane(JTabbedPane.TOP);
-		jtpVisualizar.setBounds(0, -23, 1007, 814);
+		jtpVisualizar.setBounds(-11, -29, 1032, 815);
 		contentPanel.add(jtpVisualizar);
 
 		JPanel pnlVisualizarMatches = new JPanel();
@@ -127,7 +166,8 @@ public class VisualizarMatchOferta extends JDialog {
 		pnlVisualizarMatches.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 79, 969, 696);
+		scrollPane.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		scrollPane.setBounds(30, 77, 963, 673);
 		pnlVisualizarMatches.add(scrollPane);
 
 		tblMatches = new JTable();
@@ -137,7 +177,8 @@ public class VisualizarMatchOferta extends JDialog {
 				// al hacer clic en la tabla
 				int index = tblMatches.getSelectedRow();
 				if (index >= 0) {
-					selected = Bolsa.getInstancia().buscarMatchOfertaByCodigo(tblMatches.getValueAt(index, 0).toString());
+					selected = Bolsa.getInstancia()
+							.buscarMatchOfertaByCodigo(tblMatches.getValueAt(index, 0).toString());
 					btnVisualizarCandidato.setEnabled(true);
 					cargarDatosCandSol(selected);
 				} else {
@@ -148,7 +189,7 @@ public class VisualizarMatchOferta extends JDialog {
 		tblMatches.setBackground(Color.WHITE);
 		tblMatches.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		// cargar headers de tabla y datos
-		String[] headers = { "Cod", "Candidato", "Provincia", "Solicitud N°", "Fecha", "Estado aceptación" };
+		String[] headers = { "Código", "Candidato", "Provincia", "Solicitud N°", "Fecha" };
 		tableModel = new DefaultTableModel(null, headers) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -165,18 +206,43 @@ public class VisualizarMatchOferta extends JDialog {
 		scrollPane.setViewportView(tblMatches);
 
 		JLabel label = new JLabel("Mejores coincidencias para esta oferta");
-		label.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		label.setBounds(10, 26, 342, 35);
+		label.setFont(new Font("Segoe UI", Font.PLAIN, 23));
+		label.setBounds(30, 13, 431, 35);
 		pnlVisualizarMatches.add(label);
+
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setForeground(Color.BLACK);
+		separator_2.setBounds(30, 54, 963, 10);
+		pnlVisualizarMatches.add(separator_2);
 
 		JPanel pnlVisualizarCandidato = new JPanel();
 		pnlVisualizarCandidato.setBackground(Color.WHITE);
 		jtpVisualizar.addTab("New tab", null, pnlVisualizarCandidato, null);
 		pnlVisualizarCandidato.setLayout(null);
 
+		JPanel pnlOcultoLateralIzquierdo = new JPanel();
+		pnlOcultoLateralIzquierdo.setBackground(Color.WHITE);
+		pnlOcultoLateralIzquierdo.setBounds(10, 505, 13, 184);
+		pnlVisualizarCandidato.add(pnlOcultoLateralIzquierdo);
+
+		JPanel pnlOcultoInferior = new JPanel();
+		pnlOcultoInferior.setBackground(Color.WHITE);
+		pnlOcultoInferior.setBounds(20, 679, 404, 10);
+		pnlVisualizarCandidato.add(pnlOcultoInferior);
+
+		JPanel pnlOcultoLateralDerecho = new JPanel();
+		pnlOcultoLateralDerecho.setBackground(Color.WHITE);
+		pnlOcultoLateralDerecho.setBounds(420, 502, 10, 187);
+		pnlVisualizarCandidato.add(pnlOcultoLateralDerecho);
+
+		JPanel pnlOcultoSuperior = new JPanel();
+		pnlOcultoSuperior.setBackground(Color.WHITE);
+		pnlOcultoSuperior.setBounds(20, 502, 404, 28);
+		pnlVisualizarCandidato.add(pnlOcultoSuperior);
+
 		JLabel lblNewLabel = new JLabel("Datos candidato");
 		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		lblNewLabel.setBounds(10, 24, 238, 34);
+		lblNewLabel.setBounds(31, 26, 238, 34);
 		pnlVisualizarCandidato.add(lblNewLabel);
 
 		JLabel label_1 = new JLabel("Nombre completo:");
@@ -202,7 +268,7 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarCedula.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarCedula.setForeground(Color.DARK_GRAY);
 		lblMostrarCedula.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarCedula.setBounds(196, 113, 196, 41);
+		lblMostrarCedula.setBounds(196, 113, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarCedula);
 
 		JLabel label_5 = new JLabel("Sexo:");
@@ -215,7 +281,7 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarSexo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarSexo.setForeground(Color.DARK_GRAY);
 		lblMostrarSexo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarSexo.setBounds(196, 154, 123, 41);
+		lblMostrarSexo.setBounds(196, 154, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarSexo);
 
 		JLabel label_7 = new JLabel("Fecha nacimiento:");
@@ -228,10 +294,10 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarFechaNacimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarFechaNacimiento.setForeground(Color.DARK_GRAY);
 		lblMostrarFechaNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarFechaNacimiento.setBounds(196, 229, 252, 41);
+		lblMostrarFechaNacimiento.setBounds(196, 229, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarFechaNacimiento);
 
-		JLabel lblTelefono = new JLabel("Telefono:");
+		JLabel lblTelefono = new JLabel("Tel\u00E9fono:");
 		lblTelefono.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		lblTelefono.setBounds(20, 264, 166, 41);
@@ -241,7 +307,7 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarTelefono.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarTelefono.setForeground(Color.DARK_GRAY);
 		lblMostrarTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarTelefono.setBounds(196, 264, 252, 41);
+		lblMostrarTelefono.setBounds(196, 264, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarTelefono);
 
 		JLabel lblCorreo = new JLabel("Correo:");
@@ -254,7 +320,7 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarCorreo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarCorreo.setForeground(Color.DARK_GRAY);
 		lblMostrarCorreo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarCorreo.setBounds(196, 305, 252, 41);
+		lblMostrarCorreo.setBounds(196, 305, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarCorreo);
 
 		JLabel lblProvincia = new JLabel("Provincia:");
@@ -267,14 +333,14 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarProvincia.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarProvincia.setForeground(Color.DARK_GRAY);
 		lblMostrarProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarProvincia.setBounds(196, 342, 252, 41);
+		lblMostrarProvincia.setBounds(196, 342, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarProvincia);
 
 		lblMostrarMunicipio = new JLabel("municipio");
 		lblMostrarMunicipio.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarMunicipio.setForeground(Color.DARK_GRAY);
 		lblMostrarMunicipio.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarMunicipio.setBounds(196, 378, 252, 41);
+		lblMostrarMunicipio.setBounds(196, 378, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarMunicipio);
 
 		JLabel lblMunicipio_1 = new JLabel("Municipio:");
@@ -286,14 +352,14 @@ public class VisualizarMatchOferta extends JDialog {
 		JLabel lblEst = new JLabel("Estado:");
 		lblEst.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEst.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblEst.setBounds(20, 682, 166, 41);
+		lblEst.setBounds(20, 700, 71, 41);
 		pnlVisualizarCandidato.add(lblEst);
 
 		lblMostrarEstado = new JLabel("Estado");
 		lblMostrarEstado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarEstado.setForeground(Color.DARK_GRAY);
 		lblMostrarEstado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarEstado.setBounds(196, 682, 252, 41);
+		lblMostrarEstado.setBounds(196, 700, 252, 41);
 		pnlVisualizarCandidato.add(lblMostrarEstado);
 
 		JSeparator separator = new JSeparator();
@@ -310,52 +376,48 @@ public class VisualizarMatchOferta extends JDialog {
 			}
 		});
 		lblNewLabel_1.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/close2.png")));
-		lblNewLabel_1.setBounds(904, 11, 77, 67);
+		lblNewLabel_1.setBounds(915, 13, 77, 67);
 		pnlVisualizarCandidato.add(lblNewLabel_1);
 
 		JButton btnContratar = new JButton("Contratar");
+		btnContratar.setBackground(Color.WHITE);
 		btnContratar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// contratar candidato seleccionado (Solo si este ha aceptado)
-				if (selected != null && selected.isAceptacionCandidato()) {
+				if (selected != null && !selected.isAceptacionEmpresa()) {
 					Bolsa.getInstancia().contratarPersona(selected.getSolicitudMatcheo().getSolicitante());
+					Date fechaContratacion = new Date();
+					selected.setFechaContratacion(fechaContratacion);
+					selected.setAceptacionEmpresa(true);
+					selected.getOfertaMatcheo().disminuirVacantesDisp();
+					JOptionPane.showMessageDialog(null, "Contratación efectuada exitosamente.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				} else if (selected == null) {
+					JOptionPane.showMessageDialog(null, "Debe seleccionar un matcheo antes de ejecutar esta acción.",
+							"Información", JOptionPane.INFORMATION_MESSAGE, null);
 				} else {
-					JOptionPane.showMessageDialog(null, "No es posible contratar al candidato seleccionado", "Alerta",
-							JOptionPane.WARNING_MESSAGE, null);
+					JOptionPane.showMessageDialog(null, "No es posible contratar al candidato seleccionado.",
+							"Advertencia", JOptionPane.WARNING_MESSAGE, null);
 				}
 			}
 		});
 		btnContratar.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnContratar.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnContratar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/add-user.png")));
-		btnContratar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-		btnContratar.setBounds(767, 702, 214, 73);
+		btnContratar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnContratar.setBounds(773, 679, 219, 73);
 		pnlVisualizarCandidato.add(btnContratar);
-
-		JLabel lblDisponibilidad = new JLabel("Disponibilidad:");
-		lblDisponibilidad.setHorizontalAlignment(SwingConstants.LEFT);
-		lblDisponibilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblDisponibilidad.setBounds(20, 721, 166, 41);
-		pnlVisualizarCandidato.add(lblDisponibilidad);
-
-		lblMostrarDisponibilidad = new JLabel("Estado");
-		lblMostrarDisponibilidad.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarDisponibilidad.setForeground(Color.DARK_GRAY);
-		lblMostrarDisponibilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarDisponibilidad.setBounds(196, 722, 252, 41);
-		pnlVisualizarCandidato.add(lblMostrarDisponibilidad);
 
 		JLabel lblNivelEducativo = new JLabel("Nivel educativo:");
 		lblNivelEducativo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNivelEducativo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblNivelEducativo.setBounds(20, 448, 166, 51);
+		lblNivelEducativo.setBounds(20, 453, 166, 51);
 		pnlVisualizarCandidato.add(lblNivelEducativo);
 
 		lblMostrarNivelEducativo = new JLabel("nivelEducativo");
 		lblMostrarNivelEducativo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarNivelEducativo.setForeground(Color.DARK_GRAY);
 		lblMostrarNivelEducativo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarNivelEducativo.setBounds(196, 448, 203, 51);
+		lblMostrarNivelEducativo.setBounds(196, 453, 260, 51);
 		pnlVisualizarCandidato.add(lblMostrarNivelEducativo);
 
 		jtpNivelEducativo = new JTabbedPane(JTabbedPane.TOP);
@@ -371,14 +433,14 @@ public class VisualizarMatchOferta extends JDialog {
 		JLabel lblCarrear = new JLabel("Carrera:");
 		lblCarrear.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCarrear.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblCarrear.setBounds(0, 11, 66, 51);
+		lblCarrear.setBounds(0, 0, 66, 51);
 		pnlUniversitario.add(lblCarrear);
 
 		lblMostrarCarrera = new JLabel("Carrera");
 		lblMostrarCarrera.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarCarrera.setForeground(Color.DARK_GRAY);
 		lblMostrarCarrera.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarCarrera.setBounds(72, 11, 290, 51);
+		lblMostrarCarrera.setBounds(72, 0, 290, 51);
 		pnlUniversitario.add(lblMostrarCarrera);
 
 		JPanel pnlTecnicoSuperior = new JPanel();
@@ -389,27 +451,27 @@ public class VisualizarMatchOferta extends JDialog {
 		JLabel lblTecnico = new JLabel("Tecnico:");
 		lblTecnico.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTecnico.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTecnico.setBounds(0, 11, 66, 51);
+		lblTecnico.setBounds(0, 0, 66, 51);
 		pnlTecnicoSuperior.add(lblTecnico);
 
 		lblMostrarTecnico = new JLabel("Tecnico");
 		lblMostrarTecnico.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarTecnico.setForeground(Color.DARK_GRAY);
 		lblMostrarTecnico.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarTecnico.setBounds(165, 11, 203, 51);
+		lblMostrarTecnico.setBounds(165, 0, 203, 51);
 		pnlTecnicoSuperior.add(lblMostrarTecnico);
 
 		JLabel lblAosExperiencia = new JLabel("A\u00F1os experiencia:");
 		lblAosExperiencia.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAosExperiencia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblAosExperiencia.setBounds(0, 78, 160, 51);
+		lblAosExperiencia.setBounds(0, 45, 160, 51);
 		pnlTecnicoSuperior.add(lblAosExperiencia);
 
 		lblMostrarAniosExp = new JLabel("A\u00F1os experiencia");
 		lblMostrarAniosExp.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarAniosExp.setForeground(Color.DARK_GRAY);
 		lblMostrarAniosExp.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarAniosExp.setBounds(165, 78, 203, 51);
+		lblMostrarAniosExp.setBounds(165, 45, 203, 51);
 		pnlTecnicoSuperior.add(lblMostrarAniosExp);
 
 		JPanel pnlObrero = new JPanel();
@@ -481,7 +543,7 @@ public class VisualizarMatchOferta extends JDialog {
 
 		JLabel lblDatosSolicitud = new JLabel("Datos Solicitud");
 		lblDatosSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		lblDatosSolicitud.setBounds(466, 24, 238, 34);
+		lblDatosSolicitud.setBounds(488, 26, 238, 34);
 		pnlVisualizarCandidato.add(lblDatosSolicitud);
 
 		JSeparator separator_1 = new JSeparator();
@@ -500,14 +562,14 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarDisphorario.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarDisphorario.setForeground(Color.DARK_GRAY);
 		lblMostrarDisphorario.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarDisphorario.setBounds(657, 75, 260, 41);
+		lblMostrarDisphorario.setBounds(657, 75, 309, 41);
 		pnlVisualizarCandidato.add(lblMostrarDisphorario);
 
 		lblMostrarMovilidad = new JLabel("Movilidad");
 		lblMostrarMovilidad.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarMovilidad.setForeground(Color.DARK_GRAY);
 		lblMostrarMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarMovilidad.setBounds(658, 128, 196, 41);
+		lblMostrarMovilidad.setBounds(658, 128, 309, 41);
 		pnlVisualizarCandidato.add(lblMostrarMovilidad);
 
 		JLabel lblMovilidad = new JLabel("Movilidad:");
@@ -526,7 +588,7 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarLicencia.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarLicencia.setForeground(Color.DARK_GRAY);
 		lblMostrarLicencia.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarLicencia.setBounds(201, 189, 123, 41);
+		lblMostrarLicencia.setBounds(196, 189, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarLicencia);
 
 		JLabel lblTipoDeTrabajo = new JLabel("Tipo de trabajo:");
@@ -538,47 +600,47 @@ public class VisualizarMatchOferta extends JDialog {
 		JLabel lblModalidad = new JLabel("Modalidad:");
 		lblModalidad.setHorizontalAlignment(SwingConstants.LEFT);
 		lblModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblModalidad.setBounds(477, 245, 148, 41);
+		lblModalidad.setBounds(477, 229, 148, 41);
 		pnlVisualizarCandidato.add(lblModalidad);
 
 		JLabel lblSalarioDeseado = new JLabel("Salario deseado:");
 		lblSalarioDeseado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblSalarioDeseado.setBounds(477, 306, 148, 41);
+		lblSalarioDeseado.setBounds(477, 281, 148, 41);
 		pnlVisualizarCandidato.add(lblSalarioDeseado);
 
 		JLabel lblFechaSolicitud = new JLabel("Fecha solicitud:");
 		lblFechaSolicitud.setHorizontalAlignment(SwingConstants.LEFT);
 		lblFechaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblFechaSolicitud.setBounds(477, 377, 148, 41);
+		lblFechaSolicitud.setBounds(477, 333, 148, 41);
 		pnlVisualizarCandidato.add(lblFechaSolicitud);
 
 		lblMostrarTipoTrabajo = new JLabel("tipoTrabajo");
 		lblMostrarTipoTrabajo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarTipoTrabajo.setForeground(Color.DARK_GRAY);
 		lblMostrarTipoTrabajo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarTipoTrabajo.setBounds(657, 180, 260, 41);
+		lblMostrarTipoTrabajo.setBounds(657, 180, 309, 41);
 		pnlVisualizarCandidato.add(lblMostrarTipoTrabajo);
 
 		lblMostrarModalidad = new JLabel("Modalidad");
 		lblMostrarModalidad.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarModalidad.setForeground(Color.DARK_GRAY);
 		lblMostrarModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarModalidad.setBounds(657, 245, 196, 41);
+		lblMostrarModalidad.setBounds(657, 229, 309, 41);
 		pnlVisualizarCandidato.add(lblMostrarModalidad);
 
 		lblMostrarSalarioDeseado = new JLabel("SalarioDeseado");
 		lblMostrarSalarioDeseado.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarSalarioDeseado.setForeground(Color.DARK_GRAY);
 		lblMostrarSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarSalarioDeseado.setBounds(657, 306, 123, 41);
+		lblMostrarSalarioDeseado.setBounds(657, 281, 309, 41);
 		pnlVisualizarCandidato.add(lblMostrarSalarioDeseado);
 
 		lblMostrarFechaSolicitud = new JLabel("FechaSolicitud");
 		lblMostrarFechaSolicitud.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarFechaSolicitud.setForeground(Color.DARK_GRAY);
 		lblMostrarFechaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarFechaSolicitud.setBounds(657, 377, 123, 41);
+		lblMostrarFechaSolicitud.setBounds(657, 333, 309, 41);
 		pnlVisualizarCandidato.add(lblMostrarFechaSolicitud);
 
 		JLabel lblDireccin = new JLabel("Direcci\u00F3n:");
@@ -591,39 +653,8 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarDireccion.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMostrarDireccion.setForeground(Color.DARK_GRAY);
 		lblMostrarDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblMostrarDireccion.setBounds(196, 418, 252, 41);
+		lblMostrarDireccion.setBounds(196, 418, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarDireccion);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setBackground(Color.WHITE);
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-			btnVisualizarCandidato = new JButton("Visualizar candidato");
-			btnVisualizarCandidato.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					cargarDatosCandSol(selected);
-					jtpVisualizar.setSelectedIndex(1);
-				}
-			});
-			btnVisualizarCandidato.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-			btnVisualizarCandidato.setBackground(Color.WHITE);
-			btnVisualizarCandidato.setActionCommand("OK");
-			buttonPane.add(btnVisualizarCandidato);
-			{
-				JButton btnCerrar = new JButton("Cerrar");
-				btnCerrar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
-				btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-				btnCerrar.setBackground(Color.WHITE);
-				btnCerrar.setActionCommand("Cancel");
-				buttonPane.add(btnCerrar);
-			}
-		}
 
 	}
 
@@ -633,19 +664,18 @@ public class VisualizarMatchOferta extends JDialog {
 		fila = new Object[tableModel.getColumnCount()];
 		for (MatchOferta aux : listaMatcheo) {
 			if (aux.getOfertaMatcheo().equals(ofertaActual)) {
-				fila[0] = aux.getCodigo();
-				fila[1] = aux.getSolicitudMatcheo().getSolicitante().getNombre() + " "
-						+ aux.getSolicitudMatcheo().getSolicitante().getApellidos();
-				fila[2] = aux.getSolicitudMatcheo().getSolicitante().getProvincia();
-				fila[3] = aux.getSolicitudMatcheo().getCodigo();
-				Date fechaMatch = aux.getFechaMatcheo();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				String formattedDate = dateFormat.format(fechaMatch);
-				fila[4] = formattedDate;
-				if (!aux.isAceptacionCandidato()) {
-					fila[5] = "Pendiente aprob. candidato";
-				} else {
-					fila[5] = "Aprobada p. candidato";
+				if (!aux.getSolicitudMatcheo().getSolicitante().isEstadoEmpleado()) {
+
+					fila[0] = aux.getCodigo();
+					fila[1] = aux.getSolicitudMatcheo().getSolicitante().getNombre() + " "
+							+ aux.getSolicitudMatcheo().getSolicitante().getApellidos();
+					fila[2] = aux.getSolicitudMatcheo().getSolicitante().getProvincia();
+					fila[3] = aux.getSolicitudMatcheo().getCodigo();
+					Date fechaMatch = aux.getFechaMatcheo();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+					String formattedDate = dateFormat.format(fechaMatch);
+					fila[4] = formattedDate;
+
 				}
 
 				tableModel.addRow(fila);
@@ -658,7 +688,7 @@ public class VisualizarMatchOferta extends JDialog {
 		Persona aux = match.getSolicitudMatcheo().getSolicitante();
 		Solicitud auxSoli = match.getSolicitudMatcheo();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		//datos de candidato
+		// datos de candidato
 		if (aux != null) {
 			lblMostrarNombreCompleto.setText(aux.getNombre() + " " + aux.getApellidos());
 			lblMostrarCedula.setText(aux.getCedula());
@@ -687,12 +717,6 @@ public class VisualizarMatchOferta extends JDialog {
 				lblMostrarEstado.setText("Empleado");
 			}
 
-			if (match.isAceptacionCandidato()) {
-				lblMostrarDisponibilidad.setText("Dispuesto/a a trabajar");
-			} else {
-				lblMostrarDisponibilidad.setText("N/D");
-			}
-
 			if (aux instanceof Universitario) {
 				jtpNivelEducativo.setSelectedIndex(0);
 				lblMostrarCarrera.setText(((Universitario) aux).getCarrera());
@@ -712,7 +736,7 @@ public class VisualizarMatchOferta extends JDialog {
 				lblLimpieza.setEnabled(((Obrero) aux).isLimpieza());
 			}
 		}
-		//datos de solicitud
+		// datos de solicitud
 		if (auxSoli != null) {
 			lblMostrarDisphorario.setText(auxSoli.getDispHorarios());
 			if (auxSoli.isDispMovilidad()) {
