@@ -53,7 +53,7 @@ public class EditarInfoEmpresa extends JDialog {
 			EditarInfoEmpresa dialog = new EditarInfoEmpresa(0);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
- 
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,6 +86,7 @@ public class EditarInfoEmpresa extends JDialog {
 				buttonPane.setLayout(null);
 				{
 					JButton btnModificar = new JButton("Modificar");
+					btnModificar.setIcon(new ImageIcon(EditarInfoEmpresa.class.getResource("/img/diskette.png")));
 					btnModificar.setBackground(Color.WHITE);
 					btnModificar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 					btnModificar.addActionListener(new ActionListener() {
@@ -100,13 +101,13 @@ public class EditarInfoEmpresa extends JDialog {
 										aux.setTelefono(txtTelefono.getText());
 										aux.setCorreoElectronico(txtCorreo.getText());
 										aux.setProvincia(cbxProvincia.getSelectedItem().toString());
-										aux.setMunicipio(txtDireccion.getText());
+										aux.setMunicipio(txtMunicipio.getText());
 										aux.setDireccion(txtDireccion.getText());
 										Bolsa.getInstancia().modificarUsuario(aux);
 										JOptionPane.showMessageDialog(null,
 												"¡Información general modificada con éxito!", "Información",
 												JOptionPane.INFORMATION_MESSAGE);
-										dispose();// cerrar ventana
+										dispose();
 									} else {
 										JOptionPane.showMessageDialog(null, "¡Complete correctamente los campos!",
 												"Alerta", JOptionPane.WARNING_MESSAGE);
@@ -141,6 +142,7 @@ public class EditarInfoEmpresa extends JDialog {
 				}
 				{
 					JButton btnCancelar = new JButton("Cancelar");
+					btnCancelar.setIcon(new ImageIcon(EditarInfoEmpresa.class.getResource("/img/cancelar16px.png")));
 					btnCancelar.setBackground(Color.WHITE);
 					btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 					btnCancelar.addActionListener(new ActionListener() {
@@ -180,7 +182,7 @@ public class EditarInfoEmpresa extends JDialog {
 			JLabel lblDatos = new JLabel("Editar datos generales");
 			lblDatos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 			lblDatos.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblDatos.setBounds(285, 12, 229, 50);
+			lblDatos.setBounds(272, 12, 229, 50);
 			panelDatosGenerales.add(lblDatos);
 
 			JLabel lblNombre = new JLabel("Nombre:");
@@ -264,7 +266,7 @@ public class EditarInfoEmpresa extends JDialog {
 
 			JSeparator sptSubrayado = new JSeparator();
 			sptSubrayado.setForeground(Color.BLACK);
-			sptSubrayado.setBounds(12, 67, 514, 18);
+			sptSubrayado.setBounds(22, 67, 479, 18);
 			panelDatosGenerales.add(sptSubrayado);
 
 			JPanel pnlDatosEmpresa = new JPanel();
@@ -278,18 +280,18 @@ public class EditarInfoEmpresa extends JDialog {
 			iconLaborea2.setBackground(Color.WHITE);
 			iconLaborea2.setEnabled(true);
 			iconLaborea2.setIcon(new ImageIcon(EditarInfoEmpresa.class.getResource("/img/Laborea.png")));
-			iconLaborea2.setBounds(22, 15, 150, 50);
+			iconLaborea2.setBounds(22, 15, 144, 50);
 			pnlDatosEmpresa.add(iconLaborea2);
 
 			JLabel lblDatosEmp = new JLabel("Editar datos empresariales");
 			lblDatosEmp.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 			lblDatosEmp.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblDatosEmp.setBounds(288, 13, 226, 50);
+			lblDatosEmp.setBounds(278, 15, 226, 50);
 			pnlDatosEmpresa.add(lblDatosEmp);
 
 			JSeparator sptSubrayado2 = new JSeparator();
 			sptSubrayado2.setForeground(Color.BLACK);
-			sptSubrayado2.setBounds(12, 67, 514, 11);
+			sptSubrayado2.setBounds(22, 67, 482, 11);
 			pnlDatosEmpresa.add(sptSubrayado2);
 
 			JLabel lblRnc = new JLabel("RNC:");

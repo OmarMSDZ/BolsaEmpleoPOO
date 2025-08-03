@@ -20,13 +20,13 @@ public class Persona extends Usuario implements Serializable {
 
 	public Persona(String codigo, String nombre, String passwd, String telefono, String correoElectronico,
 			String provincia, String municipio, String direccion, boolean estado, String apellidos, String sexo,
-			Date fechaNacimiento, String cedula, boolean licenciaConducir,boolean estadoEmpleado) {
+			Date fechaNacimiento, String cedula, boolean licenciaConducir, boolean estadoEmpleado) {
 		super(codigo, nombre, passwd, telefono, correoElectronico, provincia, municipio, direccion, estado);
 		this.apellidos = apellidos;
 		this.sexo = sexo;
 		this.fechaNacimiento = fechaNacimiento;
 		this.cedula = cedula;
-		this.licenciaConducir=licenciaConducir;
+		this.licenciaConducir = licenciaConducir;
 		this.estadoEmpleado = estadoEmpleado;
 		misSolicitudes = new ArrayList<Solicitud>();
 	}
@@ -68,9 +68,9 @@ public class Persona extends Usuario implements Serializable {
 	}
 
 	public void setLicenciaConducir(boolean licenciaConducir) {
-		this.licenciaConducir= licenciaConducir;
+		this.licenciaConducir = licenciaConducir;
 	}
-	
+
 	public boolean isEstadoEmpleado() {
 		return estadoEmpleado;
 	}
@@ -95,6 +95,12 @@ public class Persona extends Usuario implements Serializable {
 
 	public void removerSolicitud(Solicitud soli) {
 		misSolicitudes.remove(soli);
+	}
+
+	public void pausarSolicitudes() {
+		for (Solicitud actual : misSolicitudes) {
+			actual.setEstadoSolicitud("PAUSADA");
+		}
 	}
 
 }

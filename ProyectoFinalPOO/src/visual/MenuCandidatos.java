@@ -380,29 +380,34 @@ public class MenuCandidatos extends JDialog {
 		lblNewLabel_4.setBounds(10, 11, 260, 51);
 		pnlSolicitudes.add(lblNewLabel_4);
 
-		JLabel lblHorarioDeseado = new JLabel("Horario");
-		lblHorarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblHorarioDeseado.setBounds(782, 338, 260, 51);
+		JLabel lblHorarioDeseado = new JLabel("Horario:");
+		lblHorarioDeseado.setHorizontalAlignment(SwingConstants.LEFT);
+		lblHorarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblHorarioDeseado.setBounds(782, 384, 260, 51);
 		pnlSolicitudes.add(lblHorarioDeseado);
 
-		JLabel lblTipoDeEmpleo = new JLabel("Tipo de empleo");
-		lblTipoDeEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 23));
+		JLabel lblTipoDeEmpleo = new JLabel("Tipo de empleo:");
+		lblTipoDeEmpleo.setHorizontalAlignment(SwingConstants.LEFT);
+		lblTipoDeEmpleo.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		lblTipoDeEmpleo.setBounds(782, 164, 260, 51);
 		pnlSolicitudes.add(lblTipoDeEmpleo);
 
-		JLabel lblModalidadDeseada = new JLabel("Modalidad");
-		lblModalidadDeseada.setFont(new Font("Segoe UI", Font.PLAIN, 23));
+		JLabel lblModalidadDeseada = new JLabel("Modalidad:");
+		lblModalidadDeseada.setHorizontalAlignment(SwingConstants.LEFT);
+		lblModalidadDeseada.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 		lblModalidadDeseada.setBounds(1242, 168, 260, 51);
 		pnlSolicitudes.add(lblModalidadDeseada);
 
-		JLabel lblSalarioDeseado = new JLabel("Salario deseado");
-		lblSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblSalarioDeseado.setBounds(1242, 255, 260, 51);
+		JLabel lblSalarioDeseado = new JLabel("Salario deseado:");
+		lblSalarioDeseado.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblSalarioDeseado.setBounds(1242, 283, 260, 51);
 		pnlSolicitudes.add(lblSalarioDeseado);
 
-		JLabel lblDisponibilidadDeMovilidad = new JLabel("Disponibilidad de movilidad");
-		lblDisponibilidadDeMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblDisponibilidadDeMovilidad.setBounds(1242, 338, 313, 51);
+		JLabel lblDisponibilidadDeMovilidad = new JLabel("Disponibilidad de movilidad:");
+		lblDisponibilidadDeMovilidad.setHorizontalAlignment(SwingConstants.LEFT);
+		lblDisponibilidadDeMovilidad.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblDisponibilidadDeMovilidad.setBounds(1242, 384, 313, 51);
 		pnlSolicitudes.add(lblDisponibilidadDeMovilidad);
 
 		JSeparator separator_2 = new JSeparator();
@@ -420,7 +425,7 @@ public class MenuCandidatos extends JDialog {
 
 		cbxModalidad = new JComboBox();
 		cbxModalidad
-				.setModel(new DefaultComboBoxModel(new String[] { "<<Seleccione>>", "Presencial", "Remoto", "Mixto" }));
+				.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Presencial", "Remoto", "Mixto"}));
 		cbxModalidad.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxModalidad.setBackground(Color.WHITE);
 		cbxModalidad.setBounds(1242, 214, 313, 39);
@@ -431,14 +436,14 @@ public class MenuCandidatos extends JDialog {
 				"Nocturno", "Matutino y Vespertino", "Vespertino y Nocturno", "Todos" }));
 		cbxHorarioSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxHorarioSolicitud.setBackground(Color.WHITE);
-		cbxHorarioSolicitud.setBounds(782, 387, 395, 39);
+		cbxHorarioSolicitud.setBounds(782, 433, 395, 39);
 		pnlSolicitudes.add(cbxHorarioSolicitud);
 
 		spnSalarioDeseado = new JSpinner();
 		spnSalarioDeseado.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		spnSalarioDeseado.setBackground(Color.WHITE);
 		spnSalarioDeseado.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		spnSalarioDeseado.setBounds(1242, 302, 313, 39);
+		spnSalarioDeseado.setBounds(1242, 332, 313, 39);
 		pnlSolicitudes.add(spnSalarioDeseado);
 
 		rdbtnMovilidadSi = new JRadioButton("Puedo movilizarme/viajar");
@@ -450,7 +455,7 @@ public class MenuCandidatos extends JDialog {
 		});
 		rdbtnMovilidadSi.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnMovilidadSi.setBackground(Color.WHITE);
-		rdbtnMovilidadSi.setBounds(1242, 387, 260, 23);
+		rdbtnMovilidadSi.setBounds(1242, 433, 260, 39);
 		pnlSolicitudes.add(rdbtnMovilidadSi);
 
 		rdbtnMovilidadNo = new JRadioButton("No puedo movilizarme/viajar");
@@ -462,7 +467,7 @@ public class MenuCandidatos extends JDialog {
 		});
 		rdbtnMovilidadNo.setFont(new Font("Segoe UI", Font.PLAIN, 17));
 		rdbtnMovilidadNo.setBackground(Color.WHITE);
-		rdbtnMovilidadNo.setBounds(1242, 421, 260, 23);
+		rdbtnMovilidadNo.setBounds(1242, 476, 260, 39);
 		pnlSolicitudes.add(rdbtnMovilidadNo);
 
 		JLabel lblDatosSolicitante = new JLabel("Datos Solicitante");
@@ -518,7 +523,7 @@ public class MenuCandidatos extends JDialog {
 
 		JSeparator separator_4 = new JSeparator();
 		separator_4.setForeground(Color.BLACK);
-		separator_4.setBounds(658, 145, 658, 8);
+		separator_4.setBounds(658, 145, 961, 10);
 		pnlSolicitudes.add(separator_4);
 
 		lblInfNombreCompleto = new JLabel("Nombre Completo");
@@ -622,9 +627,10 @@ public class MenuCandidatos extends JDialog {
 		separator_1.setBounds(692, 145, 23, 764);
 		pnlSolicitudes.add(separator_1);
 
-		JLabel lblArea = new JLabel("\u00C1rea");
-		lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 23));
-		lblArea.setBounds(782, 255, 260, 51);
+		JLabel lblArea = new JLabel("Área:");
+		lblArea.setHorizontalAlignment(SwingConstants.LEFT);
+		lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+		lblArea.setBounds(782, 283, 260, 51);
 		pnlSolicitudes.add(lblArea);
 
 		cbxAreaSolicitud = new JComboBox();
@@ -637,7 +643,7 @@ public class MenuCandidatos extends JDialog {
 				"Compras y Abastecimiento", "Calidad / Seguridad Industrial" }));
 		cbxAreaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		cbxAreaSolicitud.setBackground(Color.WHITE);
-		cbxAreaSolicitud.setBounds(782, 304, 395, 39);
+		cbxAreaSolicitud.setBounds(782, 332, 395, 39);
 		pnlSolicitudes.add(cbxAreaSolicitud);
 
 		JPanel pnlMisSolicitudes = new JPanel();

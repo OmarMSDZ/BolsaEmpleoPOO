@@ -80,10 +80,10 @@ import java.awt.event.ActionEvent;
 
 public class MenuAdmins extends JDialog {
 
-	private JPanel contentPane;
+	private JPanel pnlContenido;
 	private Dimension dim;
-	private JLabel label;
-	private JLabel label_1;
+	private JLabel iconAdministrador;
+	private JLabel iconLaborea;
 	private JPanel pnlOpciones;
 
 	private JTabbedPane jtpMenus;
@@ -93,6 +93,16 @@ public class MenuAdmins extends JDialog {
 	static DataInputStream EntradaSocket;
 	static DataOutputStream SalidaSocket;
 	private Servidor servidor;
+	private JLabel lblMostrarMatcheosDisp;
+	private JLabel lblMostrarContratos;
+	private JLabel lblMostrarPersonas;
+	private JLabel lblMostrarOfertas;
+	private JLabel lblMostrarEmpresas;
+	private JLabel lblMostrarUniversitario;
+	private JLabel lblMostrarObrero;
+	private JLabel lblMostrarSolicitudes;
+	private JLabel lblMostrarTecnicos;
+	private JLabel lblMostrarUsuarios;
 
 	/**
 	 * Launch the application.
@@ -111,6 +121,7 @@ public class MenuAdmins extends JDialog {
 	public MenuAdmins(Window parent) {
 
 		super(parent, "", ModalityType.APPLICATION_MODAL);
+		setTitle("Menú de administradores");
 		setResizable(false);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -145,56 +156,57 @@ public class MenuAdmins extends JDialog {
 		setSize(1920, 1075);
 		setLocationRelativeTo(null);
 
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		pnlContenido = new JPanel();
+		pnlContenido.setBackground(Color.WHITE);
+		pnlContenido.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(pnlContenido);
+		pnlContenido.setLayout(null);
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(Color.WHITE);
-		panel_3.setBounds(250, 120, 19, 915);
-		contentPane.add(panel_3);
+		JPanel pnlOcultoLateralIzquierdo = new JPanel();
+		pnlOcultoLateralIzquierdo.setBackground(Color.WHITE);
+		pnlOcultoLateralIzquierdo.setBounds(250, 120, 19, 915);
+		pnlContenido.add(pnlOcultoLateralIzquierdo);
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(257, 1031, 1637, 10);
-		contentPane.add(panel_2);
+		JPanel pnlOcultoInferior = new JPanel();
+		pnlOcultoInferior.setBackground(Color.WHITE);
+		pnlOcultoInferior.setBounds(257, 1031, 1637, 10);
+		pnlContenido.add(pnlOcultoInferior);
 
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(1885, 64, 19, 971);
-		contentPane.add(panel);
+		JPanel pnlOcultoLateralDerecho = new JPanel();
+		pnlOcultoLateralDerecho.setBackground(Color.WHITE);
+		pnlOcultoLateralDerecho.setBounds(1885, 64, 19, 971);
+		pnlContenido.add(pnlOcultoLateralDerecho);
 
 		lblMostrarNombreDePerfil = new JLabel("Administrador");
 		lblMostrarNombreDePerfil.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblMostrarNombreDePerfil.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarNombreDePerfil.setBounds(1443, 13, 340, 74);
-		contentPane.add(lblMostrarNombreDePerfil);
+		pnlContenido.add(lblMostrarNombreDePerfil);
 
-		label = new JLabel("");
-		label.addMouseListener(new MouseAdapter() {
+		iconAdministrador = new JLabel("");
+		iconAdministrador.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
 			}
 		});
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/admin-panel.png")));
-		label.setBounds(1792, 13, 102, 74);
-		contentPane.add(label);
+		iconAdministrador.setHorizontalAlignment(SwingConstants.CENTER);
+		iconAdministrador.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/admin-panel.png")));
+		iconAdministrador.setBounds(1792, 13, 102, 74);
+		pnlContenido.add(iconAdministrador);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(250, 64, 1644, 59);
-		contentPane.add(panel_1);
+		JPanel pnlInformacionSuperior = new JPanel();
+		pnlInformacionSuperior.setBackground(Color.WHITE);
+		pnlInformacionSuperior.setBounds(250, 64, 1644, 59);
+		pnlContenido.add(pnlInformacionSuperior);
+		pnlInformacionSuperior.setLayout(null);
 
-		label_1 = new JLabel("");
-		label_1.setHorizontalAlignment(SwingConstants.CENTER);
-		label_1.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/Laborea.png")));
-		label_1.setFont(new Font("Segoe UI", Font.PLAIN, 26));
-		label_1.setBounds(12, 13, 199, 59);
-		contentPane.add(label_1);
+		iconLaborea = new JLabel("");
+		iconLaborea.setHorizontalAlignment(SwingConstants.CENTER);
+		iconLaborea.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/Laborea.png")));
+		iconLaborea.setFont(new Font("Segoe UI", Font.PLAIN, 26));
+		iconLaborea.setBounds(12, 13, 199, 59);
+		pnlContenido.add(iconLaborea);
 
 		// hacer que el panel tenga bordes redondeados, usando paintcomponent
 		pnlOpciones = new JPanel() {
@@ -207,14 +219,14 @@ public class MenuAdmins extends JDialog {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rect�ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
 		pnlOpciones.setOpaque(false);
 		pnlOpciones.setBackground(new Color(45, 45, 60));
 		pnlOpciones.setBounds(-31, 120, 278, 948);
-		contentPane.add(pnlOpciones);
+		pnlContenido.add(pnlOpciones);
 		pnlOpciones.setLayout(null);
 
 		JPanel pnlBtnCrearSolicitudes = new JPanel() {
@@ -227,7 +239,7 @@ public class MenuAdmins extends JDialog {
 				// Color de fondo
 				g2.setColor(getBackground());
 
-				// Dibuja un rect�ngulo redondeado (x, y, width, height, arcWidth, arcHeight)
+				// Dibuja un rectángulo redondeado (x, y, width, height, arcWidth, arcHeight)
 				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			}
 		};
@@ -387,22 +399,239 @@ public class MenuAdmins extends JDialog {
 		jtpMenus = new JTabbedPane(JTabbedPane.TOP);
 		jtpMenus.setEnabled(false);
 		jtpMenus.setBounds(260, 93, 1634, 948);
-		contentPane.add(jtpMenus);
+		pnlContenido.add(jtpMenus);
 
 		JPanel pnlInicio = new JPanel();
 		pnlInicio.setBackground(Color.WHITE);
 		jtpMenus.addTab("New tab", null, pnlInicio, null);
 		pnlInicio.setLayout(null);
 
-		JLabel lblNewLabel_4 = new JLabel("Resumen");
-		lblNewLabel_4.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-		lblNewLabel_4.setBounds(10, 11, 260, 51);
-		pnlInicio.add(lblNewLabel_4);
+		JLabel lblResumenInfo = new JLabel("Resumen");
+		lblResumenInfo.setHorizontalAlignment(SwingConstants.LEFT);
+		lblResumenInfo.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblResumenInfo.setBounds(10, 2, 260, 51);
+		pnlInicio.add(lblResumenInfo);
 
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setForeground(Color.BLACK);
-		separator_2.setBounds(10, 54, 1609, 8);
-		pnlInicio.add(separator_2);
+		JButton btnRecargarDatos = new JButton("Recargar");
+		btnRecargarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarInformacion();
+			}
+		});
+		btnRecargarDatos.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnRecargarDatos.setBackground(Color.WHITE);
+		btnRecargarDatos.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/refresh.png")));
+		btnRecargarDatos.setBounds(1494, 8, 125, 45);
+		pnlInicio.add(btnRecargarDatos);
+
+		JSeparator sptSubrayadoResumen = new JSeparator();
+		sptSubrayadoResumen.setForeground(Color.BLACK);
+		sptSubrayadoResumen.setBounds(10, 54, 1609, 8);
+		pnlInicio.add(sptSubrayadoResumen);
+
+		JPanel pnlMostrarCantidades = new JPanel();
+		pnlMostrarCantidades.setBackground(Color.WHITE);
+		pnlMostrarCantidades.setBounds(10, 66, 1609, 839);
+		pnlInicio.add(pnlMostrarCantidades);
+		pnlMostrarCantidades.setLayout(null);
+
+		JPanel pnlUsuariosTotales = new JPanel();
+		pnlUsuariosTotales.setLayout(null);
+		pnlUsuariosTotales.setBackground(new Color(186, 218, 191));
+		pnlUsuariosTotales.setBounds(14, 14, 646, 398);
+		pnlMostrarCantidades.add(pnlUsuariosTotales);
+
+		JLabel lblUsuarios = new JLabel("Usuarios");
+		lblUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUsuarios.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblUsuarios.setBounds(0, 112, 646, 30);
+		pnlUsuariosTotales.add(lblUsuarios);
+		
+		lblMostrarUsuarios = new JLabel("0");
+		lblMostrarUsuarios.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarUsuarios.setBounds(0, 254, 646, 30);
+		pnlUsuariosTotales.add(lblMostrarUsuarios);
+
+		JPanel pnlMatcheos = new JPanel();
+		pnlMatcheos.setLayout(null);
+		pnlMatcheos.setBackground(Color.WHITE);
+		pnlMatcheos.setBounds(14, 426, 646, 398);
+		pnlMostrarCantidades.add(pnlMatcheos);
+
+		JPanel pnlCantMatcheos = new JPanel();
+		pnlCantMatcheos.setLayout(null);
+		pnlCantMatcheos.setBackground(new Color(227, 241, 226));
+		pnlCantMatcheos.setBounds(0, 0, 646, 181);
+		pnlMatcheos.add(pnlCantMatcheos);
+
+		JLabel lblMatcheosDisp = new JLabel("Matcheos disponibles");
+		lblMatcheosDisp.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMatcheosDisp.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblMatcheosDisp.setBounds(0, 40, 646, 30);
+		pnlCantMatcheos.add(lblMatcheosDisp);
+
+		lblMostrarMatcheosDisp = new JLabel("0");
+		lblMostrarMatcheosDisp.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarMatcheosDisp.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarMatcheosDisp.setBounds(0, 110, 646, 30);
+		pnlCantMatcheos.add(lblMostrarMatcheosDisp);
+
+		JPanel pnlContratos = new JPanel();
+		pnlContratos.setLayout(null);
+		pnlContratos.setBackground(new Color(216, 229, 198));
+		pnlContratos.setBounds(0, 202, 646, 196);
+		pnlMatcheos.add(pnlContratos);
+
+		JLabel lblContratos = new JLabel("Contratos exitosos");
+		lblContratos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblContratos.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblContratos.setBounds(0, 45, 646, 30);
+		pnlContratos.add(lblContratos);
+
+		lblMostrarContratos = new JLabel("0");
+		lblMostrarContratos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarContratos.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarContratos.setBounds(0, 120, 646, 30);
+		pnlContratos.add(lblMostrarContratos);
+
+		JPanel pnlPersonas = new JPanel();
+		pnlPersonas.setLayout(null);
+		pnlPersonas.setBackground(new Color(209, 232, 238));
+		pnlPersonas.setBounds(676, 14, 283, 398);
+		pnlMostrarCantidades.add(pnlPersonas);
+
+		JLabel lblPersonas = new JLabel("Personas");
+		lblPersonas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPersonas.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblPersonas.setBounds(0, 112, 283, 30);
+		pnlPersonas.add(lblPersonas);
+
+		lblMostrarPersonas = new JLabel("0");
+		lblMostrarPersonas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarPersonas.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarPersonas.setBounds(0, 254, 283, 30);
+		pnlPersonas.add(lblMostrarPersonas);
+
+		JPanel pnlEmpresas = new JPanel();
+		pnlEmpresas.setBounds(672, 426, 283, 398);
+		pnlMostrarCantidades.add(pnlEmpresas);
+		pnlEmpresas.setLayout(null);
+		pnlEmpresas.setBackground(new Color(209, 232, 238));
+
+		JLabel lblEmpresas = new JLabel("Empresas");
+		lblEmpresas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmpresas.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblEmpresas.setBounds(0, 112, 283, 30);
+		pnlEmpresas.add(lblEmpresas);
+
+		lblMostrarEmpresas = new JLabel("0");
+		lblMostrarEmpresas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarEmpresas.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarEmpresas.setBounds(0, 254, 283, 30);
+		pnlEmpresas.add(lblMostrarEmpresas);
+
+		JPanel pnlCandidatos = new JPanel();
+		pnlCandidatos.setLayout(null);
+		pnlCandidatos.setBackground(Color.WHITE);
+		pnlCandidatos.setBounds(971, 14, 624, 398);
+		pnlMostrarCantidades.add(pnlCandidatos);
+
+		JPanel pnlUniversitario = new JPanel();
+		pnlUniversitario.setLayout(null);
+		pnlUniversitario.setBackground(new Color(237, 215, 214));
+		pnlUniversitario.setBounds(10, 0, 297, 190);
+		pnlCandidatos.add(pnlUniversitario);
+
+		JLabel lblUniversitario = new JLabel("Universitario");
+		lblUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUniversitario.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblUniversitario.setBounds(0, 37, 297, 30);
+		pnlUniversitario.add(lblUniversitario);
+
+		lblMostrarUniversitario = new JLabel("0");
+		lblMostrarUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarUniversitario.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarUniversitario.setBounds(0, 104, 297, 30);
+		pnlUniversitario.add(lblMostrarUniversitario);
+
+		JPanel pnlTecnicos = new JPanel();
+		pnlTecnicos.setLayout(null);
+		pnlTecnicos.setBackground(new Color(237, 215, 214));
+		pnlTecnicos.setBounds(317, 0, 297, 190);
+		pnlCandidatos.add(pnlTecnicos);
+
+		JLabel lblTecnicos = new JLabel("Técnicos");
+		lblTecnicos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTecnicos.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblTecnicos.setBounds(0, 37, 297, 30);
+		pnlTecnicos.add(lblTecnicos);
+
+		lblMostrarTecnicos = new JLabel("0");
+		lblMostrarTecnicos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarTecnicos.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarTecnicos.setBounds(0, 104, 297, 30);
+		pnlTecnicos.add(lblMostrarTecnicos);
+
+		JPanel pnlObrero = new JPanel();
+		pnlObrero.setLayout(null);
+		pnlObrero.setBackground(new Color(237, 215, 214));
+		pnlObrero.setBounds(10, 208, 297, 190);
+		pnlCandidatos.add(pnlObrero);
+
+		JLabel lblObrero = new JLabel("Obreros");
+		lblObrero.setHorizontalAlignment(SwingConstants.CENTER);
+		lblObrero.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblObrero.setBounds(0, 37, 297, 30);
+		pnlObrero.add(lblObrero);
+
+		lblMostrarObrero = new JLabel("0");
+		lblMostrarObrero.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarObrero.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarObrero.setBounds(0, 104, 297, 30);
+		pnlObrero.add(lblMostrarObrero);
+
+		JPanel pnlPeticiones = new JPanel();
+		pnlPeticiones.setLayout(null);
+		pnlPeticiones.setBackground(Color.WHITE);
+		pnlPeticiones.setBounds(971, 426, 624, 398);
+		pnlMostrarCantidades.add(pnlPeticiones);
+
+		JPanel pnlOfertas = new JPanel();
+		pnlOfertas.setLayout(null);
+		pnlOfertas.setBackground(new Color(244, 235, 233));
+		pnlOfertas.setBounds(12, 0, 297, 398);
+		pnlPeticiones.add(pnlOfertas);
+
+		JLabel lblOfertas = new JLabel("Ofertas disponibles");
+		lblOfertas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOfertas.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblOfertas.setBounds(0, 112, 297, 30);
+		pnlOfertas.add(lblOfertas);
+
+		lblMostrarOfertas = new JLabel("0");
+		lblMostrarOfertas.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarOfertas.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarOfertas.setBounds(0, 254, 297, 30);
+		pnlOfertas.add(lblMostrarOfertas);
+
+		JPanel pnlSolicitudes = new JPanel();
+		pnlSolicitudes.setLayout(null);
+		pnlSolicitudes.setBackground(new Color(244, 235, 233));
+		pnlSolicitudes.setBounds(317, 0, 297, 398);
+		pnlPeticiones.add(pnlSolicitudes);
+
+		JLabel lblSolicitudes = new JLabel("Solicitudes activas");
+		lblSolicitudes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSolicitudes.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		lblSolicitudes.setBounds(0, 112, 297, 30);
+		pnlSolicitudes.add(lblSolicitudes);
+
+		lblMostrarSolicitudes = new JLabel("0");
+		lblMostrarSolicitudes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMostrarSolicitudes.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblMostrarSolicitudes.setBounds(0, 254, 297, 30);
+		pnlSolicitudes.add(lblMostrarSolicitudes);
 
 		JPanel pnlInformes = new JPanel();
 		pnlInformes.setBackground(Color.WHITE);
@@ -414,10 +643,10 @@ public class MenuAdmins extends JDialog {
 		lblInformes_1.setBounds(10, 11, 260, 51);
 		pnlInformes.add(lblInformes_1);
 
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.BLACK);
-		separator.setBounds(10, 54, 1609, 8);
-		pnlInformes.add(separator);
+		JSeparator sptSubrayadorInformes = new JSeparator();
+		sptSubrayadorInformes.setForeground(Color.BLACK);
+		sptSubrayadorInformes.setBounds(10, 54, 1609, 8);
+		pnlInformes.add(sptSubrayadorInformes);
 
 		JPanel pnlMatc = new JPanel();
 		pnlMatc.setBackground(Color.WHITE);
@@ -506,10 +735,11 @@ public class MenuAdmins extends JDialog {
 
 					}
 				} catch (UnknownHostException uhe) {
-					JOptionPane.showMessageDialog(null, "No se puede acceder al servidor.");
+					JOptionPane.showMessageDialog(null, "No se puede acceder al servidor.", "Información",
+							JOptionPane.INFORMATION_MESSAGE);
 				} catch (IOException ioe) {
 					JOptionPane.showMessageDialog(null, "Error de comunicación: " + ioe.getMessage());
-					ioe.printStackTrace(); // para ver detalles en consola
+					ioe.printStackTrace(); // Para ver detalles en consola
 				}
 			}
 
@@ -521,6 +751,21 @@ public class MenuAdmins extends JDialog {
 		btnRespaldo.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/database64.png")));
 		btnRespaldo.setBounds(575, 186, 476, 108);
 		pnlRespaldo.add(btnRespaldo);
+		
+		cargarInformacion(); // Para mostrar todo la información en la pantalla
+	}
 
+	private void cargarInformacion() {
+		ArrayList<Integer> cantidades = Bolsa.getInstancia().cantidadesCantidatos();
+		lblMostrarUsuarios.setText(String.valueOf(Bolsa.getInstancia().cantidadUsuarios()));
+		lblMostrarPersonas.setText(String.valueOf(cantidades.get(0)));
+		lblMostrarEmpresas.setText(String.valueOf(Bolsa.getInstancia().cantidadEmpresas()));
+		lblMostrarUniversitario.setText(String.valueOf(cantidades.get(1)));
+		lblMostrarTecnicos.setText(String.valueOf(cantidades.get(2)));
+		lblMostrarObrero.setText(String.valueOf(cantidades.get(3)));
+		lblMostrarMatcheosDisp.setText(String.valueOf(Bolsa.getInstancia().cantMatheosActivos()));
+		lblMostrarContratos.setText(String.valueOf(Bolsa.getInstancia().cantContratos()));
+		lblMostrarOfertas.setText(String.valueOf(Bolsa.getInstancia().cantOfertasDisp()));
+		lblMostrarSolicitudes.setText(String.valueOf(Bolsa.getInstancia().cantidadSolicPend()));
 	}
 }

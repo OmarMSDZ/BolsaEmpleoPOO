@@ -57,4 +57,27 @@ public class Empresa extends Usuario implements Serializable {
 		misOfertas.add(oferta);
 	}
 
+	public int buscarIndiceOfertaCodigo(Oferta updated) {
+		int index = -1;
+		int i = 0;
+		boolean encontrado = false;
+
+		while (!encontrado && i < misOfertas.size()) {
+			if (misOfertas.get(i).getCodigo().equalsIgnoreCase(updated.getCodigo())) {
+				encontrado = true;
+				index = i;
+			}
+			i++;
+		}
+		return index;
+	}
+
+	public void modificarOferta(Oferta updated) {
+		int index = buscarIndiceOfertaCodigo(updated);
+		misOfertas.set(index, updated);
+	}
+
+	void removerOferta(Oferta selected) {
+		misOfertas.remove(selected);
+	}
 }
