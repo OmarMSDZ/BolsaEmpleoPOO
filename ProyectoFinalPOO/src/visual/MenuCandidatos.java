@@ -355,8 +355,15 @@ public class MenuCandidatos extends JDialog {
 		lblSalir.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Bolsa.setUsuarioActivo(null); // quitar usuario activo de la clase
-				dispose(); // cerrar ventana
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea salir?", "Confirmación",
+						JOptionPane.WARNING_MESSAGE);
+				if (opcion == JOptionPane.OK_OPTION) {
+					Bolsa.setUsuarioActivo(null); // quitar usuario activo de la clase
+					dispose(); // cerrar ventana
+				} else {
+					JOptionPane.showMessageDialog(null, "Acción cancelada.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				}
 			}
 		});
 		lblSalir.setForeground(Color.WHITE);
@@ -836,12 +843,18 @@ public class MenuCandidatos extends JDialog {
 		btnCancelarSolicitud.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// cancelar solicitud
-				int option = JOptionPane.showConfirmDialog(null, "Desea cancelar esta solicitud?", "Cancelar",
+				int option = JOptionPane.showConfirmDialog(null, "¿Desea cancelar esta solicitud?", "Cancelar",
 						JOptionPane.WARNING_MESSAGE);
-				if (option == JOptionPane.OK_OPTION) {
+				if (option == JOptionPane.OK_OPTION
+						&& !solicitudSelected.getEstadoSolicitud().equalsIgnoreCase("APROBADA")) {
 					Bolsa.getInstancia().eliminarSolicitud(solicitudSelected);
 					cargarSolicitudes();
 					jtpDescripcionSolicitud.setSelectedIndex(0);
+					JOptionPane.showMessageDialog(null, "Solicitud eliminada con exitó.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				} else {
+					JOptionPane.showMessageDialog(null, "Esta solicitud no puede ser eliminada.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
 				}
 			}
 		});

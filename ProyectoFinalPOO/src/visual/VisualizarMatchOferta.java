@@ -50,7 +50,6 @@ public class VisualizarMatchOferta extends JDialog {
 	private static Oferta ofertaActual;
 	private JTabbedPane jtpVisualizar;
 	private JTable tblMatches;
-	private JButton btnVisualizarCandidato;
 	private JLabel lblMostrarNombreCompleto;
 	private JLabel lblMostrarCedula;
 	private JLabel lblMostrarSexo;
@@ -81,6 +80,8 @@ public class VisualizarMatchOferta extends JDialog {
 	private JLabel lblMostrarSalarioDeseado;
 	private JLabel lblMostrarFechaSolicitud;
 	private JLabel lblMostrarDireccion;
+	private JButton btnVisualizar;
+	private JButton btnCerrar;
 
 	/**
 	 * Launch the application.
@@ -113,14 +114,14 @@ public class VisualizarMatchOferta extends JDialog {
 		setBounds(100, 100, 1020, 855);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
-		contentPanel.setBounds(0, 0, 997, 761);
+		contentPanel.setBounds(0, 0, 1014, 756);
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 
 		jtpVisualizar = new JTabbedPane(JTabbedPane.TOP);
-		jtpVisualizar.setBounds(-11, -29, 1032, 802);
+		jtpVisualizar.setBounds(-11, -29, 1041, 795);
 		contentPanel.add(jtpVisualizar);
 
 		JPanel pnlVisualizarMatches = new JPanel();
@@ -142,10 +143,10 @@ public class VisualizarMatchOferta extends JDialog {
 				if (index >= 0) {
 					selected = Bolsa.getInstancia()
 							.buscarMatchOfertaByCodigo(tblMatches.getValueAt(index, 0).toString());
-					btnVisualizarCandidato.setEnabled(true);
+					btnVisualizar.setEnabled(true);
 					cargarDatosCandSol(selected);
 				} else {
-					btnVisualizarCandidato.setEnabled(false);
+					btnVisualizar.setEnabled(false);
 				}
 			}
 		});
@@ -346,14 +347,21 @@ public class VisualizarMatchOferta extends JDialog {
 		btnContratar.setBackground(Color.WHITE);
 		btnContratar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (selected != null && !selected.isAceptacionEmpresa()) {
-					Bolsa.getInstancia().contratarPersona(selected.getSolicitudMatcheo().getSolicitante());
-					Date fechaContratacion = new Date();
-					selected.setFechaContratacion(fechaContratacion);
-					selected.setAceptacionEmpresa(true);
-					selected.getOfertaMatcheo().disminuirVacantesDisp();
-					JOptionPane.showMessageDialog(null, "Contratación efectuada exitosamente.", "Información",
-							JOptionPane.INFORMATION_MESSAGE, null);
+				if (selected != null) {
+					if (!selected.getSolicitudMatcheo().getSolicitante().isEstadoEmpleado()) {
+						Bolsa.getInstancia().contratarPersona(selected.getSolicitudMatcheo().getSolicitante(),
+								selected.getSolicitudMatcheo());
+						Date fechaContratacion = new Date();
+						selected.setFechaContratacion(fechaContratacion);
+						selected.setAceptacionEmpresa(true);
+						selected.getOfertaMatcheo().disminuirVacantesDisp();
+						JOptionPane.showMessageDialog(null, "Contratación efectuada exitosamente.", "Información",
+								JOptionPane.INFORMATION_MESSAGE, null);
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"Lo sentimos, pero este candidato no se encuentra disponile.", "Información",
+								JOptionPane.INFORMATION_MESSAGE, null);
+					}
 				} else if (selected == null) {
 					JOptionPane.showMessageDialog(null, "Debe seleccionar un matcheo antes de ejecutar esta acción.",
 							"Información", JOptionPane.INFORMATION_MESSAGE, null);
@@ -367,7 +375,7 @@ public class VisualizarMatchOferta extends JDialog {
 		btnContratar.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnContratar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/add-user.png")));
 		btnContratar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		btnContratar.setBounds(773, 679, 219, 73);
+		btnContratar.setBounds(773, 667, 219, 73);
 		pnlVisualizarCandidato.add(btnContratar);
 
 		JLabel lblNivelEducativo = new JLabel("Nivel educativo:");
@@ -618,47 +626,51 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		lblMostrarDireccion.setBounds(196, 418, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarDireccion);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setBounds(0, 765, 1014, 55);
-			buttonPane.setBackground(Color.WHITE);
-			getContentPane().add(buttonPane);
 
-			btnVisualizarCandidato = new JButton("Visualizar candidato");
-			btnVisualizarCandidato.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/user2.png")));
-			btnVisualizarCandidato.setBounds(654, 12, 199, 31);
-			btnVisualizarCandidato.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (selected != null) {
-						cargarDatosCandSol(selected);
-						jtpVisualizar.setSelectedIndex(1);
-					} else {
-						JOptionPane.showMessageDialog(null, "Antes debe selecionar un candidato", "Información",
-								JOptionPane.INFORMATION_MESSAGE, null);
-					}
+		JPanel buttomPane = new JPanel();
+		buttomPane.setLayout(null);
+		buttomPane.setBackground(Color.WHITE);
+		buttomPane.setBounds(0, 757, 1014, 63);
+		getContentPane().add(buttomPane);
 
+		btnVisualizar = new JButton("Visualizar candidato");
+		btnVisualizar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/user2.png")));
+		btnVisualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (selected != null) {
+					cargarDatosCandSol(selected);
+					jtpVisualizar.setSelectedIndex(1);
+				} else {
+					JOptionPane.showMessageDialog(null, "Debe seleccionar un candidato antes.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
 				}
-			});
-			buttonPane.setLayout(null);
-			btnVisualizarCandidato.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-			btnVisualizarCandidato.setBackground(Color.WHITE);
-			btnVisualizarCandidato.setActionCommand("OK");
-			buttonPane.add(btnVisualizarCandidato);
-			{
-				JButton btnCerrar = new JButton("Cerrar");
-				btnCerrar.setBounds(865, 12, 111, 31);
-				btnCerrar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
-				btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-				btnCerrar.setBackground(Color.WHITE);
-				btnCerrar.setActionCommand("Cancel");
-				buttonPane.add(btnCerrar);
 			}
-		}
+		});
+		btnVisualizar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnVisualizar.setBackground(Color.WHITE);
+		btnVisualizar.setActionCommand("OK");
+		btnVisualizar.setBounds(622, 16, 231, 31);
+		buttomPane.add(btnVisualizar);
+
+		btnCerrar = new JButton("Cerrar");
+		btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar esta pestaña?",
+						"Confirmación", JOptionPane.YES_NO_OPTION);
+				if (opcion == 0) {
+					jtpVisualizar.setSelectedIndex(0);
+				} else {
+					JOptionPane.showMessageDialog(null, "Acción cancelada", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				}
+			}
+		});
+		btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnCerrar.setBackground(Color.WHITE);
+		btnCerrar.setActionCommand("Cancel");
+		btnCerrar.setBounds(865, 16, 124, 31);
+		buttomPane.add(btnCerrar);
 
 	}
 
@@ -722,13 +734,16 @@ public class VisualizarMatchOferta extends JDialog {
 			}
 
 			if (aux instanceof Universitario) {
+				lblMostrarNivelEducativo.setText("Universitario");
 				jtpNivelEducativo.setSelectedIndex(0);
 				lblMostrarCarrera.setText(((Universitario) aux).getCarrera());
 			} else if (aux instanceof TecnicoSuperior) {
+				lblMostrarNivelEducativo.setText("Técnico");
 				jtpNivelEducativo.setSelectedIndex(1);
 				lblMostrarTecnico.setText(((TecnicoSuperior) aux).getTecnico());
 				lblMostrarAniosExp.setText(String.valueOf(((TecnicoSuperior) aux).getAniosExperiencia()));
 			} else if (aux instanceof Obrero) {
+				lblMostrarNivelEducativo.setText("Obrero");
 				jtpNivelEducativo.setSelectedIndex(2);
 				lblVentas.setEnabled(((Obrero) aux).isVentas());
 				lblMecanica.setEnabled(((Obrero) aux).isMecanica());

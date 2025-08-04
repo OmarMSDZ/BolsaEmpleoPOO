@@ -16,6 +16,8 @@ import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
@@ -90,7 +92,7 @@ public class InformeMatches extends JDialog {
 //		// cargar datos
 //		cargarMatches();
 //		cantMatches();
-		
+
 		scrollPane.setViewportView(tblMatches);
 
 		JLabel lblNewLabel = new JLabel("Matches realizados");
@@ -120,28 +122,38 @@ public class InformeMatches extends JDialog {
 			}
 		});
 		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnNewButton.setIcon(new ImageIcon(InformeMatches.class.getResource("/img/refresh.png")));
-		btnNewButton.setBounds(960, 72, 126, 23);
+		btnNewButton.setBounds(960, 63, 126, 37);
 		contentPanel.add(btnNewButton);
+		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.setIcon(new ImageIcon(InformeMatches.class.getResource("/img/cancelar16px.png")));
+		btnCerrar.setBounds(960, 567, 126, 44);
+		contentPanel.add(btnCerrar);
+		btnCerrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar esta ventana?",
+						"Confirmación", JOptionPane.WARNING_MESSAGE);
+				if (opcion == JOptionPane.OK_OPTION) {
+					dispose(); // cerrar ventana
+				} else {
+					JOptionPane.showMessageDialog(null, "Acción cancelada.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				}
+			}
+		});
+		btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnCerrar.setBackground(Color.WHITE);
+		btnCerrar.setActionCommand("Cancel");
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBackground(Color.WHITE);
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton btnSalir = new JButton("Salir");
-				btnSalir.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				btnSalir.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-				btnSalir.setBackground(Color.WHITE);
-				btnSalir.setActionCommand("Cancel");
-				buttonPane.add(btnSalir);
+				buttonPane.setLayout(null);
 			}
 		}
+		cargarMatches(); // Mostrar todos los matcheos disponibles esta el momento
 	}
 
 	// cargar matches
@@ -161,7 +173,7 @@ public class InformeMatches extends JDialog {
 					fila[2] = aux.getOfertaMatcheo().getPuestoTrab();
 					fila[3] = aux.getOfertaMatcheo().getArea();
 					fila[4] = aux.getOfertaMatcheo().getEmpReclutadora().getNombre();
-					if(aux.isAceptacionEmpresa()) {
+					if (aux.isAceptacionEmpresa()) {
 						fila[5] = "Si";
 					} else {
 						fila[5] = "No";
