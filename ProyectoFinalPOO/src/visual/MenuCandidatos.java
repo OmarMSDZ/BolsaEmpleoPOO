@@ -578,7 +578,7 @@ public class MenuCandidatos extends JDialog {
 
 		// cargar datos de persona al iniciar esta pantalla
 		cargarDatosPersona();
-		validarEstado();
+		
 
 		JButton btnRegistrarSolicitud = new JButton("Registrar solicitud");
 		btnRegistrarSolicitud.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/iconRegSolicitud_x16.png")));
@@ -657,20 +657,33 @@ public class MenuCandidatos extends JDialog {
 		pnlSolicitudes.add(cbxAreaSolicitud);
 
 		btnDesempleado = new JButton("Estoy desempleado");
+		btnDesempleado.setVisible(false);
 		btnDesempleado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				persActual.estoyDesempleado();
-				persActual.habilitarSolicitudes();
-				Bolsa.getInstancia().modificarUsuario(persActual);
+				
+				int option = JOptionPane.showConfirmDialog(null, "¿Desea cambiar su estado a desempleado?", "Cancelar",
+						JOptionPane.WARNING_MESSAGE);
+				if (option == JOptionPane.OK_OPTION) {
+					persActual.estoyDesempleado();
+					persActual.habilitarSolicitudes();
+					Bolsa.getInstancia().modificarUsuario(persActual);
+					JOptionPane.showMessageDialog(null, "Estado cambiado con exito", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+					cargarDatosPersona();
+				}
+				
+				
+				validarEstado();
+				
 			}
 		});
-		btnDesempleado.setVisible(false);
 		btnDesempleado.setBackground(Color.WHITE);
 		btnDesempleado.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/iconSinEmpleo_x16.png")));
 		btnDesempleado.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnDesempleado.setBounds(12, 808, 313, 66);
 		pnlSolicitudes.add(btnDesempleado);
 
+		validarEstado();
 		JPanel pnlMisSolicitudes = new JPanel();
 		pnlMisSolicitudes.setBackground(Color.WHITE);
 		jtpMenus.addTab("New tab", null, pnlMisSolicitudes, null);
@@ -891,11 +904,15 @@ public class MenuCandidatos extends JDialog {
 		lblAreaSolicitud.setBounds(230, 145, 480, 47);
 		pnlVistaSolicitud.add(lblAreaSolicitud);
 	}
-
+	
+	//validar estado de empleado y mostrar el boton en base al mismo 
 	private void validarEstado() {
-		if (persActual.isEstadoEmpleado()) {
+		if (persActual != null && persActual.isEstadoEmpleado()) {
 			btnDesempleado.setVisible(true);
+		} else {
+			btnDesempleado.setVisible(false); // por si quieres ocultarlo si no aplica
 		}
+ 
 
 	}
 
@@ -919,9 +936,12 @@ public class MenuCandidatos extends JDialog {
 
 			if (persActual.isEstadoEmpleado()) {
 				lblInfEstado.setText("Empleado");
+ 
 			} else {
 				lblInfEstado.setText("Desempleado");
+ 
 			}
+			
 
 		}
 	}
@@ -970,8 +990,7 @@ public class MenuCandidatos extends JDialog {
 						jtpDescripcionSolicitud.setSelectedIndex(1);
 
 //						conteoNotificaciones(solicitudSelected);
-						int cantidad = Bolsa.getInstancia().contarMatchesSolicitud(solicitudSelected);
-						System.out.println("Matches encontrados: " + cantidad);
+						 
 
 					}
 				});

@@ -357,6 +357,7 @@ public class VisualizarMatchOferta extends JDialog {
 						selected.getOfertaMatcheo().disminuirVacantesDisp();
 						JOptionPane.showMessageDialog(null, "Contratación efectuada exitosamente.", "Información",
 								JOptionPane.INFORMATION_MESSAGE, null);
+						jtpVisualizar.setSelectedIndex(0);
 					} else {
 						JOptionPane.showMessageDialog(null,
 								"Lo sentimos, pero este candidato no se encuentra disponile.", "Información",
@@ -681,7 +682,7 @@ public class VisualizarMatchOferta extends JDialog {
 		fila = new Object[tableModel.getColumnCount()];
 		for (MatchOferta aux : listaMatcheo) {
 			if (aux.getOfertaMatcheo().equals(ofertaActual)) {
-				if (!aux.getSolicitudMatcheo().getSolicitante().isEstadoEmpleado()) {
+				if (!aux.getSolicitudMatcheo().getSolicitante().isEstadoEmpleado() && !aux.isAceptacionEmpresa() && aux.getSolicitudMatcheo().getEstadoSolicitud().equalsIgnoreCase("APROBADA")) {
 
 					fila[0] = aux.getCodigo();
 					fila[1] = aux.getSolicitudMatcheo().getSolicitante().getNombre() + " "
@@ -692,10 +693,10 @@ public class VisualizarMatchOferta extends JDialog {
 					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 					String formattedDate = dateFormat.format(fechaMatch);
 					fila[4] = formattedDate;
-
+					tableModel.addRow(fila);
 				}
 
-				tableModel.addRow(fila);
+				
 			}
 		}
 	}
@@ -728,7 +729,7 @@ public class VisualizarMatchOferta extends JDialog {
 			lblMostrarProvincia.setText(aux.getProvincia());
 			lblMostrarMunicipio.setText(aux.getMunicipio());
 			lblMostrarDireccion.setText(aux.getDireccion());
-			if (!aux.isEstado()) {
+			if (!aux.isEstadoEmpleado()) {
 				lblMostrarEstado.setText("Desempleado");
 			} else {
 				lblMostrarEstado.setText("Empleado");

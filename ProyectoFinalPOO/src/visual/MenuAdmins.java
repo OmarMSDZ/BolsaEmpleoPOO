@@ -550,7 +550,7 @@ public class MenuAdmins extends JDialog {
 		pnlUniversitario.setBounds(10, 0, 297, 398);
 		pnlCandidatos.add(pnlUniversitario);
 
-		JLabel lblUniversitario = new JLabel("Universitario");
+		JLabel lblUniversitario = new JLabel("Universitarios");
 		lblUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUniversitario.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		lblUniversitario.setBounds(0, 112, 297, 30);
@@ -662,6 +662,8 @@ public class MenuAdmins extends JDialog {
 		pnlBotonesInformes.setLayout(null);
 
 		JButton btnInformeCandidatos = new JButton("\r\nCandidatos");
+		btnInformeCandidatos.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeCandidatos.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnInformeCandidatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VisualizarCandidatos vc = new VisualizarCandidatos();
@@ -676,6 +678,8 @@ public class MenuAdmins extends JDialog {
 		pnlBotonesInformes.add(btnInformeCandidatos);
 
 		JButton btnInformeEmpresas = new JButton("Empresas");
+		btnInformeEmpresas.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeEmpresas.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnInformeEmpresas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VisualizarEmpresas ve = new VisualizarEmpresas();
@@ -689,7 +693,18 @@ public class MenuAdmins extends JDialog {
 		btnInformeEmpresas.setBounds(810, 53, 750, 150);
 		pnlBotonesInformes.add(btnInformeEmpresas);
 
-		JButton btnInformeOfertas = new JButton("Solicitudes");
+		JButton btnInformeOfertas = new JButton("Ofertas");
+		btnInformeOfertas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!Bolsa.getInstancia().getListaOfertas().isEmpty()) {
+					VisualizarOfertas vo = new VisualizarOfertas();
+					vo.setModal(true);
+					vo.setVisible(true);
+				}
+			}
+		});
+		btnInformeOfertas.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeOfertas.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnInformeOfertas.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconOfertas_x64.png")));
 		btnInformeOfertas.setBackground(Color.WHITE);
 		btnInformeOfertas.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -697,6 +712,17 @@ public class MenuAdmins extends JDialog {
 		pnlBotonesInformes.add(btnInformeOfertas);
 
 		JButton btnInformeSolicitudes = new JButton("Solicitudes");
+		btnInformeSolicitudes.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeSolicitudes.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnInformeSolicitudes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!Bolsa.getInstancia().getListaSolicitudes().isEmpty()) {
+					VisualizarSolicitudes vs = new VisualizarSolicitudes();
+					vs.setModal(true);
+					vs.setVisible(true);
+				}
+			}
+		});
 		btnInformeSolicitudes.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconSolicitudes_x64.png")));
 		btnInformeSolicitudes.setBackground(Color.WHITE);
 		btnInformeSolicitudes.setFont(new Font("Segoe UI", Font.PLAIN, 16));

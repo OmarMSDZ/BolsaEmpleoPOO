@@ -321,7 +321,7 @@ public class MenuEmpresas extends JDialog {
 		btnVisualizarOferta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (ofertaSeleccionada != null && jtpMenus.getSelectedIndex() == 0) {
+				if (ofertaSeleccionada != null) {
 					JOptionPane.showMessageDialog(null,
 							"No es posible realizar esta acción mientras actualiza una oferta.", "Advertencia",
 							JOptionPane.WARNING_MESSAGE, null);
