@@ -99,8 +99,23 @@ public class Persona extends Usuario implements Serializable {
 
 	public void pausarSolicitudes() {
 		for (Solicitud actual : misSolicitudes) {
-			actual.setEstadoSolicitud("PAUSADA");
+			if (!actual.getEstadoSolicitud().equalsIgnoreCase("APROBADA")) {
+				actual.setEstadoSolicitud("PAUSADA");
+			}
 		}
+	}
+
+	public void estoyDesempleado() {
+		estadoEmpleado = false;
+	}
+
+	public void habilitarSolicitudes() {
+		for (Solicitud actual : misSolicitudes) {
+			if (actual.getEstadoSolicitud().equalsIgnoreCase("PAUSADA")) {
+				actual.setEstadoSolicitud("ACTIVA");
+			}
+		}
+
 	}
 
 }

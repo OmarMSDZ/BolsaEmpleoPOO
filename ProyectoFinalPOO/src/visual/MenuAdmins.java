@@ -540,19 +540,19 @@ public class MenuAdmins extends JDialog {
 		JPanel pnlUniversitario = new JPanel();
 		pnlUniversitario.setLayout(null);
 		pnlUniversitario.setBackground(new Color(237, 215, 214));
-		pnlUniversitario.setBounds(10, 0, 297, 190);
+		pnlUniversitario.setBounds(10, 0, 297, 398);
 		pnlCandidatos.add(pnlUniversitario);
 
 		JLabel lblUniversitario = new JLabel("Universitario");
 		lblUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUniversitario.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-		lblUniversitario.setBounds(0, 37, 297, 30);
+		lblUniversitario.setBounds(0, 112, 297, 30);
 		pnlUniversitario.add(lblUniversitario);
 
 		lblMostrarUniversitario = new JLabel("0");
 		lblMostrarUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMostrarUniversitario.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		lblMostrarUniversitario.setBounds(0, 104, 297, 30);
+		lblMostrarUniversitario.setBounds(0, 254, 297, 30);
 		pnlUniversitario.add(lblMostrarUniversitario);
 
 		JPanel pnlTecnicos = new JPanel();
@@ -576,7 +576,7 @@ public class MenuAdmins extends JDialog {
 		JPanel pnlObrero = new JPanel();
 		pnlObrero.setLayout(null);
 		pnlObrero.setBackground(new Color(237, 215, 214));
-		pnlObrero.setBounds(10, 208, 297, 190);
+		pnlObrero.setBounds(317, 208, 297, 190);
 		pnlCandidatos.add(pnlObrero);
 
 		JLabel lblObrero = new JLabel("Obreros");
@@ -639,8 +639,8 @@ public class MenuAdmins extends JDialog {
 		pnlInformes.setLayout(null);
 
 		JLabel lblInformes_1 = new JLabel("Informes");
-		lblInformes_1.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-		lblInformes_1.setBounds(10, 11, 260, 51);
+		lblInformes_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblInformes_1.setBounds(10, 0, 260, 51);
 		pnlInformes.add(lblInformes_1);
 
 		JSeparator sptSubrayadorInformes = new JSeparator();
@@ -659,8 +659,8 @@ public class MenuAdmins extends JDialog {
 		pnlMatc.add(separator_3);
 
 		JLabel lblMatching = new JLabel("Matching");
-		lblMatching.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-		lblMatching.setBounds(10, 11, 260, 51);
+		lblMatching.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblMatching.setBounds(10, 0, 260, 51);
 		pnlMatc.add(lblMatching);
 
 		JButton btnRefrescarMatch = new JButton("Refrescar matching");

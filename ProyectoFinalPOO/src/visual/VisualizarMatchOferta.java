@@ -113,51 +113,14 @@ public class VisualizarMatchOferta extends JDialog {
 		setBounds(100, 100, 1020, 855);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setBounds(0, 765, 1014, 55);
-			buttonPane.setBackground(Color.WHITE);
-			getContentPane().add(buttonPane);
-
-			btnVisualizarCandidato = new JButton("Visualizar candidato");
-			btnVisualizarCandidato.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/user2.png")));
-			btnVisualizarCandidato.setBounds(662, 13, 199, 31);
-			btnVisualizarCandidato.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (selected != null) {
-						cargarDatosCandSol(selected);
-					}
-					jtpVisualizar.setSelectedIndex(1);
-				}
-			});
-			buttonPane.setLayout(null);
-			btnVisualizarCandidato.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-			btnVisualizarCandidato.setBackground(Color.WHITE);
-			btnVisualizarCandidato.setActionCommand("OK");
-			buttonPane.add(btnVisualizarCandidato);
-			{
-				JButton btnCerrar = new JButton("Cerrar");
-				btnCerrar.setBounds(865, 13, 111, 31);
-				btnCerrar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-				});
-				btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
-				btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-				btnCerrar.setBackground(Color.WHITE);
-				btnCerrar.setActionCommand("Cancel");
-				buttonPane.add(btnCerrar);
-			}
-		}
-		contentPanel.setBounds(0, 0, 997, 820);
+		contentPanel.setBounds(0, 0, 997, 761);
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
 
 		jtpVisualizar = new JTabbedPane(JTabbedPane.TOP);
-		jtpVisualizar.setBounds(-11, -29, 1032, 815);
+		jtpVisualizar.setBounds(-11, -29, 1032, 802);
 		contentPanel.add(jtpVisualizar);
 
 		JPanel pnlVisualizarMatches = new JPanel();
@@ -655,6 +618,47 @@ public class VisualizarMatchOferta extends JDialog {
 		lblMostrarDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		lblMostrarDireccion.setBounds(196, 418, 260, 41);
 		pnlVisualizarCandidato.add(lblMostrarDireccion);
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setBounds(0, 765, 1014, 55);
+			buttonPane.setBackground(Color.WHITE);
+			getContentPane().add(buttonPane);
+
+			btnVisualizarCandidato = new JButton("Visualizar candidato");
+			btnVisualizarCandidato.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/user2.png")));
+			btnVisualizarCandidato.setBounds(654, 12, 199, 31);
+			btnVisualizarCandidato.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (selected != null) {
+						cargarDatosCandSol(selected);
+						jtpVisualizar.setSelectedIndex(1);
+					} else {
+						JOptionPane.showMessageDialog(null, "Antes debe selecionar un candidato", "Información",
+								JOptionPane.INFORMATION_MESSAGE, null);
+					}
+
+				}
+			});
+			buttonPane.setLayout(null);
+			btnVisualizarCandidato.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+			btnVisualizarCandidato.setBackground(Color.WHITE);
+			btnVisualizarCandidato.setActionCommand("OK");
+			buttonPane.add(btnVisualizarCandidato);
+			{
+				JButton btnCerrar = new JButton("Cerrar");
+				btnCerrar.setBounds(865, 12, 111, 31);
+				btnCerrar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
+				btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+				btnCerrar.setBackground(Color.WHITE);
+				btnCerrar.setActionCommand("Cancel");
+				buttonPane.add(btnCerrar);
+			}
+		}
 
 	}
 

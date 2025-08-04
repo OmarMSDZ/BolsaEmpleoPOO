@@ -87,9 +87,9 @@ public class InformeMatches extends JDialog {
 
 		tblMatches.setModel(tableModel);
 
-		// cargar datos
-		cargarMatches();
-		cantMatches();
+//		// cargar datos
+//		cargarMatches();
+//		cantMatches();
 		
 		scrollPane.setViewportView(tblMatches);
 
@@ -170,7 +170,6 @@ public class InformeMatches extends JDialog {
 					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 					String formattedDate = dateFormat.format(fechaMatch);
 					fila[6] = formattedDate;
-
 				}
 
 				tableModel.addRow(fila);
