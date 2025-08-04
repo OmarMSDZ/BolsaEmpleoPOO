@@ -321,7 +321,7 @@ public class MenuEmpresas extends JDialog {
 		btnVisualizarOferta.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (ofertaSeleccionada != null && jtpMenus.getSelectedIndex() == 0) {
+				if (ofertaSeleccionada != null) {
 					JOptionPane.showMessageDialog(null,
 							"No es posible realizar esta acción mientras actualiza una oferta.", "Advertencia",
 							JOptionPane.WARNING_MESSAGE, null);
@@ -878,10 +878,20 @@ public class MenuEmpresas extends JDialog {
 		pnlDescOferta.setBounds(359, 11, 1263, 895);
 		pnlVerOfertas.add(pnlDescOferta);
 		pnlDescOferta.setLayout(null);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(0, 885, 1270, 10);
+		pnlDescOferta.add(panel_1);
+		panel_1.setBackground(Color.WHITE);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(0, -14, 15, 898);
+		pnlDescOferta.add(panel);
+		panel.setBackground(Color.WHITE);
 
 		jtpDescripcionOferta = new JTabbedPane(JTabbedPane.TOP);
 		jtpDescripcionOferta.setBorder(null);
-		jtpDescripcionOferta.setBounds(0, -32, 1276, 927);
+		jtpDescripcionOferta.setBounds(10, -32, 1266, 927);
 		pnlDescOferta.add(jtpDescripcionOferta);
 
 		JPanel pnlMensajeOferta = new JPanel();

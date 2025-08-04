@@ -135,7 +135,7 @@ public class MenuAdmins extends JDialog {
 //				//iniciar servidor para archivos de respaldo
 				// Antes de mostrar la ventana:
 				servidor = new Servidor();
-				servidor.start(); // Esto arranca el servidor en segundo plano
+				servidor.start();
 
 			}
 
@@ -284,7 +284,7 @@ public class MenuAdmins extends JDialog {
 		pnlBtnSolicitudes.setBounds(0, 169, 268, 80);
 		pnlOpciones.add(pnlBtnSolicitudes);
 
-		JLabel lblInformes = new JLabel("Informes");
+		JLabel lblInformes = new JLabel("Visualizar info");
 		lblInformes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -550,7 +550,7 @@ public class MenuAdmins extends JDialog {
 		pnlUniversitario.setBounds(10, 0, 297, 398);
 		pnlCandidatos.add(pnlUniversitario);
 
-		JLabel lblUniversitario = new JLabel("Universitario");
+		JLabel lblUniversitario = new JLabel("Universitarios");
 		lblUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUniversitario.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		lblUniversitario.setBounds(0, 112, 297, 30);
@@ -645,9 +645,9 @@ public class MenuAdmins extends JDialog {
 		jtpMenus.addTab("New tab", null, pnlInformes, null);
 		pnlInformes.setLayout(null);
 
-		JLabel lblInformes_1 = new JLabel("Informes");
+		JLabel lblInformes_1 = new JLabel("Visualizar Información");
 		lblInformes_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
-		lblInformes_1.setBounds(10, 0, 260, 51);
+		lblInformes_1.setBounds(10, 0, 379, 51);
 		pnlInformes.add(lblInformes_1);
 
 		JSeparator sptSubrayadorInformes = new JSeparator();
@@ -662,11 +662,19 @@ public class MenuAdmins extends JDialog {
 		pnlBotonesInformes.setLayout(null);
 
 		JButton btnInformeCandidatos = new JButton("\r\nCandidatos");
+		btnInformeCandidatos.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeCandidatos.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnInformeCandidatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VisualizarCandidatos vc = new VisualizarCandidatos();
-				vc.setModal(true);
-				vc.setVisible(true);
+				//con stream y anymatch podemos ver si hay al menos una instancia de persona 
+				if (Bolsa.getInstancia().getListaUsuarios().stream().anyMatch(u -> u instanceof Persona)) {
+					VisualizarCandidatos vc = new VisualizarCandidatos();
+					vc.setModal(true);
+					vc.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "No se encuentran candidatos registrados", "Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		btnInformeCandidatos.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconCandidatos_x64.png")));
@@ -676,11 +684,20 @@ public class MenuAdmins extends JDialog {
 		pnlBotonesInformes.add(btnInformeCandidatos);
 
 		JButton btnInformeEmpresas = new JButton("Empresas");
+		btnInformeEmpresas.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeEmpresas.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnInformeEmpresas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VisualizarEmpresas ve = new VisualizarEmpresas();
-				ve.setModal(true);
-				ve.setVisible(true);
+				if (Bolsa.getInstancia().getListaUsuarios().stream().anyMatch(u -> u instanceof Empresa)) {
+
+					VisualizarEmpresas ve = new VisualizarEmpresas();
+					ve.setModal(true);
+					ve.setVisible(true);
+
+				} else {
+					JOptionPane.showMessageDialog(null, "No se encuentran empresas registradas", "Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		btnInformeEmpresas.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconEmpresas_x64.png")));
@@ -689,7 +706,21 @@ public class MenuAdmins extends JDialog {
 		btnInformeEmpresas.setBounds(810, 53, 750, 150);
 		pnlBotonesInformes.add(btnInformeEmpresas);
 
-		JButton btnInformeOfertas = new JButton("Solicitudes");
+		JButton btnInformeOfertas = new JButton("Ofertas");
+		btnInformeOfertas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!Bolsa.getInstancia().getListaOfertas().isEmpty()) {
+					VisualizarOfertas vo = new VisualizarOfertas();
+					vo.setModal(true);
+					vo.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "No se encuentran ofertas registradas", "Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		btnInformeOfertas.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeOfertas.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnInformeOfertas.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconOfertas_x64.png")));
 		btnInformeOfertas.setBackground(Color.WHITE);
 		btnInformeOfertas.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -697,6 +728,20 @@ public class MenuAdmins extends JDialog {
 		pnlBotonesInformes.add(btnInformeOfertas);
 
 		JButton btnInformeSolicitudes = new JButton("Solicitudes");
+		btnInformeSolicitudes.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnInformeSolicitudes.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnInformeSolicitudes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!Bolsa.getInstancia().getListaSolicitudes().isEmpty()) {
+					VisualizarSolicitudes vs = new VisualizarSolicitudes();
+					vs.setModal(true);
+					vs.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "No se encuentran solicitudes registradas", "Advertencia",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		btnInformeSolicitudes.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconSolicitudes_x64.png")));
 		btnInformeSolicitudes.setBackground(Color.WHITE);
 		btnInformeSolicitudes.setFont(new Font("Segoe UI", Font.PLAIN, 16));

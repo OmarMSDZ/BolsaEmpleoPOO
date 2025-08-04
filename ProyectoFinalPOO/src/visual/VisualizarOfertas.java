@@ -18,9 +18,10 @@ import javax.swing.table.DefaultTableModel;
 
 import logica.Bolsa;
 import logica.Empresa;
+import logica.Oferta;
 import logica.Usuario;
 
-public class VisualizarEmpresas extends JDialog {
+public class VisualizarOfertas extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private static DefaultTableModel tableModel;
@@ -31,7 +32,7 @@ public class VisualizarEmpresas extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			VisualizarEmpresas dialog = new VisualizarEmpresas();
+			VisualizarOfertas dialog = new VisualizarOfertas();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -42,7 +43,7 @@ public class VisualizarEmpresas extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VisualizarEmpresas() {
+	public VisualizarOfertas() {
 		getContentPane().setBackground(Color.WHITE);
 		setBackground(Color.WHITE);
 		setTitle("Laborea - Visualizar empresas registradas");
@@ -57,8 +58,8 @@ public class VisualizarEmpresas extends JDialog {
 		contentPanel.setLayout(null);
 
 		String[] headers = {
-			"Código", "Nombre", "Provincia", "Municipio",
-			"RNC", "Tipo empresa", "Sector empresarial", "Estado"
+			"Código", "Empresa", "Puesto", "Descripcion", "Modalidad",
+			"Tipo empleo", "Horario", "Area", "Salario est.", "C. Vacantes", "Estado"
 		};
 
 		tableModel = new DefaultTableModel(null, headers) {
@@ -91,7 +92,7 @@ public class VisualizarEmpresas extends JDialog {
 						JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
-		btnCerrar.setIcon(new ImageIcon(VisualizarEmpresas.class.getResource("/img/cancelar16px.png")));
+		btnCerrar.setIcon(new ImageIcon(VisualizarOfertas.class.getResource("/img/cancelar16px.png")));
 		btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		btnCerrar.setBackground(Color.WHITE);
 		btnCerrar.setBounds(865, 16, 137, 31);
@@ -111,7 +112,7 @@ public class VisualizarEmpresas extends JDialog {
 		JTable tabla = new JTable(tableModel);
 		scpTabla.setViewportView(tabla);
 
-		JLabel lblEmpresasRegistradas = new JLabel("Empresas registradas");
+		JLabel lblEmpresasRegistradas = new JLabel("Ofertas registradas");
 		lblEmpresasRegistradas.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		lblEmpresasRegistradas.setBounds(30, 13, 431, 35);
 		pnlInformacion.add(lblEmpresasRegistradas);
@@ -122,29 +123,29 @@ public class VisualizarEmpresas extends JDialog {
 		pnlInformacion.add(sptSubrayado);
 
 		// Llenar tabla
-		mostrarEmpresas();
+		mostrarOfertas();
 	}
 
-	private void mostrarEmpresas() {
-		ArrayList<Usuario> usuarios = Bolsa.getInstancia().getListaUsuarios();
+	private void mostrarOfertas() {
+		ArrayList<Oferta> ofertas = Bolsa.getInstancia().getListaOfertas();
 		tableModel.setRowCount(0);
 		fila = new Object[8]; // 8 columnas
 
-		for (Usuario u : usuarios) {
-			if (u instanceof Empresa) {
-				Empresa e = (Empresa) u;
-
-				fila[0] = e.getCodigo();
-				fila[1] = e.getNombre();
-				fila[2] = e.getProvincia();
-				fila[3] = e.getMunicipio();
-				fila[4] = e.getRnc();
-				fila[5] = e.getTipoEmpresa();
-				fila[6] = e.getSectorEmpresarial();
-				fila[7] = e.isEstado() ? "Activa" : "Inactiva";
+		for (Oferta o : ofertas) {
+	 
+				fila[0] = o.getCodigo();
+				fila[1] = o.getEmpReclutadora().getNombre();
+				fila[2] = o.getPuestoTrab();
+				fila[3] = o.getDescripcion();
+				fila[4] = o.getModalidad();
+				fila[5] = o.getTipo();
+				fila[6] = o.getHorario();
+				fila[7] = o.getArea();
+				fila[8] = o.getSalarioEstimado();
+				fila[9] = o.getCantVacantes();
+				fila[10] = o.isEstadoOferta() ? "Activa" : "Inactiva";
 
 				tableModel.addRow(fila);
-			}
 		}
 	}
 }

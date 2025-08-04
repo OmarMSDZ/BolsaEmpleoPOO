@@ -349,6 +349,8 @@ public class VisualizarMatchOferta extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if (selected != null) {
 					if (!selected.getSolicitudMatcheo().getSolicitante().isEstadoEmpleado()) {
+						if(ofertaActual.getCantVacantes()!=0) {
+							
 						Bolsa.getInstancia().contratarPersona(selected.getSolicitudMatcheo().getSolicitante(),
 								selected.getSolicitudMatcheo());
 						Date fechaContratacion = new Date();
@@ -357,6 +359,13 @@ public class VisualizarMatchOferta extends JDialog {
 						selected.getOfertaMatcheo().disminuirVacantesDisp();
 						JOptionPane.showMessageDialog(null, "Contratación efectuada exitosamente.", "Información",
 								JOptionPane.INFORMATION_MESSAGE, null);
+						jtpVisualizar.setSelectedIndex(0);
+
+						} else {
+							JOptionPane.showMessageDialog(null,
+									"No hay mas vacantes disponibles para esta oferta", "Información",
+									JOptionPane.INFORMATION_MESSAGE, null);
+						}
 					} else {
 						JOptionPane.showMessageDialog(null,
 								"Lo sentimos, pero este candidato no se encuentra disponile.", "Información",
@@ -657,15 +666,13 @@ public class VisualizarMatchOferta extends JDialog {
 		btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
 		btnCerrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (btnCerrar.getText().equalsIgnoreCase("CERRAR")) {
-					int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar esta pestaña?",
-							"Confirmación", JOptionPane.YES_NO_OPTION);
-					if (opcion == JOptionPane.YES_OPTION) {
-						dispose();
-					} else {
-						JOptionPane.showMessageDialog(null, "Acción cancelada", "Información",
-								JOptionPane.INFORMATION_MESSAGE, null);
-					}
+ 
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar esta pestaña?",
+						"Confirmación", JOptionPane.YES_NO_OPTION);
+				if (opcion == 0) {
+//					jtpVisualizar.setSelectedIndex(0);
+					dispose();
+ 
 				} else {
 					btnCerrar.setText("Cerrar");
 					selected = null;
@@ -688,7 +695,7 @@ public class VisualizarMatchOferta extends JDialog {
 		fila = new Object[tableModel.getColumnCount()];
 		for (MatchOferta aux : listaMatcheo) {
 			if (aux.getOfertaMatcheo().equals(ofertaActual)) {
-				if (!aux.getSolicitudMatcheo().getSolicitante().isEstadoEmpleado()) {
+				if (!aux.getSolicitudMatcheo().getSolicitante().isEstadoEmpleado() && !aux.isAceptacionEmpresa() && !aux.getSolicitudMatcheo().getEstadoSolicitud().equalsIgnoreCase("APROBADA")) {
 
 					fila[0] = aux.getCodigo();
 					fila[1] = aux.getSolicitudMatcheo().getSolicitante().getNombre() + " "
@@ -699,10 +706,10 @@ public class VisualizarMatchOferta extends JDialog {
 					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 					String formattedDate = dateFormat.format(fechaMatch);
 					fila[4] = formattedDate;
-
+					tableModel.addRow(fila);
 				}
 
-				tableModel.addRow(fila);
+				
 			}
 		}
 	}

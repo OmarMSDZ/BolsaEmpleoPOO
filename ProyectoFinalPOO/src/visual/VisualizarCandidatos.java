@@ -21,12 +21,17 @@ import javax.swing.border.EmptyBorder;
 import logica.Bolsa;
 import logica.Persona;
 import logica.Usuario;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VisualizarCandidatos extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private static DefaultTableModel tableModel;
 	private static Object[] fila;
+	private static Persona selected = null;
 
 	/**
 	 * Launch the application.
@@ -80,12 +85,30 @@ public class VisualizarCandidatos extends JDialog {
 		buttonPane.setLayout(null);
 		buttonPane.setBackground(Color.WHITE);
 
-		JButton btnVisualizar = new JButton("Visualizar candidato");
-		btnVisualizar.setIcon(new ImageIcon(VisualizarCandidatos.class.getResource("/img/user2.png")));
-		btnVisualizar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		btnVisualizar.setBackground(Color.WHITE);
-		btnVisualizar.setBounds(617, 13, 220, 31);
-		buttonPane.add(btnVisualizar);
+		JButton btnDesemplear = new JButton("Desemplear");
+		btnDesemplear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(selected!=null) {
+					
+				int option = JOptionPane.showConfirmDialog(null, "¿Desea cambiar el estado de esta persona a desempleado?", "Cancelar",
+						JOptionPane.WARNING_MESSAGE);
+				if (option == JOptionPane.OK_OPTION) {
+					selected.estoyDesempleado();
+					selected.habilitarSolicitudes();
+					Bolsa.getInstancia().modificarUsuario(selected);
+					JOptionPane.showMessageDialog(null, "Estado cambiado con exito", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+					mostrarCandidatos();
+				}
+
+				}
+			}
+		});
+		btnDesemplear.setIcon(new ImageIcon(VisualizarCandidatos.class.getResource("/img/user2.png")));
+		btnDesemplear.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnDesemplear.setBackground(Color.WHITE);
+		btnDesemplear.setBounds(617, 13, 220, 31);
+		buttonPane.add(btnDesemplear);
 
 		JButton btnCerrar = new JButton("Cerrar");
 		btnCerrar.addActionListener(e -> {
@@ -116,6 +139,17 @@ public class VisualizarCandidatos extends JDialog {
 		pnlInformacion.add(scpTabla);
 
 		JTable tabla = new JTable(tableModel);
+		tabla.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index = tabla.getSelectedRow();
+				if (index >= 0) {
+					selected = (Persona) Bolsa.getInstancia()
+							.buscarUsuarioByCodigo(tabla.getValueAt(index, 0).toString());
+				 
+				}  
+			}
+		});
 		scpTabla.setViewportView(tabla);
 
 		JLabel lblCanditatosRegistrados = new JLabel("Candidatos registrados");

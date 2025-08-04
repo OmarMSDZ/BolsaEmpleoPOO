@@ -322,7 +322,7 @@ public class VisualizarDatosEmpresa extends JDialog {
 		lblMostrarDireccion = new JLabel("Direcci\u00F3n");
 		lblMostrarDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarDireccion.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarDireccion.setBounds(424, 94, 168, 32);
+		lblMostrarDireccion.setBounds(424, 94, 353, 32);
 		pnlDatosUsuario.add(lblMostrarDireccion);
 
 		lblMostrarNombre = new JLabel("Nombre");
@@ -340,7 +340,7 @@ public class VisualizarDatosEmpresa extends JDialog {
 		lblMostrarProvincia = new JLabel("Provincia");
 		lblMostrarProvincia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarProvincia.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarProvincia.setBounds(424, 189, 168, 32);
+		lblMostrarProvincia.setBounds(424, 189, 191, 32);
 		pnlDatosUsuario.add(lblMostrarProvincia);
 
 		lblMostrarMunicipio = new JLabel("Municipio");
@@ -405,19 +405,19 @@ public class VisualizarDatosEmpresa extends JDialog {
 		lblMostrarRnc = new JLabel("RNC");
 		lblMostrarRnc.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarRnc.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarRnc.setBounds(23, 107, 168, 32);
+		lblMostrarRnc.setBounds(23, 107, 220, 32);
 		pnlDatosEmpresariales.add(lblMostrarRnc);
 
 		lblMostrarTipoEmp = new JLabel("Tipo de empresa");
 		lblMostrarTipoEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarTipoEmp.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarTipoEmp.setBounds(265, 107, 168, 32);
+		lblMostrarTipoEmp.setBounds(265, 107, 202, 32);
 		pnlDatosEmpresariales.add(lblMostrarTipoEmp);
 
 		lblMostrarSector = new JLabel("Sector");
 		lblMostrarSector.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblMostrarSector.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMostrarSector.setBounds(507, 107, 168, 32);
+		lblMostrarSector.setBounds(507, 107, 281, 32);
 		pnlDatosEmpresariales.add(lblMostrarSector);
 
 		JLabel iconBuilding = new JLabel("");

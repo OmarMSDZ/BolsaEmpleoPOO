@@ -312,8 +312,6 @@ public class LoginUsuarios extends JDialog {
 		iconVolverInicio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Inicio pantallaPrincipal = new Inicio();
-				pantallaPrincipal.setVisible(true);
 				dispose();
 			}
 		});
@@ -1125,19 +1123,19 @@ public class LoginUsuarios extends JDialog {
 		JLabel lblRNC = new JLabel("RNC:");
 		lblRNC.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblRNC.setHorizontalAlignment(SwingConstants.LEFT);
-		lblRNC.setBounds(180, 225, 174, 34);
+		lblRNC.setBounds(135, 193, 174, 34);
 		pnlRegistroEmpresas.add(lblRNC);
 
 		txtRNC = new JTextField();
 		txtRNC.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtRNC.setBounds(180, 257, 174, 34);
+		txtRNC.setBounds(135, 225, 540, 34);
 		pnlRegistroEmpresas.add(txtRNC);
 		txtRNC.setColumns(10);
 
 		JLabel lblTipoEmpresa = new JLabel("Tipo de empresa:");
 		lblTipoEmpresa.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblTipoEmpresa.setHorizontalAlignment(SwingConstants.LEFT);
-		lblTipoEmpresa.setBounds(441, 225, 174, 34);
+		lblTipoEmpresa.setBounds(135, 270, 174, 34);
 		pnlRegistroEmpresas.add(lblTipoEmpresa);
 
 		cmbTipoEmpresa = new JComboBox();
@@ -1154,7 +1152,7 @@ public class LoginUsuarios extends JDialog {
 				"Hospitalaria", "Inmobiliaria", "Instituci\u00F3n Bancaria", "Instituci\u00F3n de Seguros",
 				"Metal\u00FArgica", "Naviera", "Petrolera", "Qu\u00EDmica", "Retail", "Salud y Bienestar",
 				"Sider\u00FArgica", "Tecnol\u00F3gica", "Textil" }));
-		cmbTipoEmpresa.setBounds(441, 257, 174, 34);
+		cmbTipoEmpresa.setBounds(135, 302, 540, 34);
 		pnlRegistroEmpresas.add(cmbTipoEmpresa);
 
 		JLabel lblRegEmpMensaje = new JLabel("Registrate como empresa y p\u00FAblica ofertas de trabajo");
@@ -1171,7 +1169,7 @@ public class LoginUsuarios extends JDialog {
 		JLabel lblSector = new JLabel("Sector empresarial:");
 		lblSector.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		lblSector.setHorizontalAlignment(SwingConstants.LEFT);
-		lblSector.setBounds(180, 332, 174, 34);
+		lblSector.setBounds(135, 363, 174, 34);
 		pnlRegistroEmpresas.add(lblSector);
 
 		cmbSectorEmp = new JComboBox();
@@ -1179,7 +1177,7 @@ public class LoginUsuarios extends JDialog {
 		cmbSectorEmp.setModel(new DefaultComboBoxModel(
 				new String[] { "<< Seleccione >>", "P\u00FAblico", "Privado", "Semi-P\u00FAblico" }));
 		cmbSectorEmp.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		cmbSectorEmp.setBounds(180, 379, 174, 34);
+		cmbSectorEmp.setBounds(135, 400, 540, 34);
 		pnlRegistroEmpresas.add(cmbSectorEmp);
 	}
 

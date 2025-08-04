@@ -29,7 +29,6 @@ public class Solicitud implements Serializable {
 		this.solicitante = solicitante;
 		this.dispHorarios = dispHorarios;
 		this.dispMovilidad = dispMovilidad;
-//		this.licencia = licencia;
 		this.tipoEmpleo = tipoEmpleado;
 		this.modalidad = modalidad;
 		this.area = area;

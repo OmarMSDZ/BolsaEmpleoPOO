@@ -276,6 +276,9 @@ public class Bolsa implements Serializable {
 		listaOfertas.remove(selected);
 		Empresa aux = selected.getEmpReclutadora();
 		aux.removerOferta(selected);
+		//eliminar matches 
+		listaMatchOferta.removeIf(match -> match.getOfertaMatcheo().equals(selected));
+		
 		modificarUsuario(aux);
 	}
 
@@ -283,6 +286,9 @@ public class Bolsa implements Serializable {
 		listaSolicitudes.remove(selected);
 		Persona aux = selected.getSolicitante();
 		aux.removerSolicitud(selected);
+		//eliminar matches
+		listaMatchOferta.removeIf(match -> match.getSolicitudMatcheo().equals(selected));
+
 		modificarUsuario(aux);
 	}
 
@@ -345,7 +351,7 @@ public class Bolsa implements Serializable {
 			for (Solicitud solicitud : solicitudes) {
 
 				// Validación básica
-				if (oferta == null || solicitud == null || solicitud.getSolicitante() == null)
+				if (oferta == null || solicitud == null || solicitud.getSolicitante() == null || oferta.getCantVacantes()==0)
 					continue;
 
 				String estadoSol = solicitud.getEstadoSolicitud();
@@ -400,14 +406,28 @@ public class Bolsa implements Serializable {
 					System.out.println("Evaluando oferta " + oferta.getCodigo() + " con solicitud "
 							+ solicitud.getCodigo() + " - porcentaje: " + porcentaje);
 
-					// Evitar duplicados de match oferta/solicitud (MOVER A OTRO METODO)
+					// Evitar duplicados de match oferta/solicitud
 					boolean yaExisteMatch = false;
+
+					// Revisar en la lista global de matches ya existentes
 					for (MatchOferta existente : Bolsa.getInstancia().getListaMatchOferta()) {
 						if (existente.getOfertaMatcheo() != null && existente.getSolicitudMatcheo() != null
 								&& existente.getOfertaMatcheo().equals(oferta)
 								&& existente.getSolicitudMatcheo().equals(solicitud)) {
 							yaExisteMatch = true;
 							break;
+						}
+					}
+
+					// Revisar también en la lista local que se está generando en esta ejecución
+					if (!yaExisteMatch) {
+						for (MatchOferta existente : MatchesOfertas) {
+							if (existente.getOfertaMatcheo() != null && existente.getSolicitudMatcheo() != null
+									&& existente.getOfertaMatcheo().equals(oferta)
+									&& existente.getSolicitudMatcheo().equals(solicitud)) {
+								yaExisteMatch = true;
+								break;
+							}
 						}
 					}
 
@@ -462,7 +482,16 @@ public class Bolsa implements Serializable {
 		int cantidad = 0;
 		if (!listaMatchOferta.isEmpty()) {
 			for (MatchOferta matchOferta : listaMatchOferta) {
-				if (matchOferta.getOfertaMatcheo().equals(oferta)) {
+				Solicitud solicitud = matchOferta.getSolicitudMatcheo();
+				Persona solicitante = solicitud.getSolicitante();
+				
+				if (
+					matchOferta.getOfertaMatcheo().equals(oferta) &&
+					!matchOferta.isAceptacionEmpresa() &&
+					solicitante != null &&
+					!solicitante.isEstadoEmpleado() &&
+					!solicitud.getEstadoSolicitud().equalsIgnoreCase("APROBADA"))
+					{
 					cantidad++;
 				}
 			}
@@ -470,20 +499,6 @@ public class Bolsa implements Serializable {
 		return cantidad;
 	}
 
-	// QUITAR
-	public int contarMatchesSolicitud(Solicitud solicitud) {
-		int cantidad = 0;
-		if (!listaMatchOferta.isEmpty() && solicitud != null && solicitud.getCodigo() != null) {
-			for (MatchOferta matchOferta : listaMatchOferta) {
-				Solicitud solMatcheada = matchOferta.getSolicitudMatcheo();
-				if (solMatcheada != null && solMatcheada.getCodigo() != null
-						&& solMatcheada.getCodigo().equals(solicitud.getCodigo())) {
-					cantidad++;
-				}
-			}
-		}
-		return cantidad;
-	}
 
 	// Contratar candidato, esto cierra las solicitudes del empleado y cambia su
 	// estado a empleado
