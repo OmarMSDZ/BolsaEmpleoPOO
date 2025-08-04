@@ -222,7 +222,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 		{
 			JLabel lblMunicipio = new JLabel("Municipio");
 			lblMunicipio.setForeground(Color.DARK_GRAY);
-			lblMunicipio.setBounds(441, 146, 189, 46);
+			lblMunicipio.setBounds(385, 146, 189, 46);
 			pnlInfoPersonal.add(lblMunicipio);
 			lblMunicipio.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		}
@@ -262,13 +262,13 @@ public class VisualizarPerfilCandidato extends JDialog {
 		{
 			lblApellidoPersona = new JLabel("Apellido/s");
 			lblApellidoPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-			lblApellidoPersona.setBounds(211, 104, 189, 46);
+			lblApellidoPersona.setBounds(211, 104, 164, 46);
 			pnlInfoPersonal.add(lblApellidoPersona);
 		}
 		{
 			lblTelefonoPersona = new JLabel("Tel\u00E9fono");
 			lblTelefonoPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-			lblTelefonoPersona.setBounds(630, 104, 189, 46);
+			lblTelefonoPersona.setBounds(630, 104, 160, 46);
 			pnlInfoPersonal.add(lblTelefonoPersona);
 		}
 		{
@@ -280,32 +280,32 @@ public class VisualizarPerfilCandidato extends JDialog {
 		{
 			lblProvinciaPersona = new JLabel("Provincia");
 			lblProvinciaPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-			lblProvinciaPersona.setBounds(211, 189, 189, 46);
+			lblProvinciaPersona.setBounds(211, 189, 164, 46);
 			pnlInfoPersonal.add(lblProvinciaPersona);
 		}
 		{
 			lblMunicipioPersona = new JLabel("Municipio");
 			lblMunicipioPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-			lblMunicipioPersona.setBounds(441, 189, 189, 46);
+			lblMunicipioPersona.setBounds(385, 189, 189, 46);
 			pnlInfoPersonal.add(lblMunicipioPersona);
 		}
 		{
 			lblDireccionPersona = new JLabel("Direcci\u00F3n");
 			lblDireccionPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-			lblDireccionPersona.setBounds(630, 189, 189, 46);
+			lblDireccionPersona.setBounds(630, 189, 160, 46);
 			pnlInfoPersonal.add(lblDireccionPersona);
 		}
 		{
 			JLabel lblFechaNacimiento = new JLabel("Fecha Nacimiento");
 			lblFechaNacimiento.setForeground(Color.DARK_GRAY);
 			lblFechaNacimiento.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-			lblFechaNacimiento.setBounds(441, 58, 189, 46);
+			lblFechaNacimiento.setBounds(385, 58, 189, 46);
 			pnlInfoPersonal.add(lblFechaNacimiento);
 		}
 		{
 			lblFechaNacimientoPersona = new JLabel("Fecha Nacimiento");
 			lblFechaNacimientoPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-			lblFechaNacimientoPersona.setBounds(441, 104, 189, 46);
+			lblFechaNacimientoPersona.setBounds(385, 104, 189, 46);
 			pnlInfoPersonal.add(lblFechaNacimientoPersona);
 		}
 		{
@@ -430,20 +430,20 @@ public class VisualizarPerfilCandidato extends JDialog {
 			{
 				lblNombreTecnicoPersona = new JLabel("Nombre Tecnico");
 				lblNombreTecnicoPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-				lblNombreTecnicoPersona.setBounds(10, 65, 138, 46);
+				lblNombreTecnicoPersona.setBounds(10, 65, 376, 46);
 				pnlNivelTecnico.add(lblNombreTecnicoPersona);
 			}
 			{
 				JLabel lblAosExp = new JLabel("A\u00F1os experiencia");
 				lblAosExp.setForeground(Color.DARK_GRAY);
 				lblAosExp.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-				lblAosExp.setBounds(181, 11, 138, 46);
+				lblAosExp.setBounds(396, 11, 138, 46);
 				pnlNivelTecnico.add(lblAosExp);
 			}
 			{
 				lblAnosExperienciaPersona = new JLabel("AnosExp");
 				lblAnosExperienciaPersona.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-				lblAnosExperienciaPersona.setBounds(181, 65, 138, 46);
+				lblAnosExperienciaPersona.setBounds(396, 65, 138, 46);
 				pnlNivelTecnico.add(lblAnosExperienciaPersona);
 			}
 

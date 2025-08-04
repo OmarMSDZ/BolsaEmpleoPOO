@@ -328,6 +328,16 @@ public class EditarInfoPersonalCandidato extends JDialog {
 				pnlInfoProfesional.setBackground(Color.WHITE);
 				jtpEditarInformacion.addTab("New tab", null, pnlInfoProfesional, null);
 				pnlInfoProfesional.setLayout(null);
+				
+				JPanel panel_1 = new JPanel();
+				panel_1.setBackground(Color.WHITE);
+				panel_1.setBounds(25, 180, 10, 221);
+				pnlInfoProfesional.add(panel_1);
+				
+				JPanel panel = new JPanel();
+				panel.setBackground(Color.WHITE);
+				panel.setBounds(526, 181, 10, 221);
+				pnlInfoProfesional.add(panel);
 
 				JSeparator sptPnlAlternante = new JSeparator();
 				sptPnlAlternante.setForeground(Color.BLACK);
@@ -362,7 +372,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 
 				JPanel pnlOcultoSuperior = new JPanel();
 				pnlOcultoSuperior.setBackground(Color.WHITE);
-				pnlOcultoSuperior.setBounds(33, 191, 500, 36);
+				pnlOcultoSuperior.setBounds(33, 181, 500, 46);
 				pnlInfoProfesional.add(pnlOcultoSuperior);
 				{
 					jtpNivelEducativo = new JTabbedPane(JTabbedPane.TOP);
@@ -385,7 +395,7 @@ public class EditarInfoPersonalCandidato extends JDialog {
 							cbxCarrera = new JComboBox();
 							cbxCarrera.setModel(new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Administraci\u00F3n de Empresas", "Agronom\u00EDa", "Antropolog\u00EDa", "Animaci\u00F3n Digital", "Arquitectura", "Artes Esc\u00E9nicas", "Artes Pl\u00E1sticas", "Astrobiolog\u00EDa", "Astronom\u00EDa", "Bellas Artes", "Bioinform\u00E1tica", "Biolog\u00EDa", "Biomedicina", "Biotecnolog\u00EDa", "Bioqu\u00EDmica", "Ciencia de Datos", "Ciencia y Tecnolog\u00EDa de Materiales Avanzados", "Ciencias Ambientales", "Ciencias de la Computaci\u00F3n", "Ciencias de la Comunicaci\u00F3n", "Ciencias de la Tierra", "Ciencias Forenses", "Ciencias Pol\u00EDticas", "Comercio Internacional", "Computaci\u00F3n Cu\u00E1ntica", "Contabilidad", "Criminolog\u00EDa", "Ciberseguridad", "Cine", "Danza", "Derecho", "Dise\u00F1o de Interiores", "Dise\u00F1o de Moda", "Dise\u00F1o Gr\u00E1fico", "Dise\u00F1o Industrial", "Dise\u00F1o Multimedia", "Dise\u00F1o UX-UI", "Dise\u00F1o y Gesti\u00F3n de Ciudades Inteligentes", "Econom\u00EDa", "Educaci\u00F3n", "Enfermer\u00EDa", "Entretenimiento Digital", "Estad\u00EDstica", "Farmacia", "Filosof\u00EDa", "Fisioterapia", "Finanzas", "Foniatr\u00EDa", "Fotograf\u00EDa", "Geograf\u00EDa", "Geof\u00EDsica", "Geolog\u00EDa", "Gen\u00E9tica", "Gerontolog\u00EDa", "Gesti\u00F3n Ambiental", "Gesti\u00F3n de la Innovaci\u00F3n y Emprendimiento", "Gesti\u00F3n de Riesgos y Desastres", "Gesti\u00F3n P\u00FAblica", "Historia", "Imagenolog\u00EDa", "Ingenier\u00EDa Aeroespacial", "Ingenier\u00EDa Agr\u00F3noma", "Ingenier\u00EDa Ambiental", "Ingenier\u00EDa Biom\u00E9dica", "Ingenier\u00EDa Civil", "Ingenier\u00EDa de Materiales", "Ingenier\u00EDa El\u00E9ctrica", "Ingenier\u00EDa Electr\u00F3nica", "Ingenier\u00EDa en Automatizaci\u00F3n y Control", "Ingenier\u00EDa en Energ\u00EDas Renovables", "Ingenier\u00EDa en Inteligencia Artificial", "Ingenier\u00EDa en Mecatr\u00F3nica", "Ingenier\u00EDa en Minas y Metalurgia", "Ingenier\u00EDa en Nanotecnolog\u00EDa", "Ingenier\u00EDa en Sistemas Computacionales", "Ingenier\u00EDa en Software", "Ingenier\u00EDa en Telecomunicaciones", "Ingenier\u00EDa en Transporte y V\u00EDas", "Ingenier\u00EDa Forestal", "Ingenier\u00EDa Gen\u00E9tica", "Ingenier\u00EDa Industrial", "Ingenier\u00EDa Mec\u00E1nica", "Ingenier\u00EDa Naval", "Ingenier\u00EDa Petrolera", "Ingenier\u00EDa Qu\u00EDmica", "Ingenier\u00EDa en Energ\u00EDa y Sustentabilidad", "Lenguas Modernas", "Ling\u00FC\u00EDstica", "Log\u00EDstica y Transporte", "Logopedia", "Laboratorio Cl\u00EDnico", "Matem\u00E1ticas", "Marketing", "Medicina", "Medicina Veterinaria", "Mercadotecnia", "M\u00FAsica", "Nanotecnolog\u00EDa Aplicada", "Negocios Internacionales", "Neurociencias", "Nutrici\u00F3n", "Oceanograf\u00EDa", "Odontolog\u00EDa", "Optometr\u00EDa", "Paleontolog\u00EDa", "Pedagog\u00EDa", "Periodismo", "Producci\u00F3n Audiovisual", "Publicidad y Relaciones P\u00FAblicas", "Psicolog\u00EDa", "Psicolog\u00EDa Cl\u00EDnica", "Qu\u00EDmica", "Realidad Virtual y Aumentada", "Relaciones Internacionales", "Rob\u00F3tica", "Sociolog\u00EDa", "Tecnolog\u00EDa de Alimentos", "Tecnolog\u00EDa M\u00E9dica", "Teatro", "Teolog\u00EDa", "Traducci\u00F3n e Interpretaci\u00F3n", "Trabajo Social", "Turismo y Hoteler\u00EDa", "Videojuegos", "Zootecnia"}));
 							cbxCarrera.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-							cbxCarrera.setBounds(10, 47, 250, 30);
+							cbxCarrera.setBounds(10, 47, 475, 30);
 							pnlUniv.add(cbxCarrera);
 						}
 					}
