@@ -488,7 +488,7 @@ public class Bolsa implements Serializable {
 	// Contratar candidato, esto cierra las solicitudes del empleado y cambia su
 	// estado a empleado
 	public void contratarPersona(Persona persona, Solicitud solicitud) {
-		persona.setEstado(true);
+		persona.setEstadoEmpleado(true);
 		solicitud.cambiarEstadoAprobada();
 		persona.pausarSolicitudes();
 		modificarUsuario(persona);

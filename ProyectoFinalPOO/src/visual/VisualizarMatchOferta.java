@@ -640,6 +640,7 @@ public class VisualizarMatchOferta extends JDialog {
 				if (selected != null) {
 					cargarDatosCandSol(selected);
 					jtpVisualizar.setSelectedIndex(1);
+					btnCerrar.setText("Regresar");
 				} else {
 					JOptionPane.showMessageDialog(null, "Debe seleccionar un candidato antes.", "Información",
 							JOptionPane.INFORMATION_MESSAGE, null);
@@ -656,14 +657,21 @@ public class VisualizarMatchOferta extends JDialog {
 		btnCerrar.setIcon(new ImageIcon(VisualizarMatchOferta.class.getResource("/img/cancelar16px.png")));
 		btnCerrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar esta pestaña?",
-						"Confirmación", JOptionPane.YES_NO_OPTION);
-				if (opcion == 0) {
-					jtpVisualizar.setSelectedIndex(0);
+				if (btnCerrar.getText().equalsIgnoreCase("CERRAR")) {
+					int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar esta pestaña?",
+							"Confirmación", JOptionPane.YES_NO_OPTION);
+					if (opcion == JOptionPane.YES_OPTION) {
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, "Acción cancelada", "Información",
+								JOptionPane.INFORMATION_MESSAGE, null);
+					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Acción cancelada", "Información",
-							JOptionPane.INFORMATION_MESSAGE, null);
+					btnCerrar.setText("Cerrar");
+					selected = null;
+					jtpVisualizar.setSelectedIndex(0);
 				}
+
 			}
 		});
 		btnCerrar.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -727,7 +735,7 @@ public class VisualizarMatchOferta extends JDialog {
 			lblMostrarProvincia.setText(aux.getProvincia());
 			lblMostrarMunicipio.setText(aux.getMunicipio());
 			lblMostrarDireccion.setText(aux.getDireccion());
-			if (!aux.isEstado()) {
+			if (!aux.isEstadoEmpleado()) {
 				lblMostrarEstado.setText("Desempleado");
 			} else {
 				lblMostrarEstado.setText("Empleado");
