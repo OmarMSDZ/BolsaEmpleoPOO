@@ -659,7 +659,8 @@ public class VisualizarMatchOferta extends JDialog {
 				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar esta pestaña?",
 						"Confirmación", JOptionPane.YES_NO_OPTION);
 				if (opcion == 0) {
-					jtpVisualizar.setSelectedIndex(0);
+//					jtpVisualizar.setSelectedIndex(0);
+					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Acción cancelada", "Información",
 							JOptionPane.INFORMATION_MESSAGE, null);
