@@ -124,7 +124,7 @@ public class MenuAdmins extends JDialog {
 //				//iniciar servidor para archivos de respaldo
 				// Antes de mostrar la ventana:
 				servidor = new Servidor();
-				servidor.start(); // Esto arranca el servidor en segundo plano
+				servidor.start(); 
 
 			}
 
