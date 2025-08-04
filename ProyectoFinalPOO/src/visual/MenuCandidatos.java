@@ -578,7 +578,6 @@ public class MenuCandidatos extends JDialog {
 
 		// cargar datos de persona al iniciar esta pantalla
 		cargarDatosPersona();
-		validarEstado();
 
 		JButton btnRegistrarSolicitud = new JButton("Registrar solicitud");
 		btnRegistrarSolicitud.setIcon(new ImageIcon(MenuCandidatos.class.getResource("/img/iconRegSolicitud_x16.png")));
@@ -662,6 +661,9 @@ public class MenuCandidatos extends JDialog {
 				persActual.estoyDesempleado();
 				persActual.habilitarSolicitudes();
 				Bolsa.getInstancia().modificarUsuario(persActual);
+				JOptionPane.showMessageDialog(null, "Su información ha sido actualizada con exito.", "Información",
+						JOptionPane.INFORMATION_MESSAGE, null);
+				validarEstado();
 			}
 		});
 		btnDesempleado.setVisible(false);
@@ -890,13 +892,16 @@ public class MenuCandidatos extends JDialog {
 		lblAreaSolicitud.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		lblAreaSolicitud.setBounds(230, 145, 480, 47);
 		pnlVistaSolicitud.add(lblAreaSolicitud);
+
+		validarEstado(); // Verificar si el candidato esta empleado
 	}
 
 	private void validarEstado() {
 		if (persActual.isEstadoEmpleado()) {
 			btnDesempleado.setVisible(true);
+		} else {
+			btnDesempleado.setVisible(false);
 		}
-
 	}
 
 	private void cargarDatosPersona() {
