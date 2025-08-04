@@ -370,8 +370,15 @@ public class MenuEmpresas extends JDialog {
 		lblSalir.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Bolsa.setUsuarioActivo(null); // quitar usuario activo de la clase
-				dispose(); // cerrar ventana
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea salir?", "Confirmación",
+						JOptionPane.WARNING_MESSAGE);
+				if (opcion == JOptionPane.OK_OPTION) {
+					Bolsa.setUsuarioActivo(null); // quitar usuario activo de la clase
+					dispose(); // cerrar ventana
+				} else {
+					JOptionPane.showMessageDialog(null, "Acción cancelada.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				}
 			}
 		});
 		lblSalir.setForeground(Color.WHITE);

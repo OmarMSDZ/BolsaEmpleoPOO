@@ -138,7 +138,7 @@ public class VisualizarPerfilCandidato extends JDialog {
 			JLabel lblNewLabel = new JLabel("");
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel.setIcon(new ImageIcon(VisualizarPerfilCandidato.class.getResource("/img/Laborea.png")));
-			lblNewLabel.setBounds(0, 0, 177, 69);
+			lblNewLabel.setBounds(0, 0, 150, 75);
 			contentPanel.add(lblNewLabel);
 		}
 		{

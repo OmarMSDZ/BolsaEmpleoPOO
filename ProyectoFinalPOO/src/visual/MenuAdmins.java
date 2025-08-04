@@ -385,8 +385,15 @@ public class MenuAdmins extends JDialog {
 		lblSalir.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Bolsa.setUsuarioActivo(null); // quitar usuario activo de la clase
-				dispose(); // cerrar ventana
+				int opcion = JOptionPane.showConfirmDialog(null, "¿Seguro que desea salir?", "Confirmación",
+						JOptionPane.WARNING_MESSAGE);
+				if (opcion == JOptionPane.OK_OPTION) {
+					Bolsa.setUsuarioActivo(null); // quitar usuario activo de la clase
+					dispose(); // cerrar ventana
+				} else {
+					JOptionPane.showMessageDialog(null, "Acción cancelada.", "Información",
+							JOptionPane.INFORMATION_MESSAGE, null);
+				}
 			}
 		});
 		lblSalir.setForeground(Color.WHITE);
@@ -446,7 +453,7 @@ public class MenuAdmins extends JDialog {
 		lblUsuarios.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		lblUsuarios.setBounds(0, 112, 646, 30);
 		pnlUsuariosTotales.add(lblUsuarios);
-		
+
 		lblMostrarUsuarios = new JLabel("0");
 		lblMostrarUsuarios.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		lblMostrarUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
@@ -540,19 +547,19 @@ public class MenuAdmins extends JDialog {
 		JPanel pnlUniversitario = new JPanel();
 		pnlUniversitario.setLayout(null);
 		pnlUniversitario.setBackground(new Color(237, 215, 214));
-		pnlUniversitario.setBounds(10, 0, 297, 190);
+		pnlUniversitario.setBounds(10, 0, 297, 398);
 		pnlCandidatos.add(pnlUniversitario);
 
 		JLabel lblUniversitario = new JLabel("Universitario");
 		lblUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUniversitario.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-		lblUniversitario.setBounds(0, 37, 297, 30);
+		lblUniversitario.setBounds(0, 112, 297, 30);
 		pnlUniversitario.add(lblUniversitario);
 
 		lblMostrarUniversitario = new JLabel("0");
 		lblMostrarUniversitario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMostrarUniversitario.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		lblMostrarUniversitario.setBounds(0, 104, 297, 30);
+		lblMostrarUniversitario.setBounds(0, 254, 297, 30);
 		pnlUniversitario.add(lblMostrarUniversitario);
 
 		JPanel pnlTecnicos = new JPanel();
@@ -576,7 +583,7 @@ public class MenuAdmins extends JDialog {
 		JPanel pnlObrero = new JPanel();
 		pnlObrero.setLayout(null);
 		pnlObrero.setBackground(new Color(237, 215, 214));
-		pnlObrero.setBounds(10, 208, 297, 190);
+		pnlObrero.setBounds(317, 208, 297, 190);
 		pnlCandidatos.add(pnlObrero);
 
 		JLabel lblObrero = new JLabel("Obreros");
@@ -639,8 +646,8 @@ public class MenuAdmins extends JDialog {
 		pnlInformes.setLayout(null);
 
 		JLabel lblInformes_1 = new JLabel("Informes");
-		lblInformes_1.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-		lblInformes_1.setBounds(10, 11, 260, 51);
+		lblInformes_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblInformes_1.setBounds(10, 0, 260, 51);
 		pnlInformes.add(lblInformes_1);
 
 		JSeparator sptSubrayadorInformes = new JSeparator();
@@ -648,19 +655,67 @@ public class MenuAdmins extends JDialog {
 		sptSubrayadorInformes.setBounds(10, 54, 1609, 8);
 		pnlInformes.add(sptSubrayadorInformes);
 
+		JPanel pnlBotonesInformes = new JPanel();
+		pnlBotonesInformes.setBackground(Color.WHITE);
+		pnlBotonesInformes.setBounds(10, 64, 1592, 460);
+		pnlInformes.add(pnlBotonesInformes);
+		pnlBotonesInformes.setLayout(null);
+
+		JButton btnInformeCandidatos = new JButton("\r\nCandidatos");
+		btnInformeCandidatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VisualizarCandidatos vc = new VisualizarCandidatos();
+				vc.setModal(true);
+				vc.setVisible(true);
+			}
+		});
+		btnInformeCandidatos.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconCandidatos_x64.png")));
+		btnInformeCandidatos.setBackground(Color.WHITE);
+		btnInformeCandidatos.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnInformeCandidatos.setBounds(30, 53, 750, 150);
+		pnlBotonesInformes.add(btnInformeCandidatos);
+
+		JButton btnInformeEmpresas = new JButton("Empresas");
+		btnInformeEmpresas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VisualizarEmpresas ve = new VisualizarEmpresas();
+				ve.setModal(true);
+				ve.setVisible(true);
+			}
+		});
+		btnInformeEmpresas.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconEmpresas_x64.png")));
+		btnInformeEmpresas.setBackground(Color.WHITE);
+		btnInformeEmpresas.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnInformeEmpresas.setBounds(810, 53, 750, 150);
+		pnlBotonesInformes.add(btnInformeEmpresas);
+
+		JButton btnInformeOfertas = new JButton("Solicitudes");
+		btnInformeOfertas.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconOfertas_x64.png")));
+		btnInformeOfertas.setBackground(Color.WHITE);
+		btnInformeOfertas.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnInformeOfertas.setBounds(810, 256, 750, 150);
+		pnlBotonesInformes.add(btnInformeOfertas);
+
+		JButton btnInformeSolicitudes = new JButton("Solicitudes");
+		btnInformeSolicitudes.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/iconSolicitudes_x64.png")));
+		btnInformeSolicitudes.setBackground(Color.WHITE);
+		btnInformeSolicitudes.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnInformeSolicitudes.setBounds(30, 256, 750, 150);
+		pnlBotonesInformes.add(btnInformeSolicitudes);
+
 		JPanel pnlMatc = new JPanel();
 		pnlMatc.setBackground(Color.WHITE);
 		jtpMenus.addTab("New tab", null, pnlMatc, null);
 		pnlMatc.setLayout(null);
 
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setForeground(Color.BLACK);
-		separator_3.setBounds(10, 54, 1609, 8);
-		pnlMatc.add(separator_3);
+		JSeparator sptSubrayadorMatches = new JSeparator();
+		sptSubrayadorMatches.setForeground(Color.BLACK);
+		sptSubrayadorMatches.setBounds(10, 54, 1609, 8);
+		pnlMatc.add(sptSubrayadorMatches);
 
 		JLabel lblMatching = new JLabel("Matching");
-		lblMatching.setFont(new Font("Segoe UI", Font.PLAIN, 25));
-		lblMatching.setBounds(10, 11, 260, 51);
+		lblMatching.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblMatching.setBounds(10, 0, 260, 51);
 		pnlMatc.add(lblMatching);
 
 		JButton btnRefrescarMatch = new JButton("Refrescar matching");
@@ -751,7 +806,7 @@ public class MenuAdmins extends JDialog {
 		btnRespaldo.setIcon(new ImageIcon(MenuAdmins.class.getResource("/img/database64.png")));
 		btnRespaldo.setBounds(575, 186, 476, 108);
 		pnlRespaldo.add(btnRespaldo);
-		
+
 		cargarInformacion(); // Para mostrar todo la información en la pantalla
 	}
 

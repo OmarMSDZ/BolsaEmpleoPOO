@@ -13,7 +13,6 @@ public class Solicitud implements Serializable {
 	private Persona solicitante;
 	private String dispHorarios;
 	private boolean dispMovilidad;
-//	private boolean licencia;
 	private String tipoEmpleo;
 	private String modalidad;
 	private String area;
@@ -125,6 +124,10 @@ public class Solicitud implements Serializable {
 
 	public void setEstadoSolicitud(String estadoSolicitud) {
 		this.estadoSolicitud = estadoSolicitud;
+	}
+
+	public void cambiarEstadoAprobada() {
+		setEstadoSolicitud("APROBADA");
 	}
 
 }
