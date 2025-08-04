@@ -3,13 +3,13 @@ package logica;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Oferta implements Serializable{
+public class Oferta implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String codigo, puestoTrab, descripcion, modalidad, tipoEmpleo, horario, nivelEducacion; 
+	private String codigo, puestoTrab, descripcion, modalidad, tipoEmpleo, horario, nivelEducacion;
 	private String area;
 	private int aniosExp;
 	private float salarioEstimado;
@@ -169,6 +169,10 @@ public class Oferta implements Serializable{
 
 	public void setEmpReclutadora(Empresa empReclutadora) {
 		this.empReclutadora = empReclutadora;
+	}
+
+	public void disminuirVacantesDisp() {
+		cantVacantes--;
 	}
 
 }

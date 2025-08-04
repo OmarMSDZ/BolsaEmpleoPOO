@@ -12,16 +12,17 @@ public class MatchOferta implements Serializable {
 	private Date fechaMatcheo;
 	private Oferta ofertaMatcheo;
 	private Solicitud solicitudMatcheo;
+	private Date fechaContratacion;
 	private boolean aceptacionEmpresa;
- 
 
 	public MatchOferta(String codigo, Date fechaMatcheo, Oferta ofertaMatcheo, Solicitud solicitudMatcheo,
-			boolean aceptacionEmpresa) {
+			Date fechaContratacion, boolean aceptacionEmpresa) {
 		super();
 		this.codigo = codigo;
 		this.fechaMatcheo = fechaMatcheo;
 		this.ofertaMatcheo = ofertaMatcheo;
 		this.solicitudMatcheo = solicitudMatcheo;
+		this.fechaContratacion = fechaContratacion;
 		this.aceptacionEmpresa = aceptacionEmpresa;
  
 	}
@@ -56,6 +57,14 @@ public class MatchOferta implements Serializable {
 
 	public void setSolicitudMatcheo(Solicitud solicitudMatcheo) {
 		this.solicitudMatcheo = solicitudMatcheo;
+	}
+
+	public Date getFechaContratacion() {
+		return fechaContratacion;
+	}
+
+	public void setFechaContratacion(Date fechaContratacion) {
+		this.fechaContratacion = fechaContratacion;
 	}
 
 	public boolean isAceptacionEmpresa() {
